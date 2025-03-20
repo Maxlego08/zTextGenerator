@@ -92,7 +92,7 @@ processResources {
     def props = [version: version, name: rootProject.name]
     inputs.properties props
     filteringCharset 'UTF-8'
-    filesMatching('**/*.yml') {
+    filesMatching('plugin.yml') {
         expand props
     }
 }

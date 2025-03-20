@@ -1,0 +1,55 @@
+package fr.maxlego08.text.api.utils;
+
+import fr.maxlego08.text.api.placeholders.Placeholder;
+import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+
+public abstract class ZUtils {
+
+    /**
+     * Recursively iterates through all files in the given folder, skipping the
+     * folder itself, and applies the given consumer to each file that ends with
+     * ".yml".
+     *
+     * @param folder   the folder to iterate through
+     * @param consumer the consumer to apply to each file
+     */
+    protected void files(File folder, Consumer<File> consumer) {
+        try (Stream<Path> s = Files.walk(Paths.get(folder.getPath()))) {
+            s.skip(1).map(Path::toFile).filter(File::isFile).filter(e -> e.getName().endsWith(".yml")).forEach(consumer);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Applies PlaceholderAPI transformations to a string.
+     *
+     * @param placeHolder the string to transform.
+     * @param player      the player context for the placeholders.
+     * @return the transformed string.
+     */
+    protected String papi(String placeHolder, Player player) {
+        return Placeholder.getPlaceholder().setPlaceholders(player, placeHolder);
+    }
+
+    /**
+     * Applies PlaceholderAPI transformations to a list of strings.
+     *
+     * @param placeHolder the list of strings to transform.
+     * @param player      the player context for the placeholders.
+     * @return the transformed list of strings.
+     */
+    protected List<String> papi(List<String> placeHolder, Player player) {
+        return Placeholder.getPlaceholder().setPlaceholders(player, placeHolder);
+    }
+
+}
