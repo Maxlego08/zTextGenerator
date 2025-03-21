@@ -2,9 +2,9 @@ package fr.maxlego08.text.api.placeholders;
 
 import fr.maxlego08.text.api.TextGeneratorPlugin;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -74,12 +74,12 @@ public class LocalPlaceholder {
         return null;
     }
 
-    public void register(String startWith, BiFunction<Player, String, String> biConsumer) {
-        this.autoPlaceholders.add(new AutoPlaceholder(startWith, biConsumer));
+    public void register(String startWith, BiFunction<Player, String, String> biConsumer, String description, String... args) {
+        this.autoPlaceholders.add(new AutoPlaceholder(startWith, biConsumer, description, Arrays.asList(args)));
     }
 
-    public void register(String startWith, Function<Player, String> biConsumer) {
-        this.autoPlaceholders.add(new AutoPlaceholder(startWith, biConsumer));
+    public void register(String startWith, Function<Player, String> biConsumer, String description, String... args) {
+        this.autoPlaceholders.add(new AutoPlaceholder(startWith, biConsumer, description, Arrays.asList(args)));
     }
 
     public TextGeneratorPlugin getPlugin() {
@@ -92,5 +92,9 @@ public class LocalPlaceholder {
 
     public String getPrefix() {
         return prefix;
+    }
+
+    public List<AutoPlaceholder> getAutoPlaceholders() {
+        return autoPlaceholders;
     }
 }
