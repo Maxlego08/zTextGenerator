@@ -10,6 +10,7 @@ import fr.maxlego08.text.command.CommandManager;
 import fr.maxlego08.text.command.commands.CommandTextGenerator;
 import fr.maxlego08.text.messages.ZMessageManager;
 import fr.maxlego08.text.placeholders.AlignedPlaceholders;
+import fr.maxlego08.text.placeholders.TitlePlaceholders;
 import fr.maxlego08.text.zcore.ZPlugin;
 import fr.maxlego08.text.zcore.utils.EmptyFont;
 
@@ -35,7 +36,7 @@ public final class TextPlugin extends ZPlugin {
         this.enableDebug = this.getConfig().getBoolean("enable-debug", false);
         this.textManager.loadAlphabets();
 
-        var placeholders = List.of(new AlignedPlaceholders(this));
+        var placeholders = List.of(new AlignedPlaceholders(this), new TitlePlaceholders());
         placeholders.forEach(placeholder -> placeholder.register(this.textManager));
 
         this.registerCommand("text-generator", new CommandTextGenerator(this), "text", "tg");

@@ -2,8 +2,8 @@ package fr.maxlego08.text;
 
 import fr.maxlego08.text.api.Alphabet;
 import fr.maxlego08.text.api.FontTransformation;
+import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.records.FontInfo;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.List;
@@ -11,13 +11,13 @@ import java.util.Optional;
 
 public class ZAlphabet implements Alphabet {
 
-    private final Plugin plugin;
+    private final TextGeneratorPlugin plugin;
     private final String name;
     private final File file;
     private final List<FontInfo> fontInfos;
     private final FontTransformation fontTransformation;
 
-    public ZAlphabet(Plugin plugin, String name, File file, List<FontInfo> fontInfos, FontTransformation fontTransformation) {
+    public ZAlphabet(TextGeneratorPlugin plugin, String name, File file, List<FontInfo> fontInfos, FontTransformation fontTransformation) {
         this.plugin = plugin;
         this.name = name;
         this.file = file;
@@ -47,7 +47,7 @@ public class ZAlphabet implements Alphabet {
 
     @Override
     public int getTextLength(String content) {
-        return content.chars().map(c -> getLength((char) c)).sum();
+        return this.plugin.getColorHelper().getTextWithoutColor(content).chars().map(c -> getLength((char) c)).sum();
     }
 
     @Override

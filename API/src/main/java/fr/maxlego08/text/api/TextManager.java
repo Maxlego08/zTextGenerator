@@ -20,4 +20,6 @@ public interface TextManager {
 
     String getNegativeOffset(int pixels);
 
+    Alphabet getInventoryTitleAlphabet();
+
 }

@@ -41,6 +41,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             folder.mkdirs();
 
             this.plugin.saveResource("alphabets/normal.yml", false);
+            this.plugin.saveResource("alphabets/inventory-title.yml", false);
         }
 
         this.files(folder, this::loadAlphabet);
@@ -56,8 +57,11 @@ public class ZTextManager extends ZUtils implements TextManager {
 
         this.alphabets.removeIf(alphabet -> alphabet.getName().equalsIgnoreCase(name));
 
-
         List<FontInfo> fontInfos = this.loadFontInfo(configuration);
+        if (fontInfos.isEmpty()) {
+            this.plugin.getLogger().severe("No font infos found for alphabet " + name + " from " + file.getName());
+        }
+
         List<SpecialFontTransformation> specialFontTransformations = this.loadFontTransformations(configuration);
         String upperCase = configuration.getString("font-transformations.upper-case");
         String lowerCase = configuration.getString("font-transformations.lower-case");
@@ -123,5 +127,14 @@ public class ZTextManager extends ZUtils implements TextManager {
         }
 
         return specialFontTransformations;
+    }
+
+    @Override
+    public Alphabet getInventoryTitleAlphabet() {
+        var optional = getAlphabet("inventory-title");
+        if (optional.isEmpty()) {
+            throw new RuntimeException("Inventory title alphabet not found");
+        }
+        return optional.get();
     }
 }
