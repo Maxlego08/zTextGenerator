@@ -289,5 +289,7 @@ font-transformations:
       replacement: ':huit_%height%:'
     - char: '9'
       replacement: ':neuf_%height%:'
+    - char: ' '
+      replacement: ' '
   upper-case: ":%char%_u_%height%:"
   lower-case: ":%char%_l_%height%:"

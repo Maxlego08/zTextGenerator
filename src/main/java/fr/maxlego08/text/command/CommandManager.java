@@ -14,16 +14,11 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CommandManager extends ZUtils implements CommandExecutor, TabCompleter {
 
@@ -51,11 +46,6 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
     public void validCommands() {
         this.plugin.getLogger().info("Loading " + getUniqueCommand() + " commands");
         this.commandChecking();
-        try {
-            this.generateMarkdownFile();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
     }
 
     public VCommand registerCommand(VCommand command) {
@@ -213,45 +203,6 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-    }
-
-    public void generateMarkdownFile() throws IOException {
-
-        List<VCommand> commands = new ArrayList<>();
-        this.commands.stream().filter(e -> e.getParent() == null).sorted(Comparator.comparing(VCommand::getFirst)).forEach(command -> {
-            commands.add(command);
-            commands.addAll(this.commands.stream().filter(e -> e.getMainParent() == command).sorted(Comparator.comparing(VCommand::getFirst)).toList());
-        });
-
-        StringBuilder sb = new StringBuilder();
-        // Markdown table header
-        sb.append("| Command | Aliases | Permission | Description |\n");
-        sb.append("|---------|---------|------------|-------------|\n");
-
-        for (VCommand command : commands) {
-            // Gather command data
-            String cmd = command.getSyntax(); // Assuming getSyntax() gives the command
-            List<String> aliasesList = new ArrayList<>(command.getSubCommands());
-            if (!aliasesList.isEmpty()) {
-                aliasesList.removeFirst();  // Remove the first element
-            }
-            String aliases = aliasesList.stream()
-                    .map(alias -> "/" + alias)  // Add '/' before each alias
-                    .collect(Collectors.joining(", "));
-            String perm = command.getPermission(); // getPermission() for permissions
-            String desc = command.getDescription(); // getDescription() for the description
-
-            // Escape special Markdown characters in descriptions
-            desc = desc == null ? "" : desc.replace("|", "\\|");
-            perm = perm == null ? "" : perm;
-
-            // Add row to the Markdown table
-            sb.append(String.format("| `%s` | %s | %s | %s |\n", cmd, aliases, perm, desc));
-        }
-
-        // Write the StringBuilder content to the file
-        var path = new File(plugin.getDataFolder(), "commands.md").toPath();
-        Files.writeString(path, sb.toString());
     }
 
 }

@@ -6,6 +6,7 @@ import fr.maxlego08.text.api.placeholders.Placeholder;
 import fr.maxlego08.text.command.CommandManager;
 import fr.maxlego08.text.command.VCommand;
 import fr.maxlego08.text.messages.MessageLoader;
+import fr.maxlego08.text.zcore.utils.documentations.CommandMarkdownGenerator;
 import fr.maxlego08.text.zcore.utils.documentations.PlaceholderMarkdownGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,12 +29,22 @@ public abstract class ZPlugin extends JavaPlugin implements TextGeneratorPlugin 
 
     protected void postEnable() {
 
-        File filePlaceholder = new File(getDataFolder(), "placeholders.md");
+        File folder = new File(getDataFolder(), "docs");
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        File filePlaceholder = new File(folder, "placeholders.md");
+        File fileCommand = new File(folder, "commands.md");
 
         try {
             PlaceholderMarkdownGenerator placeholderMarkdownGenerator = new PlaceholderMarkdownGenerator();
             placeholderMarkdownGenerator.generateMarkdownFile(LocalPlaceholder.getInstance().getAutoPlaceholders(), filePlaceholder.toPath());
             getLogger().info("Markdown 'placeholders.md' file successfully generated!");
+
+            CommandMarkdownGenerator commandMarkdownGenerator = new CommandMarkdownGenerator();
+            commandMarkdownGenerator.generateMarkdownFile(this.commandManager.getCommands(), fileCommand.toPath());
+            getLogger().info("Markdown 'commands.md' file successfully generated!");
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }

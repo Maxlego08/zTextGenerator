@@ -14,6 +14,7 @@ public enum Message {
     COMMAND_SYNTAX_HELP("&f%syntax% &7» &7%description%"),
 
     RELOAD("&aYou have just reloaded the configuration files."),
+    DESCRIPTION_RELOAD("Reload configuration files"),
 
     ;
 
