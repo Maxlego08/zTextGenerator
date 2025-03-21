@@ -52,15 +52,18 @@ allprojects {
     }
 
     dependencies {
-        compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-        compileOnly 'me.clip:placeholderapi:2.11.6'
-        compileOnly 'com.github.Maxlego08:zMenu-API:1.0.3.8'
+        compileOnly('io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT')
+        compileOnly('me.clip:placeholderapi:2.11.6')
     }
 
 }
 
 dependencies {
     implementation project(':API')
+
+    rootProject.subprojects.findAll { it.path.startsWith(':Hooks:') }.each { subproject ->
+        implementation project(subproject.path)
+    }
 }
 
 shadowJar {

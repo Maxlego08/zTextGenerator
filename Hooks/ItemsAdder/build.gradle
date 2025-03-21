@@ -1,0 +1,6 @@
+group = 'Hooks:ItemsAdder'
+
+dependencies {
+
+    compileOnly project(":API")
+}
