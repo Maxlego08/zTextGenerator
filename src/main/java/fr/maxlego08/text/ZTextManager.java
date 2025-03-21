@@ -1,10 +1,10 @@
 package fr.maxlego08.text;
 
 import fr.maxlego08.text.api.Alphabet;
-import fr.maxlego08.text.api.records.FontInfo;
 import fr.maxlego08.text.api.FontTransformation;
-import fr.maxlego08.text.api.records.SpecialFontTransformation;
 import fr.maxlego08.text.api.TextManager;
+import fr.maxlego08.text.api.records.FontInfo;
+import fr.maxlego08.text.api.records.SpecialFontTransformation;
 import fr.maxlego08.text.api.utils.ZUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -18,6 +18,7 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     private final TextPlugin plugin;
     private final List<Alphabet> alphabets = new ArrayList<>();
+    private String offset;
 
     public ZTextManager(TextPlugin plugin) {
         this.plugin = plugin;
@@ -43,6 +44,8 @@ public class ZTextManager extends ZUtils implements TextManager {
         }
 
         this.files(folder, this::loadAlphabet);
+
+        this.offset = this.plugin.getConfig().getString("offset", ":offset-%pixels%:");
     }
 
     @Override
@@ -63,6 +66,21 @@ public class ZTextManager extends ZUtils implements TextManager {
 
         this.alphabets.add(new ZAlphabet(this.plugin, name, file, fontInfos, fontTransformation));
         this.plugin.getLogger().info("Loaded alphabet " + name + " from " + file.getName());
+    }
+
+    @Override
+    public String getOffset() {
+        return this.offset;
+    }
+
+    @Override
+    public String getOffset(int pixels) {
+        return this.offset.replace("%pixels%", String.valueOf(pixels));
+    }
+
+    @Override
+    public String getNegativeOffset(int pixels) {
+        return getOffset(-pixels);
     }
 
     private List<FontInfo> loadFontInfo(YamlConfiguration configuration) {

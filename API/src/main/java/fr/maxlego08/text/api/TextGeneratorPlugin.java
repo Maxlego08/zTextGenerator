@@ -1,6 +1,7 @@
 package fr.maxlego08.text.api;
 
 import fr.maxlego08.text.api.color.ColorHelper;
+import fr.maxlego08.text.api.messages.MessageManager;
 import org.bukkit.plugin.Plugin;
 
 public interface TextGeneratorPlugin extends Plugin {
@@ -9,4 +10,11 @@ public interface TextGeneratorPlugin extends Plugin {
 
     ColorHelper getColorHelper();
 
+    boolean isEnableDebug();
+
+    void debug(String message);
+
+    void reloadConfigurations();
+
+    MessageManager getMessageManager();
 }

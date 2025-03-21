@@ -16,6 +16,28 @@ public class AlignedPlaceholders extends PlaceholderRegister {
         register("center_", createAlignedPlaceholder(textManager, Alignment.CENTER), "Center the text in the given height.", "alphabet", "height", "text");
         register("left_", createAlignedPlaceholder(textManager, Alignment.LEFT), "Left align the text in the given height.", "alphabet", "height", "text");
         register("right_", createAlignedPlaceholder(textManager, Alignment.RIGHT), "Right align the text in the given height.", "alphabet", "height", "text");
+        register("length_", getTextLength(textManager), "Return the length of the given text.", "alphabet", "text");
+    }
+
+    private BiFunction<Player, String, String> getTextLength(TextManager textManager) {
+        return (player, args) -> {
+
+            List<String> values = splitIgnoringBraces(args);
+            if (values.size() != 2) {
+                return "The format is invalid! Please try again (" + values.size() + ")";
+            }
+
+            String alphabetName = values.getFirst();
+            String content = papi(values.get(1).replace("%player%", player.getName()), player);
+
+            var optional = textManager.getAlphabet(alphabetName);
+            if (optional.isEmpty()) {
+                return "Alphabet " + alphabetName + " not found";
+            }
+
+            var alphabet = optional.get();
+            return String.valueOf(alphabet.getTextLength(content));
+        };
     }
 
     private BiFunction<Player, String, String> createAlignedPlaceholder(TextManager textManager, Alignment alignment) {
@@ -43,20 +65,20 @@ public class AlignedPlaceholders extends PlaceholderRegister {
                 case CENTER -> {
                     int length = textLength / 2;
                     int rest = textLength % 2;
-                    sb.append(":offset_-%d:".formatted(length + rest));
+                    sb.append(textManager.getNegativeOffset(length + rest));
                     for (char c : content.toCharArray()) {
                         sb.append(alphabet.transformChar(c, height));
                     }
-                    sb.append(":offset_-%d:".formatted(textLength + rest));
+                    sb.append(textManager.getNegativeOffset(textLength + rest));
                 }
                 case LEFT -> {
                     for (char c : content.toCharArray()) {
                         sb.append(alphabet.transformChar(c, height));
                     }
-                    sb.append(":offset_-%d:".formatted(textLength));
+                    sb.append(textManager.getNegativeOffset(textLength));
                 }
                 case RIGHT -> {
-                    sb.append(":offset_-%d:".formatted(textLength));
+                    sb.append(textManager.getNegativeOffset(textLength));
                     for (char c : content.toCharArray()) {
                         sb.append(alphabet.transformChar(c, height));
                     }

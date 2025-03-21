@@ -14,6 +14,10 @@ public interface TextManager {
 
     void loadAlphabet(File file);
 
+    String getOffset();
 
+    String getOffset(int pixels);
+
+    String getNegativeOffset(int pixels);
 
 }

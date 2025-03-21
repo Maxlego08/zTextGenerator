@@ -1,6 +1,9 @@
 package fr.maxlego08.text.api.utils;
 
+import fr.maxlego08.text.api.TextGeneratorPlugin;
+import fr.maxlego08.text.api.messages.Message;
 import fr.maxlego08.text.api.placeholders.Placeholder;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -50,6 +53,10 @@ public abstract class ZUtils {
      */
     protected List<String> papi(List<String> placeHolder, Player player) {
         return Placeholder.getPlaceholder().setPlaceholders(player, placeHolder);
+    }
+
+    protected void message(TextGeneratorPlugin plugin, CommandSender sender, Message message, Object... args) {
+        plugin.getMessageManager().message(sender, message, args);
     }
 
 }

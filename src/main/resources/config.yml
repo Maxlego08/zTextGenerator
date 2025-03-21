@@ -1,0 +1,7 @@
+enable-debug: true
+
+# Allows horizontal text adjustment.
+# For ItemsAdder you should use: :offset-%pixels%: - https://itemsadder.devs.beer/plugin-usage/adding-content/font-images#offsets
+# For Oraxen you should use: <shift:%pixels%> - https://docs.oraxen.com/configuration/glyphs/custom-gui#how-do-i-get-the-unicode-for-the-glyph
+# For Nexos you should use: <shift:%pixels%> - https://docs.nexomc.com/configuration/glyphs#custom-guis
+offset: ":offset_%pixels%:"

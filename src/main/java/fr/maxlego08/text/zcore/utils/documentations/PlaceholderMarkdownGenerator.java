@@ -1,4 +1,4 @@
-package fr.maxlego08.text.zcore.utils;
+package fr.maxlego08.text.zcore.utils.documentations;
 
 import fr.maxlego08.text.api.placeholders.AutoPlaceholder;
 
