@@ -1,7 +1,8 @@
 package fr.maxlego08.text.color;
 
-import fr.maxlego08.menu.zcore.utils.nms.NMSUtils;
+import fr.maxlego08.text.api.Alphabet;
 import fr.maxlego08.text.api.color.ColorHelper;
+import fr.maxlego08.text.api.color.Result;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -48,15 +49,13 @@ public class PaperColor implements ColorHelper {
 
         String newMessage = message;
 
-        if (NMSUtils.isHexColor()) {
-            Pattern pattern = Pattern.compile("(?<!<)(?<!:)#[a-fA-F0-9]{6}");
-            Matcher matcher = pattern.matcher(message);
-            while (matcher.find()) {
-                String color = message.substring(matcher.start(), matcher.end());
-                newMessage = newMessage.replace(color, "<" + color + ">");
-                message = message.replace(color, "");
-                matcher = pattern.matcher(message);
-            }
+        Pattern pattern = Pattern.compile("(?<!<)(?<!:)#[a-fA-F0-9]{6}");
+        Matcher matcher = pattern.matcher(message);
+        while (matcher.find()) {
+            String color = message.substring(matcher.start(), matcher.end());
+            newMessage = newMessage.replace(color, "<" + color + ">");
+            message = message.replace(color, "");
+            matcher = pattern.matcher(message);
         }
 
         for (Map.Entry<String, String> entry : this.COLORS_MAPPINGS.entrySet()) {
@@ -82,7 +81,43 @@ public class PaperColor implements ColorHelper {
     }
 
     @Override
+    public Result transformString(Alphabet alphabet, String string, int height) {
+
+        string = colorMiniMessage(string);
+
+        boolean insideTag = false;
+        StringBuilder tagBuilder = new StringBuilder();
+        StringBuilder finalResult = new StringBuilder();
+        int length = 0;
+
+        for (char c : string.toCharArray()) {
+            if (c == '<') {
+                insideTag = true;
+                tagBuilder.append(c);
+                continue;
+            }
+
+            if (insideTag) {
+                tagBuilder.append(c);
+                if (c == '>') {
+                    finalResult.append(tagBuilder);
+                    tagBuilder.setLength(0);
+                    insideTag = false;
+                }
+                continue;
+            }
+
+            length += alphabet.getLength(c);
+            finalResult.append(alphabet.transformChar(c, height));
+        }
+
+        return new Result(finalResult.toString(), length);
+    }
+
+    @Override
     public void message(CommandSender sender, String string) {
         sender.sendMessage(getComponent(string));
     }
+
+
 }

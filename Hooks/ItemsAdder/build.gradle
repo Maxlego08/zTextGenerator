@@ -1,6 +1,16 @@
 group = 'Hooks:ItemsAdder'
 
+repositories {
+    maven {
+        name = "matteodev"
+        url = 'https://maven.devs.beer/'
+    }
+}
+
 dependencies {
 
     compileOnly project(":API")
+
+    compileOnly('dev.lone:api-itemsadder:4.0.2-beta-release-11')
+    compileOnly files("libs/LoneLibs_1.0.65.jar")
 }

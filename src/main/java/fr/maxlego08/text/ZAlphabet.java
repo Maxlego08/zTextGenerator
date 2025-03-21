@@ -47,15 +47,16 @@ public class ZAlphabet implements Alphabet {
 
     @Override
     public int getTextLength(String content) {
-        int length = 0;
-        for (char c : content.toCharArray()) {
-            Optional<FontInfo> fontInfoOptional = this.fontInfos.stream().filter(e -> e.character() == c).findFirst();
-            length += fontInfoOptional.map(FontInfo::length).orElseGet(() -> {
-                this.plugin.getLogger().info("Unknown character: " + c + " for alphabet: " + this.name);
-                return 0;
-            });
-        }
-        return length;
+        return content.chars().map(c -> getLength((char) c)).sum();
+    }
+
+    @Override
+    public int getLength(char c) {
+        Optional<FontInfo> fontInfoOptional = this.fontInfos.stream().filter(e -> e.character() == c).findFirst();
+        return fontInfoOptional.map(FontInfo::length).orElseGet(() -> {
+            this.plugin.getLogger().info("Unknown character: " + c + " for alphabet: " + this.name);
+            return 0;
+        });
     }
 
     @Override

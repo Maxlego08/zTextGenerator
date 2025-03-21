@@ -1,5 +1,6 @@
 package fr.maxlego08.text.placeholders;
 
+import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.TextManager;
 import fr.maxlego08.text.api.placeholders.PlaceholderRegister;
 import fr.maxlego08.text.api.utils.Alignment;
@@ -9,6 +10,12 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 public class AlignedPlaceholders extends PlaceholderRegister {
+
+    private final TextGeneratorPlugin plugin;
+
+    public AlignedPlaceholders(TextGeneratorPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void register(TextManager textManager) {
@@ -57,7 +64,8 @@ public class AlignedPlaceholders extends PlaceholderRegister {
             }
 
             var alphabet = optional.get();
-            var textLength = alphabet.getTextLength(content);
+            var result = this.plugin.getColorHelper().transformString(alphabet, content, height);
+            var textLength = result.length();
 
             StringBuilder sb = new StringBuilder();
 
@@ -66,26 +74,20 @@ public class AlignedPlaceholders extends PlaceholderRegister {
                     int length = textLength / 2;
                     int rest = textLength % 2;
                     sb.append(textManager.getNegativeOffset(length + rest));
-                    for (char c : content.toCharArray()) {
-                        sb.append(alphabet.transformChar(c, height));
-                    }
+                    sb.append(result.string());
                     sb.append(textManager.getNegativeOffset(textLength + rest));
                 }
                 case LEFT -> {
-                    for (char c : content.toCharArray()) {
-                        sb.append(alphabet.transformChar(c, height));
-                    }
+                    sb.append(result.string());
                     sb.append(textManager.getNegativeOffset(textLength));
                 }
                 case RIGHT -> {
                     sb.append(textManager.getNegativeOffset(textLength));
-                    for (char c : content.toCharArray()) {
-                        sb.append(alphabet.transformChar(c, height));
-                    }
+                    sb.append(result.string());
                 }
             }
 
-            return sb.toString();
+            return this.plugin.getFontImage().replace(sb.toString()).replace("§f", "").replace("§r", "");
         };
     }
 }

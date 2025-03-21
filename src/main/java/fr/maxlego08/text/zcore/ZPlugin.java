@@ -3,6 +3,7 @@ package fr.maxlego08.text.zcore;
 import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.placeholders.LocalPlaceholder;
 import fr.maxlego08.text.api.placeholders.Placeholder;
+import fr.maxlego08.text.api.utils.Plugins;
 import fr.maxlego08.text.command.CommandManager;
 import fr.maxlego08.text.command.VCommand;
 import fr.maxlego08.text.messages.MessageLoader;
@@ -12,7 +13,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.Arrays;
+import java.util.Optional;
 
 public abstract class ZPlugin extends JavaPlugin implements TextGeneratorPlugin {
 
@@ -66,5 +69,29 @@ public abstract class ZPlugin extends JavaPlugin implements TextGeneratorPlugin 
 
     protected void registerCommand(String command, VCommand vCommand, String... aliases) {
         this.commandManager.registerCommand(this, command, vCommand, Arrays.asList(aliases));
+    }
+
+    protected boolean isActive(Plugins plugins) {
+        return getServer().getPluginManager().getPlugin(plugins.getName()) != null;
+    }
+
+    protected  <T> Optional<T> createInstance(String className) {
+        try {
+            Class<?> clazz = Class.forName("fr.maxlego08.text.hooks." + className);
+
+            try {
+                Constructor<?> constructor = clazz.getConstructor(TextGeneratorPlugin.class);
+                // noinspection unchecked
+                return Optional.of((T) constructor.newInstance(this));
+            } catch (NoSuchMethodException error) {
+                // noinspection unchecked
+                return Optional.of((T) clazz.newInstance());
+            }
+        } catch (ClassNotFoundException ignored) {
+            return Optional.empty();
+        } catch (Exception error) {
+            error.printStackTrace();
+            return Optional.empty();
+        }
     }
 }

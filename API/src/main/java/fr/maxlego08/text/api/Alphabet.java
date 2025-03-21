@@ -17,5 +17,7 @@ public interface Alphabet {
 
     int getTextLength(String content);
 
+    int getLength(char c);
+
     String transformChar(char c, int height);
 }

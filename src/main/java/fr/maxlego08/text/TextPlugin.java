@@ -2,15 +2,19 @@ package fr.maxlego08.text;
 
 import fr.maxlego08.text.api.TextManager;
 import fr.maxlego08.text.api.color.ColorHelper;
+import fr.maxlego08.text.api.font.FontImage;
 import fr.maxlego08.text.api.messages.MessageManager;
+import fr.maxlego08.text.api.utils.Plugins;
 import fr.maxlego08.text.color.PaperColor;
 import fr.maxlego08.text.command.CommandManager;
 import fr.maxlego08.text.command.commands.CommandTextGenerator;
 import fr.maxlego08.text.messages.ZMessageManager;
 import fr.maxlego08.text.placeholders.AlignedPlaceholders;
 import fr.maxlego08.text.zcore.ZPlugin;
+import fr.maxlego08.text.zcore.utils.EmptyFont;
 
 import java.util.List;
+import java.util.Optional;
 
 public final class TextPlugin extends ZPlugin {
 
@@ -18,6 +22,7 @@ public final class TextPlugin extends ZPlugin {
     private final ColorHelper colorHelper = new PaperColor();
     private final MessageManager messageManager = new ZMessageManager(this);
     private boolean enableDebug = false;
+    private FontImage fontImage = new EmptyFont();
 
     @Override
     public void onEnable() {
@@ -30,10 +35,12 @@ public final class TextPlugin extends ZPlugin {
         this.enableDebug = this.getConfig().getBoolean("enable-debug", false);
         this.textManager.loadAlphabets();
 
-        var placeholders = List.of(new AlignedPlaceholders());
+        var placeholders = List.of(new AlignedPlaceholders(this));
         placeholders.forEach(placeholder -> placeholder.register(this.textManager));
 
         this.registerCommand("text-generator", new CommandTextGenerator(this), "text", "tg");
+
+        this.createInstances();
 
         postEnable();
     }
@@ -79,5 +86,22 @@ public final class TextPlugin extends ZPlugin {
     @Override
     public MessageManager getMessageManager() {
         return this.messageManager;
+    }
+
+    @Override
+    public FontImage getFontImage() {
+        return this.fontImage;
+    }
+
+    private void createInstances() {
+
+        if (isActive(Plugins.ITEMSADDER)) {
+            Optional<FontImage> optional = createInstance("ItemsAdderFont");
+            optional.ifPresentOrElse(fontImage -> {
+                this.fontImage = fontImage;
+                getLogger().info("Loaded ItemsAdderFont");
+            }, () -> getLogger().severe("Failed to load ItemsAdderFont"));
+        }
+
     }
 }

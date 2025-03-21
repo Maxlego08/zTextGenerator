@@ -1,0 +1,34 @@
+package fr.maxlego08.text.api.utils;
+
+public enum Plugins {
+	
+	VAULT("Vault"),
+	ESSENTIALS("Essentials"),
+	HEADDATABASE("HeadDatabase"), 
+	ZHEAD("zHead"),
+	PLACEHOLDER("PlaceholderAPI"),
+	CITIZENS("Citizens"),
+	TRANSLATIONAPI("TranslationAPI"),
+	ZTRANSLATOR("zTranslator"),
+	ORAXEN("Oraxen"),
+	ITEMSADDER("ItemsAdder"),
+	SLIMEFUN("Slimefun"),
+	NOVA("Nova"),
+	ECO("eco"),
+	ZITEMS("zItems"),
+
+	JOBS("Jobs"),
+	LUCKPERMS("LuckPerms"),
+    NEXO("Nexo");
+
+	private final String name;
+
+	Plugins(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+}

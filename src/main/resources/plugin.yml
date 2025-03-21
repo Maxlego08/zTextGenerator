@@ -7,3 +7,5 @@ description: Add texts inside your inventories
 website: https://groupez.dev/
 depend:
   - PlaceholderAPI
+soft-depend:
+  - ItemsAdder
