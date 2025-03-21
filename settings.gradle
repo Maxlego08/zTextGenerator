@@ -2,3 +2,4 @@ rootProject.name = 'zTextGenerator'
 
 include 'API'
 include 'Hooks:ItemsAdder'
+include 'Hooks:Nexo'

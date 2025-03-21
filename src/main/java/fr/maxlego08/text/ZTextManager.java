@@ -5,7 +5,12 @@ import fr.maxlego08.text.api.FontTransformation;
 import fr.maxlego08.text.api.TextManager;
 import fr.maxlego08.text.api.records.FontInfo;
 import fr.maxlego08.text.api.records.SpecialFontTransformation;
+import fr.maxlego08.text.api.text.Text;
+import fr.maxlego08.text.api.text.TextLine;
+import fr.maxlego08.text.api.utils.Alignment;
 import fr.maxlego08.text.api.utils.ZUtils;
+import fr.maxlego08.text.text.ZText;
+import fr.maxlego08.text.text.ZTextLine;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -18,6 +23,7 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     private final TextPlugin plugin;
     private final List<Alphabet> alphabets = new ArrayList<>();
+    private final List<Text> texts = new ArrayList<>();
     private String offset;
 
     public ZTextManager(TextPlugin plugin) {
@@ -32,6 +38,75 @@ public class ZTextManager extends ZUtils implements TextManager {
     @Override
     public Optional<Alphabet> getAlphabet(String name) {
         return this.alphabets.stream().filter(alphabet -> alphabet.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    @Override
+    public void loadTexts() {
+
+        File folder = new File(this.plugin.getDataFolder(), "texts");
+        if (!folder.exists()) {
+            folder.mkdirs();
+
+            this.plugin.saveResource("texts/text-example.yml", false);
+        }
+
+        this.files(folder, this::loadTexts);
+
+    }
+
+    @Override
+    public void loadTexts(File file) {
+
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+        List<Map<?, ?>> maps = configuration.getMapList("texts");
+        int before = this.texts.size();
+        maps.forEach(this::loadText);
+
+        this.plugin.getLogger().info("Loaded " + (this.texts.size() - before) + " texts from " + file.getName());
+    }
+
+    @Override
+    public void loadText(Map<?, ?> map) {
+
+        if (!map.containsKey("name")) {
+            throw new IllegalArgumentException("Text must have a name.");
+        }
+
+        if (!map.containsKey("lines")) {
+            throw new IllegalArgumentException("Text must have lines.");
+        }
+
+        if (!map.containsKey("alphabet")) {
+            throw new IllegalArgumentException("Text must have an alphabet.");
+        }
+
+        String name = (String) map.get("name");
+        this.texts.removeIf(text -> text.getName().equalsIgnoreCase(name));
+
+        String title = map.containsKey("title") ? (String) map.get("title") : null;
+        Alignment alignment = map.containsKey("alignment") ? Alignment.valueOf((String) map.get("alignment")) : Alignment.LEFT;
+
+        String alphabetName = (String) map.get("alphabet");
+        var optional = this.getAlphabet(alphabetName);
+        if (optional.isEmpty()) {
+            throw new IllegalArgumentException("Alphabet " + alphabetName + " not found for text " + name);
+        }
+        Alphabet alphabet = optional.get();
+
+        int length = map.containsKey("length") ? ((Number) map.get("length")).intValue() : 200;
+
+        List<?> lines = (List<?>) map.get("lines");
+        List<TextLine> textLines = new ArrayList<>();
+        for (Object line : lines) {
+            if (line instanceof String string) {
+                textLines.add(new ZTextLine(string));
+            }
+        }
+
+        Text text = new ZText(name, title, alignment, alphabet, length, textLines);
+        text.createResult();
+
+        this.texts.add(text);
     }
 
     @Override
@@ -136,5 +211,15 @@ public class ZTextManager extends ZUtils implements TextManager {
             throw new RuntimeException("Inventory title alphabet not found");
         }
         return optional.get();
+    }
+
+    @Override
+    public List<Text> getTexts() {
+        return this.texts;
+    }
+
+    @Override
+    public Optional<Text> getText(String name) {
+        return this.texts.stream().filter(text -> text.getName().equalsIgnoreCase(name)).findFirst();
     }
 }

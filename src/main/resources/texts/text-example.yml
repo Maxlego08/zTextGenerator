@@ -1,0 +1,23 @@
+texts:
+  - name: "text-example"
+    title: "<white>Example"
+    alignment: LEFT
+    alphabet: "normal"
+    length: 200
+    lines:
+      - alignment: RIGHT
+        alphabet: "normal"
+        elements:
+          - alphabet: "normal"
+            element: "AAAAA"
+          - alphabet: "normal"
+            element: "aaaaaa"
+          - alphabet: "normal"
+            element: "AAAAA"
+      - "BBBBBBBBBBBBBBBBBBB"
+      - "CCCCCCCCCCCCCCCCCCC"
+      - "DDDDDDDDDDDDDDDDDDD"
+      - "EEEEEEEEEEEEEEEEEEE"
+      - "FFFFFFFFFFFFFFFFFFF"
+      - "GGGGGGGGGGGGGGGGGGG"
+      - "HHHHHHHHHHHHHHHHHHH"

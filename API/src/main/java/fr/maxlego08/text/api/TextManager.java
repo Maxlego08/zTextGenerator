@@ -1,7 +1,10 @@
 package fr.maxlego08.text.api;
 
+import fr.maxlego08.text.api.text.Text;
+
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface TextManager {
@@ -9,6 +12,12 @@ public interface TextManager {
     List<Alphabet> getAlphabets();
 
     Optional<Alphabet> getAlphabet(String name);
+
+    void loadTexts();
+
+    void loadTexts(File file);
+
+    void loadText(Map<?, ?> map);
 
     void loadAlphabets();
 
@@ -21,5 +30,9 @@ public interface TextManager {
     String getNegativeOffset(int pixels);
 
     Alphabet getInventoryTitleAlphabet();
+
+    List<Text> getTexts();
+
+    Optional<Text> getText(String name);
 
 }

@@ -35,6 +35,7 @@ public final class TextPlugin extends ZPlugin {
 
         this.enableDebug = this.getConfig().getBoolean("enable-debug", false);
         this.textManager.loadAlphabets();
+        this.textManager.loadTexts();
 
         var placeholders = List.of(new AlignedPlaceholders(this), new TitlePlaceholders());
         placeholders.forEach(placeholder -> placeholder.register(this.textManager));
@@ -80,7 +81,10 @@ public final class TextPlugin extends ZPlugin {
     public void reloadConfigurations() {
 
         this.enableDebug = this.getConfig().getBoolean("enable-debug", false);
+
         this.textManager.loadAlphabets();
+        this.textManager.loadTexts();
+
         this.messageLoader.load();
     }
 
@@ -102,6 +106,14 @@ public final class TextPlugin extends ZPlugin {
                 this.fontImage = fontImage;
                 getLogger().info("Loaded ItemsAdderFont");
             }, () -> getLogger().severe("Failed to load ItemsAdderFont"));
+        }
+
+        if (isActive(Plugins.NEXO)) {
+            Optional<FontImage> optional = createInstance("NexoFont");
+            optional.ifPresentOrElse(fontImage -> {
+                this.fontImage = fontImage;
+                getLogger().info("Loaded NexoFont");
+            }, () -> getLogger().severe("Failed to load NexoFont"));
         }
 
     }
