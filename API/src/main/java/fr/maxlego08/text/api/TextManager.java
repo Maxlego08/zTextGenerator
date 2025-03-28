@@ -1,6 +1,8 @@
 package fr.maxlego08.text.api;
 
+import fr.maxlego08.text.api.book.Book;
 import fr.maxlego08.text.api.text.Text;
+import fr.maxlego08.text.api.utils.Alignment;
 
 import java.io.File;
 import java.util.List;
@@ -16,6 +18,10 @@ public interface TextManager {
     void loadTexts();
 
     void loadTexts(File file);
+
+    void loadBooks();
+
+    void loadBook(File file);
 
     void loadText(Map<?, ?> map);
 
@@ -34,5 +40,13 @@ public interface TextManager {
     List<Text> getTexts();
 
     Optional<Text> getText(String name);
+
+    List<Book> getBooks();
+
+    Optional<Book> getBook(String name);
+
+    String replaceText(Alphabet alphabet, Alignment alignment, String content, int height);
+
+    String transformFont(String text);
 
 }

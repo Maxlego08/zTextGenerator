@@ -1,0 +1,14 @@
+name: "example"
+inventory-name: ":offset_-48::book:"
+start-offset: 10
+left-size: 100
+right-size: 100
+offset-between: 10
+alphabet: "normal"
+pages:
+  - page: 1
+    left: "Un exemple de livre pour montrer comment a marche."
+    right: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam."
+  - page: 2
+    left: "Nan en vrai mon livre est pas si ouf"
+    right: "Bla bla bla un superbe livre vachement sympa!"

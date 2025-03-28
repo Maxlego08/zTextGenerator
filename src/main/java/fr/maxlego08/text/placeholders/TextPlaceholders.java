@@ -26,8 +26,7 @@ public class TextPlaceholders extends PlaceholderRegister {
             }
 
             var text = optional.get();
-
-            return "";
+            return text.getResult(player);
         };
     }
 

@@ -4,6 +4,7 @@ import fr.maxlego08.text.api.Alphabet;
 import fr.maxlego08.text.api.text.TextElement;
 import fr.maxlego08.text.api.text.TextLine;
 import fr.maxlego08.text.api.utils.Alignment;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 

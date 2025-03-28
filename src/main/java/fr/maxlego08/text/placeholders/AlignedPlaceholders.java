@@ -64,30 +64,7 @@ public class AlignedPlaceholders extends PlaceholderRegister {
             }
 
             var alphabet = optional.get();
-            var result = this.plugin.getColorHelper().transformString(alphabet, content, height);
-            var textLength = result.length();
-
-            StringBuilder sb = new StringBuilder();
-
-            switch (alignment) {
-                case CENTER -> {
-                    int length = textLength / 2;
-                    int rest = textLength % 2;
-                    sb.append(textManager.getNegativeOffset(length + rest));
-                    sb.append(result.string());
-                    sb.append(textManager.getNegativeOffset(textLength + rest));
-                }
-                case LEFT -> {
-                    sb.append(result.string());
-                    sb.append(textManager.getNegativeOffset(textLength));
-                }
-                case RIGHT -> {
-                    sb.append(textManager.getNegativeOffset(textLength));
-                    sb.append(result.string());
-                }
-            }
-
-            return this.plugin.getFontImage().replace(sb.toString()).replace("§f", "").replace("§r", "");
+            return textManager.replaceText(alphabet, alignment, content, height);
         };
     }
 }

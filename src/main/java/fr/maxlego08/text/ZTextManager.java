@@ -3,12 +3,16 @@ package fr.maxlego08.text;
 import fr.maxlego08.text.api.Alphabet;
 import fr.maxlego08.text.api.FontTransformation;
 import fr.maxlego08.text.api.TextManager;
+import fr.maxlego08.text.api.book.Book;
+import fr.maxlego08.text.api.book.BookPage;
 import fr.maxlego08.text.api.records.FontInfo;
 import fr.maxlego08.text.api.records.SpecialFontTransformation;
 import fr.maxlego08.text.api.text.Text;
+import fr.maxlego08.text.api.text.TextElement;
 import fr.maxlego08.text.api.text.TextLine;
 import fr.maxlego08.text.api.utils.Alignment;
 import fr.maxlego08.text.api.utils.ZUtils;
+import fr.maxlego08.text.book.ZBook;
 import fr.maxlego08.text.text.ZText;
 import fr.maxlego08.text.text.ZTextLine;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,6 +28,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     private final TextPlugin plugin;
     private final List<Alphabet> alphabets = new ArrayList<>();
     private final List<Text> texts = new ArrayList<>();
+    private final List<Book> books = new ArrayList<>();
     private String offset;
 
     public ZTextManager(TextPlugin plugin) {
@@ -41,6 +46,51 @@ public class ZTextManager extends ZUtils implements TextManager {
     }
 
     @Override
+    public void loadBooks() {
+
+        this.books.clear();
+
+        File folder = new File(this.plugin.getDataFolder(), "books");
+        if (!folder.exists()) {
+            folder.mkdirs();
+
+            this.plugin.saveResource("books/book-example.yml", false);
+        }
+
+        this.files(folder, this::loadBook);
+        this.plugin.getLogger().info("Loaded " + this.books.size() + " books");
+    }
+
+    @Override
+    public void loadBook(File file) {
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+
+        String name = configuration.getString("name");
+        String inventoryName = configuration.getString("inventory-name");
+        String alphabetName = configuration.getString("alphabet");
+        int startOffset = configuration.getInt("start-offset");
+        int leftSize = configuration.getInt("left-size");
+        int rightSize = configuration.getInt("right-size");
+        int offsetBetween = configuration.getInt("offset-between");
+        List<Map<?, ?>> pages = configuration.getMapList("pages");
+
+        List<BookPage> bookPages = new ArrayList<>();
+        pages.forEach(map -> {
+            String left = map.get("left").toString();
+            String right = map.get("right").toString();
+            int page = Integer.parseInt(map.get("page").toString());
+            bookPages.add(new BookPage(page, right, left));
+        });
+
+        Optional<Alphabet> optional = this.getAlphabet(alphabetName);
+        if (optional.isEmpty()) {
+            throw new IllegalArgumentException("Alphabet " + alphabetName + " not found");
+        }
+
+        this.books.add(new ZBook(name, inventoryName, bookPages, startOffset, leftSize, rightSize, offsetBetween, optional.get()));
+    }
+
+    @Override
     public void loadTexts() {
 
         File folder = new File(this.plugin.getDataFolder(), "texts");
@@ -51,7 +101,6 @@ public class ZTextManager extends ZUtils implements TextManager {
         }
 
         this.files(folder, this::loadTexts);
-
     }
 
     @Override
@@ -98,12 +147,52 @@ public class ZTextManager extends ZUtils implements TextManager {
         List<?> lines = (List<?>) map.get("lines");
         List<TextLine> textLines = new ArrayList<>();
         for (Object line : lines) {
+
+            System.out.println(line);
+
             if (line instanceof String string) {
+                System.out.println("STR " + string);
                 textLines.add(new ZTextLine(string));
+            } else if (line instanceof Map<?, ?> lineMap) {
+
+                System.out.println(lineMap);
+
+                Alignment ligneAlignment = lineMap.containsKey("alignment") ? Alignment.valueOf((String) lineMap.get("alignment")) : null;
+                Alphabet ligneAlphabet = null;
+                if (lineMap.containsKey("alphabet")) {
+                    alphabetName = (String) lineMap.get("alphabet");
+                    optional = this.getAlphabet(alphabetName);
+                    if (optional.isPresent()) {
+                        ligneAlphabet = optional.get();
+                    }
+                }
+
+                if (!lineMap.containsKey("elements")) {
+                    throw new IllegalArgumentException("Text line must have an elements.");
+                }
+
+                List<TextElement> textElements = new ArrayList<>();
+
+                List<Map<?, ?>> elements = (List<Map<?, ?>>) lineMap.get("elements");
+                for (Map<?, ?> elementMap : elements) {
+                    Alphabet elementAlphabet = null;
+                    if (elementMap.containsKey("alphabet")) {
+                        alphabetName = (String) elementMap.get("alphabet");
+                        optional = this.getAlphabet(alphabetName);
+                        if (optional.isPresent()) {
+                            elementAlphabet = optional.get();
+                        }
+                    }
+
+                    String element = (String) elementMap.get("element");
+                    textElements.add(new TextElement(elementAlphabet, element));
+                }
+
+                textLines.add(new ZTextLine(ligneAlphabet, ligneAlignment, textElements));
             }
         }
 
-        Text text = new ZText(name, title, alignment, alphabet, length, textLines);
+        Text text = new ZText(this.plugin, name, title, alignment, alphabet, length, textLines);
         text.createResult();
 
         this.texts.add(text);
@@ -221,5 +310,48 @@ public class ZTextManager extends ZUtils implements TextManager {
     @Override
     public Optional<Text> getText(String name) {
         return this.texts.stream().filter(text -> text.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    @Override
+    public Optional<Book> getBook(String name) {
+        return this.books.stream().filter(book -> book.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    @Override
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    @Override
+    public String replaceText(Alphabet alphabet, Alignment alignment, String content, int height) {
+        var result = this.plugin.getColorHelper().transformString(alphabet, content, height);
+        var textLength = result.length();
+
+        StringBuilder sb = new StringBuilder();
+
+        switch (alignment) {
+            case CENTER -> {
+                int length = textLength / 2;
+                int rest = textLength % 2;
+                sb.append(this.getNegativeOffset(length + rest));
+                sb.append(result.string());
+                sb.append(this.getNegativeOffset(textLength + rest));
+            }
+            case LEFT -> {
+                sb.append(result.string());
+                sb.append(this.getNegativeOffset(textLength));
+            }
+            case RIGHT -> {
+                sb.append(this.getNegativeOffset(textLength));
+                sb.append(result.string());
+            }
+        }
+
+        return this.transformFont(sb.toString());
+    }
+
+    @Override
+    public String transformFont(String text) {
+        return this.plugin.getFontImage().replace(text).replace("§f", "").replace("§r", "");
     }
 }

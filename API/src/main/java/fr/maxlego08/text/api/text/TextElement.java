@@ -1,4 +1,6 @@
 package fr.maxlego08.text.api.text;
 
-public record TextElement(String alphabet, String element) {
+import fr.maxlego08.text.api.Alphabet;
+
+public record TextElement(Alphabet alphabet, String element) {
 }
