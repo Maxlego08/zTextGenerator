@@ -11,6 +11,7 @@ public class CommandTextGenerator extends VCommand {
         super(plugin);
         this.setPermission(Permission.ZTEXTGENERATOR_USE);
         this.addSubCommand(new CommandTextGeneratorReload(plugin));
+        this.addSubCommand(new CommandTextGeneratorBook(plugin));
     }
 
     @Override

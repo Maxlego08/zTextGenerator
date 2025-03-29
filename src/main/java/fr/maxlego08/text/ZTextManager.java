@@ -8,6 +8,7 @@ import fr.maxlego08.text.api.book.BookPage;
 import fr.maxlego08.text.api.book.Page;
 import fr.maxlego08.text.api.book.PageContent;
 import fr.maxlego08.text.api.book.PageType;
+import fr.maxlego08.text.api.messages.Message;
 import fr.maxlego08.text.api.records.FontInfo;
 import fr.maxlego08.text.api.records.SpecialFontTransformation;
 import fr.maxlego08.text.api.text.Text;
@@ -18,7 +19,9 @@ import fr.maxlego08.text.api.utils.ZUtils;
 import fr.maxlego08.text.book.ZBook;
 import fr.maxlego08.text.text.ZText;
 import fr.maxlego08.text.text.ZTextLine;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -283,7 +286,7 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     @Override
     public String getOffset(int pixels) {
-        return this.offset.replace("%pixels%", String.valueOf(pixels));
+        return pixels == 0 ? "" : this.offset.replace("%pixels%", String.valueOf(pixels));
     }
 
     @Override
@@ -393,5 +396,31 @@ public class ZTextManager extends ZUtils implements TextManager {
     @Override
     public String transformFont(String text) {
         return this.plugin.getFontImage().replace(text).replace("§f", "").replace("§r", "");
+    }
+
+    @Override
+    public void openBook(CommandSender sender, Player player, String bookName, int page) {
+
+        var optional = getBook(bookName);
+        if (optional.isEmpty()) {
+            message(plugin, sender, Message.BOOK_NOT_FOUND, "%book%", bookName);
+            return;
+        }
+
+        var book = optional.get();
+        var optionalBookPage = book.getPages().stream().filter(bookPage -> bookPage.page() == page).findFirst();
+        if (optionalBookPage.isEmpty()) {
+            message(plugin, sender, Message.BOOK_PAGE_NOT_FOUND, "%page%", page);
+            return;
+        }
+
+        var bookPage = optionalBookPage.get();
+        openBook(player, book, bookPage);
+    }
+
+    @Override
+    public void openBook(Player player, Book book, BookPage bookPage) {
+        var inventory = this.plugin.getColorHelper().createBook(player, book, bookPage, this);
+        player.openInventory(inventory);
     }
 }

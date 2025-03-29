@@ -8,6 +8,7 @@ import fr.maxlego08.text.api.utils.Plugins;
 import fr.maxlego08.text.color.PaperColor;
 import fr.maxlego08.text.command.CommandManager;
 import fr.maxlego08.text.command.commands.CommandTextGenerator;
+import fr.maxlego08.text.listener.InventoryListener;
 import fr.maxlego08.text.messages.ZMessageManager;
 import fr.maxlego08.text.placeholders.AlignedPlaceholders;
 import fr.maxlego08.text.placeholders.BookPlaceholders;
@@ -44,6 +45,7 @@ public final class TextPlugin extends ZPlugin {
         placeholders.forEach(placeholder -> placeholder.register(this.textManager));
 
         this.registerCommand("text-generator", new CommandTextGenerator(this), "text", "tg");
+        this.registerListener(new InventoryListener());
 
         this.createInstances();
 

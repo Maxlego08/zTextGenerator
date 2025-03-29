@@ -15,7 +15,10 @@ public enum Message {
 
     RELOAD("&aYou have just reloaded the configuration files."),
     DESCRIPTION_RELOAD("Reload configuration files"),
+    DESCRIPTION_BOOK("Open a book"),
 
+    BOOK_NOT_FOUND("&cImpossible to find the book &f%book%&c."),
+    BOOK_PAGE_NOT_FOUND("&cImpossible to find the book page &f%page%&c."),
     ;
 
     private List<String> messages;

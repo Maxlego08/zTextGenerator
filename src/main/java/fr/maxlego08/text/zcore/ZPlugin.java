@@ -9,6 +9,7 @@ import fr.maxlego08.text.command.VCommand;
 import fr.maxlego08.text.messages.MessageLoader;
 import fr.maxlego08.text.zcore.utils.documentations.CommandMarkdownGenerator;
 import fr.maxlego08.text.zcore.utils.documentations.PlaceholderMarkdownGenerator;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -71,11 +72,15 @@ public abstract class ZPlugin extends JavaPlugin implements TextGeneratorPlugin 
         this.commandManager.registerCommand(this, command, vCommand, Arrays.asList(aliases));
     }
 
+    protected void registerListener(Listener listener) {
+        getServer().getPluginManager().registerEvents(listener, this);
+    }
+
     protected boolean isActive(Plugins plugins) {
         return getServer().getPluginManager().getPlugin(plugins.getName()) != null;
     }
 
-    protected  <T> Optional<T> createInstance(String className) {
+    protected <T> Optional<T> createInstance(String className) {
         try {
             Class<?> clazz = Class.forName("fr.maxlego08.text.hooks." + className);
 

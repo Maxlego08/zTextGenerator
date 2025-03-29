@@ -1,14 +1,21 @@
 package fr.maxlego08.text.color;
 
 import fr.maxlego08.text.api.Alphabet;
+import fr.maxlego08.text.api.TextManager;
+import fr.maxlego08.text.api.book.Book;
+import fr.maxlego08.text.api.book.BookPage;
 import fr.maxlego08.text.api.color.ColorHelper;
 import fr.maxlego08.text.api.color.Result;
+import fr.maxlego08.text.book.BookInventory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -119,5 +126,11 @@ public class PaperColor implements ColorHelper {
         sender.sendMessage(getComponent(string));
     }
 
-
+    @Override
+    public Inventory createBook(Player player, Book book, BookPage page, TextManager textManager) {
+        BookInventory bookInventory = new BookInventory();
+        var inventory = Bukkit.createInventory(bookInventory, 54, getComponent(book.getInventoryName() + book.toBookString(textManager, this, page)));
+        bookInventory.setInventory(inventory);
+        return inventory;
+    }
 }
