@@ -5,6 +5,9 @@ import fr.maxlego08.text.api.FontTransformation;
 import fr.maxlego08.text.api.TextManager;
 import fr.maxlego08.text.api.book.Book;
 import fr.maxlego08.text.api.book.BookPage;
+import fr.maxlego08.text.api.book.Page;
+import fr.maxlego08.text.api.book.PageContent;
+import fr.maxlego08.text.api.book.PageType;
 import fr.maxlego08.text.api.records.FontInfo;
 import fr.maxlego08.text.api.records.SpecialFontTransformation;
 import fr.maxlego08.text.api.text.Text;
@@ -68,26 +71,63 @@ public class ZTextManager extends ZUtils implements TextManager {
         String name = configuration.getString("name");
         String inventoryName = configuration.getString("inventory-name");
         String alphabetName = configuration.getString("alphabet");
+        Alignment alignment = Alignment.valueOf(configuration.getString("alignment", Alignment.LEFT.name()));
         int startOffset = configuration.getInt("start-offset");
         int leftSize = configuration.getInt("left-size");
         int rightSize = configuration.getInt("right-size");
         int offsetBetween = configuration.getInt("offset-between");
         List<Map<?, ?>> pages = configuration.getMapList("pages");
-
-        List<BookPage> bookPages = new ArrayList<>();
-        pages.forEach(map -> {
-            String left = map.get("left").toString();
-            String right = map.get("right").toString();
-            int page = Integer.parseInt(map.get("page").toString());
-            bookPages.add(new BookPage(page, right, left));
-        });
-
         Optional<Alphabet> optional = this.getAlphabet(alphabetName);
         if (optional.isEmpty()) {
             throw new IllegalArgumentException("Alphabet " + alphabetName + " not found");
         }
+        Alphabet alphabet = optional.get();
 
-        this.books.add(new ZBook(name, inventoryName, bookPages, startOffset, leftSize, rightSize, offsetBetween, optional.get()));
+        List<BookPage> bookPages = new ArrayList<>();
+        pages.forEach(map -> {
+            var left = map.get("left");
+            var right = map.get("right");
+            int page = Integer.parseInt(map.get("page").toString());
+            bookPages.add(new BookPage(page, loadPage(right, alphabet, alignment), loadPage(left, alphabet, alignment)));
+        });
+
+
+        this.books.add(new ZBook(name, inventoryName, bookPages, startOffset, leftSize, rightSize, offsetBetween, alphabet));
+        System.out.println(books);
+    }
+
+    private Page loadPage(Object object, Alphabet alphabet, Alignment alignment) {
+
+        if (object instanceof String string) {
+            return new Page(PageType.FILL, List.of(new PageContent(alignment, alphabet, string)));
+        } else if (object instanceof List<?> list) {
+
+            List<PageContent> pageContents = new ArrayList<>();
+            for (Object o : list) {
+
+                if (o instanceof Map<?, ?> map) {
+                    Alignment pageAlignment = map.containsKey("alignment") ? Alignment.valueOf(map.get("alignment").toString()) : alignment;
+                    if (map.containsKey("alphabet")) {
+                        String alphabetName = map.get("alphabet").toString();
+                        Optional<Alphabet> optional = this.getAlphabet(alphabetName);
+                        if (optional.isEmpty()) {
+                            throw new IllegalArgumentException("Alphabet " + alphabetName + " not found");
+                        }
+                        alphabet = optional.get();
+                    }
+
+                    String content = map.get("content").toString();
+                    pageContents.add(new PageContent(pageAlignment, alphabet, content));
+                } else {
+                    throw new IllegalArgumentException("Invalid page for " + object);
+                }
+            }
+
+            return new Page(PageType.LINE, pageContents);
+
+        } else {
+            throw new IllegalArgumentException("Invalid page for " + object);
+        }
     }
 
     @Override

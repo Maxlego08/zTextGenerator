@@ -73,4 +73,18 @@ public class ZBook implements Book {
     public Optional<BookPage> getPage(int page) {
         return this.pages.stream().filter(bookPage -> bookPage.page() == page).findFirst();
     }
+
+    @Override
+    public String toString() {
+        return "ZBook{" +
+                "name='" + name + '\'' +
+                ", inventoryName='" + inventoryName + '\'' +
+                ", pages=" + pages +
+                ", startOffset=" + startOffset +
+                ", leftSize=" + leftSize +
+                ", rightSize=" + rightSize +
+                ", offsetBetween=" + offsetBetween +
+                ", alphabet=" + alphabet +
+                '}';
+    }
 }

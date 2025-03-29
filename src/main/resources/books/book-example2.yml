@@ -1,0 +1,36 @@
+name: "example2"
+inventory-name: ":offset_-48::book:"
+start-offset: 10
+left-size: 90
+right-size: 80
+offset-between: 10
+alphabet: "normal"
+alignment: LEFT
+pages:
+  - page: 1
+    left:
+      - alignment: LEFT
+        alphabet: "normal"
+        content: "<black>Ligne 1"
+      - alignment: RIGHT
+        alphabet: "normal"
+        content: "<black>Ligne 2"
+      - alignment: CENTER
+        alphabet: "normal"
+        content: "<black>Ligne 3"
+      - alignment: LEFT
+        alphabet: "normal"
+        content: "<black>Ligne 4"
+      - alignment: RIGHT
+        alphabet: "normal"
+        content: "<black>Ligne 5"
+      - alignment: CENTER
+        alphabet: "normal"
+        content: "<black>Ligne 6"
+      - alignment: LEFT
+        alphabet: "normal"
+        content: "<black>Ligne 7"
+    right: "<black>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam."
+  - page: 2
+    left: "Nan en vrai mon livre est pas si ouf"
+    right: "Bla bla bla un superbe livre vachement sympa!"
