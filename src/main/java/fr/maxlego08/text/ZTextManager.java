@@ -96,7 +96,6 @@ public class ZTextManager extends ZUtils implements TextManager {
 
 
         this.books.add(new ZBook(name, inventoryName, bookPages, startOffset, leftSize, rightSize, offsetBetween, alphabet));
-        System.out.println(books);
     }
 
     private Page loadPage(Object object, Alphabet alphabet, Alignment alignment) {
@@ -194,11 +193,9 @@ public class ZTextManager extends ZUtils implements TextManager {
             System.out.println(line);
 
             if (line instanceof String string) {
-                System.out.println("STR " + string);
+
                 textLines.add(new ZTextLine(string));
             } else if (line instanceof Map<?, ?> lineMap) {
-
-                System.out.println(lineMap);
 
                 Alignment ligneAlignment = lineMap.containsKey("alignment") ? Alignment.valueOf((String) lineMap.get("alignment")) : null;
                 Alphabet ligneAlphabet = null;
