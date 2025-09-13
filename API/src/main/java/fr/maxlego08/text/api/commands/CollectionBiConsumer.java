@@ -1,4 +1,4 @@
-package fr.maxlego08.text.zcore.utils.commands;
+package fr.maxlego08.text.api.commands;
 
 import org.bukkit.command.CommandSender;
 

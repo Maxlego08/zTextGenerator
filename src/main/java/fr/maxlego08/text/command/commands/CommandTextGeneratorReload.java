@@ -1,14 +1,15 @@
 package fr.maxlego08.text.command.commands;
 
 import fr.maxlego08.text.TextPlugin;
+import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.messages.Message;
 import fr.maxlego08.text.api.utils.Permission;
-import fr.maxlego08.text.command.VCommand;
-import fr.maxlego08.text.zcore.utils.commands.CommandType;
+import fr.maxlego08.text.api.commands.VCommand;
+import fr.maxlego08.text.api.commands.CommandType;
 
 public class CommandTextGeneratorReload extends VCommand {
 
-    public CommandTextGeneratorReload(TextPlugin plugin) {
+    public CommandTextGeneratorReload(TextGeneratorPlugin plugin) {
         super(plugin);
         this.setPermission(Permission.ZTEXTGENERATOR_RELOAD);
         this.addSubCommand("reload", "rl");
@@ -16,7 +17,7 @@ public class CommandTextGeneratorReload extends VCommand {
     }
 
     @Override
-    protected CommandType perform(TextPlugin plugin) {
+    protected CommandType perform(TextGeneratorPlugin plugin) {
         plugin.reloadConfigurations();
         message(plugin, sender, Message.RELOAD);
         return CommandType.SUCCESS;

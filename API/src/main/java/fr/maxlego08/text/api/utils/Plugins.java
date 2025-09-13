@@ -19,7 +19,8 @@ public enum Plugins {
 
 	JOBS("Jobs"),
 	LUCKPERMS("LuckPerms"),
-    NEXO("Nexo");
+    NEXO("Nexo"),
+	ZMENU("zMenu");
 
 	private final String name;
 

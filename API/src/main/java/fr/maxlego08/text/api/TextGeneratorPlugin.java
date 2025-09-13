@@ -1,6 +1,8 @@
 package fr.maxlego08.text.api;
 
 import fr.maxlego08.text.api.color.ColorHelper;
+import fr.maxlego08.text.api.commands.CommandManager;
+import fr.maxlego08.text.api.commands.VCommand;
 import fr.maxlego08.text.api.fonts.FontImage;
 import fr.maxlego08.text.api.messages.MessageManager;
 import org.bukkit.plugin.Plugin;
@@ -57,4 +59,23 @@ public interface TextGeneratorPlugin extends Plugin {
      * @return the FontImage associated with this plugin
      */
     FontImage getFontImage();
+
+    /**
+     * Retrieves the CommandManager associated with this plugin.
+     * The CommandManager is responsible for registering and managing commands.
+     *
+     * @return the CommandManager associated with this plugin
+     */
+    CommandManager getCommandManager();
+
+    /**
+     * Registers a command with this plugin.
+     *
+     * @param command  the name of the command to register
+     * @param vCommand the VCommand instance to register with the command
+     * @param aliases  the aliases of the command to register
+     */
+    void registerCommand(String command, VCommand vCommand, String... aliases);
+
+    <T> T getProvider(Class<T> classz);
 }

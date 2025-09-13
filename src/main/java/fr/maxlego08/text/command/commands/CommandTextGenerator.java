@@ -1,13 +1,14 @@
 package fr.maxlego08.text.command.commands;
 
 import fr.maxlego08.text.TextPlugin;
+import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.utils.Permission;
-import fr.maxlego08.text.command.VCommand;
-import fr.maxlego08.text.zcore.utils.commands.CommandType;
+import fr.maxlego08.text.api.commands.VCommand;
+import fr.maxlego08.text.api.commands.CommandType;
 
 public class CommandTextGenerator extends VCommand {
 
-    public CommandTextGenerator(TextPlugin plugin) {
+    public CommandTextGenerator(TextGeneratorPlugin plugin) {
         super(plugin);
         this.setPermission(Permission.ZTEXTGENERATOR_USE);
         this.addSubCommand(new CommandTextGeneratorReload(plugin));
@@ -15,7 +16,7 @@ public class CommandTextGenerator extends VCommand {
     }
 
     @Override
-    protected CommandType perform(TextPlugin plugin) {
+    protected CommandType perform(TextGeneratorPlugin plugin) {
         syntaxMessage();
         return CommandType.SUCCESS;
     }

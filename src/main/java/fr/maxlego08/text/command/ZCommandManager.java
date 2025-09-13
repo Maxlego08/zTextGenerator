@@ -1,9 +1,11 @@
 package fr.maxlego08.text.command;
 
 import fr.maxlego08.text.TextPlugin;
+import fr.maxlego08.text.api.commands.CommandManager;
+import fr.maxlego08.text.api.commands.VCommand;
 import fr.maxlego08.text.api.messages.Message;
 import fr.maxlego08.text.api.utils.ZUtils;
-import fr.maxlego08.text.zcore.utils.commands.CommandType;
+import fr.maxlego08.text.api.commands.CommandType;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CommandManager extends ZUtils implements CommandExecutor, TabCompleter {
+public class ZCommandManager extends ZUtils implements CommandManager {
 
     private static CommandMap commandMap;
     private static Constructor<? extends PluginCommand> constructor;
@@ -39,20 +41,23 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
     private final TextPlugin plugin;
     private final List<VCommand> commands = new ArrayList<>();
 
-    public CommandManager(TextPlugin plugin) {
+    public ZCommandManager(TextPlugin plugin) {
         this.plugin = plugin;
     }
 
+    @Override
     public void validCommands() {
         this.plugin.getLogger().info("Loading " + getUniqueCommand() + " commands");
         this.commandChecking();
     }
 
+    @Override
     public VCommand registerCommand(VCommand command) {
         this.commands.add(command);
         return command;
     }
 
+    @Override
     public VCommand registerCommand(String string, VCommand command) {
         this.commands.add(command.addSubCommand(string));
         this.plugin.getCommand(string).setExecutor(this);
@@ -187,6 +192,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
         return null;
     }
 
+    @Override
     public void registerCommand(Plugin plugin, String string, VCommand vCommand, List<String> aliases) {
         try {
             PluginCommand command = constructor.newInstance(string, this.plugin);

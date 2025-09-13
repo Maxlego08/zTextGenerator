@@ -1,15 +1,17 @@
 package fr.maxlego08.text.zcore;
 
 import fr.maxlego08.text.api.TextGeneratorPlugin;
+import fr.maxlego08.text.api.commands.CommandManager;
 import fr.maxlego08.text.api.placeholders.LocalPlaceholder;
 import fr.maxlego08.text.api.placeholders.Placeholder;
 import fr.maxlego08.text.api.utils.Plugins;
-import fr.maxlego08.text.command.CommandManager;
-import fr.maxlego08.text.command.VCommand;
+import fr.maxlego08.text.command.ZCommandManager;
+import fr.maxlego08.text.api.commands.VCommand;
 import fr.maxlego08.text.messages.MessageLoader;
 import fr.maxlego08.text.zcore.utils.documentations.CommandMarkdownGenerator;
 import fr.maxlego08.text.zcore.utils.documentations.PlaceholderMarkdownGenerator;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -21,7 +23,7 @@ import java.util.Optional;
 public abstract class ZPlugin extends JavaPlugin implements TextGeneratorPlugin {
 
     protected final MessageLoader messageLoader = new MessageLoader(this);
-    protected CommandManager commandManager;
+    protected ZCommandManager ZCommandManager;
 
     protected void preEnable() {
 
@@ -47,13 +49,13 @@ public abstract class ZPlugin extends JavaPlugin implements TextGeneratorPlugin 
             getLogger().info("Markdown 'placeholders.md' file successfully generated!");
 
             CommandMarkdownGenerator commandMarkdownGenerator = new CommandMarkdownGenerator();
-            commandMarkdownGenerator.generateMarkdownFile(this.commandManager.getCommands(), fileCommand.toPath());
+            commandMarkdownGenerator.generateMarkdownFile(this.ZCommandManager.getCommands(), fileCommand.toPath());
             getLogger().info("Markdown 'commands.md' file successfully generated!");
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
 
-        this.commandManager.validCommands();
+        this.ZCommandManager.validCommands();
     }
 
     protected void preDisable() {
@@ -64,12 +66,13 @@ public abstract class ZPlugin extends JavaPlugin implements TextGeneratorPlugin 
 
     }
 
+    @Override
     public CommandManager getCommandManager() {
-        return commandManager;
+        return ZCommandManager;
     }
 
-    protected void registerCommand(String command, VCommand vCommand, String... aliases) {
-        this.commandManager.registerCommand(this, command, vCommand, Arrays.asList(aliases));
+    public void registerCommand(String command, VCommand vCommand, String... aliases) {
+        this.ZCommandManager.registerCommand(this, command, vCommand, Arrays.asList(aliases));
     }
 
     protected void registerListener(Listener listener) {
@@ -98,5 +101,14 @@ public abstract class ZPlugin extends JavaPlugin implements TextGeneratorPlugin 
             error.printStackTrace();
             return Optional.empty();
         }
+    }
+
+    public <T> T getProvider(Class<T> classz) {
+        RegisteredServiceProvider<T> provider = getServer().getServicesManager().getRegistration(classz);
+        if (provider == null) {
+            getLogger().severe("Unable to retrieve the provider " + classz);
+            return null;
+        }
+        return provider.getProvider() != null ? provider.getProvider() : null;
     }
 }

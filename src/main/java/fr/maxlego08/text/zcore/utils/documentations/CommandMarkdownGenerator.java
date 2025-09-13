@@ -1,6 +1,6 @@
 package fr.maxlego08.text.zcore.utils.documentations;
 
-import fr.maxlego08.text.command.VCommand;
+import fr.maxlego08.text.api.commands.VCommand;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,8 +1,7 @@
-package fr.maxlego08.text.zcore.utils.commands;
+package fr.maxlego08.text.api.commands;
 
 import fr.maxlego08.text.api.utils.ZUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;

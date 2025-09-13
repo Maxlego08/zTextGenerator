@@ -3,10 +3,11 @@ package fr.maxlego08.text;
 import fr.maxlego08.text.api.TextManager;
 import fr.maxlego08.text.api.color.ColorHelper;
 import fr.maxlego08.text.api.fonts.FontImage;
+import fr.maxlego08.text.api.hooks.HookProvider;
 import fr.maxlego08.text.api.messages.MessageManager;
 import fr.maxlego08.text.api.utils.Plugins;
 import fr.maxlego08.text.color.PaperColor;
-import fr.maxlego08.text.command.CommandManager;
+import fr.maxlego08.text.command.ZCommandManager;
 import fr.maxlego08.text.command.commands.CommandTextGenerator;
 import fr.maxlego08.text.listener.InventoryListener;
 import fr.maxlego08.text.messages.ZMessageManager;
@@ -17,6 +18,7 @@ import fr.maxlego08.text.placeholders.TitlePlaceholders;
 import fr.maxlego08.text.zcore.ZPlugin;
 import fr.maxlego08.text.zcore.utils.EmptyFont;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +29,13 @@ public final class TextPlugin extends ZPlugin {
     private final MessageManager messageManager = new ZMessageManager(this);
     private boolean enableDebug = false;
     private FontImage fontImage = new EmptyFont();
+    private final List<HookProvider> hookProviders = new ArrayList<>();
 
     @Override
     public void onEnable() {
         preEnable();
 
-        this.commandManager = new CommandManager(this);
+        this.ZCommandManager = new ZCommandManager(this);
 
         this.saveDefaultConfig();
 
@@ -49,6 +52,8 @@ public final class TextPlugin extends ZPlugin {
 
         this.createInstances();
 
+        this.hookProviders.forEach(hookProvider -> hookProvider.onEnable(this));
+
         postEnable();
     }
 
@@ -56,6 +61,7 @@ public final class TextPlugin extends ZPlugin {
     public void onDisable() {
         preDisable();
 
+        this.hookProviders.forEach(hookProvider -> hookProvider.onDisable(this));
 
         postDisable();
     }
@@ -92,6 +98,8 @@ public final class TextPlugin extends ZPlugin {
         this.textManager.loadBooks();
 
         this.messageLoader.load();
+
+        this.hookProviders.forEach(hookProvider -> hookProvider.onReload(this));
     }
 
     @Override
@@ -120,6 +128,14 @@ public final class TextPlugin extends ZPlugin {
                 this.fontImage = fontImage;
                 getLogger().info("Loaded NexoFont");
             }, () -> getLogger().severe("Failed to load NexoFont"));
+        }
+
+        if (isActive(Plugins.ZMENU)){
+            Optional<HookProvider> optional = createInstance("zmenu.ZMenuProvider");
+            optional.ifPresentOrElse(hookProvider -> {
+                this.hookProviders.add(hookProvider);
+                getLogger().info("Loaded zMenu");
+            }, () -> getLogger().severe("Failed to load zMenu"));
         }
 
     }

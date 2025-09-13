@@ -1,12 +1,13 @@
 package fr.maxlego08.text.command.commands;
 
 import fr.maxlego08.text.TextPlugin;
+import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.book.Book;
 import fr.maxlego08.text.api.book.BookPage;
 import fr.maxlego08.text.api.messages.Message;
 import fr.maxlego08.text.api.utils.Permission;
-import fr.maxlego08.text.command.VCommand;
-import fr.maxlego08.text.zcore.utils.commands.CommandType;
+import fr.maxlego08.text.api.commands.VCommand;
+import fr.maxlego08.text.api.commands.CommandType;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class CommandTextGeneratorBook extends VCommand {
 
-    public CommandTextGeneratorBook(TextPlugin plugin) {
+    public CommandTextGeneratorBook(TextGeneratorPlugin plugin) {
         super(plugin);
         this.setPermission(Permission.ZTEXTGENERATOR_BOOK);
         this.addSubCommand("book");
@@ -31,7 +32,7 @@ public class CommandTextGeneratorBook extends VCommand {
     }
 
     @Override
-    protected CommandType perform(TextPlugin plugin) {
+    protected CommandType perform(TextGeneratorPlugin plugin) {
 
         Player player = this.argAsPlayer(0);
         String bookName = this.argAsString(1);

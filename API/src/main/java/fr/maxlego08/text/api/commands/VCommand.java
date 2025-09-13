@@ -1,13 +1,8 @@
-package fr.maxlego08.text.command;
+package fr.maxlego08.text.api.commands;
 
-import fr.maxlego08.text.TextPlugin;
+import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.messages.Message;
 import fr.maxlego08.text.api.utils.Permission;
-import fr.maxlego08.text.zcore.ZPlugin;
-import fr.maxlego08.text.zcore.utils.commands.Arguments;
-import fr.maxlego08.text.zcore.utils.commands.CollectionBiConsumer;
-import fr.maxlego08.text.zcore.utils.commands.CommandType;
-import fr.maxlego08.text.zcore.utils.commands.Tab;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,7 +19,7 @@ import java.util.Optional;
  */
 public abstract class VCommand extends Arguments {
 
-    protected final TextPlugin plugin;
+    protected final TextGeneratorPlugin plugin;
     /**
      * List of sub-commands for this command.
      */
@@ -67,7 +62,7 @@ public abstract class VCommand extends Arguments {
      *
      * @param plugin the plugin instance.
      */
-    public VCommand(TextPlugin plugin) {
+    public VCommand(TextGeneratorPlugin plugin) {
         super();
         this.plugin = plugin;
     }
@@ -491,7 +486,7 @@ public abstract class VCommand extends Arguments {
      * @param args          the arguments of the command.
      * @return the command type.
      */
-    public CommandType prePerform(TextPlugin plugin, CommandSender commandSender, String[] args) {
+    public CommandType prePerform(TextGeneratorPlugin plugin, CommandSender commandSender, String[] args) {
 
         // Update the number of arguments according to the number of parents
         this.parentCount = this.parentCount(0);
@@ -538,7 +533,7 @@ public abstract class VCommand extends Arguments {
      * @param plugin the plugin instance.
      * @return the command type.
      */
-    protected abstract CommandType perform(TextPlugin plugin);
+    protected abstract CommandType perform(TextGeneratorPlugin plugin);
 
     /**
      * Checks if there are any sub-commands with the same name as this command.
@@ -573,7 +568,7 @@ public abstract class VCommand extends Arguments {
      * @param args   the arguments of the command.
      * @return the list of tab completions.
      */
-    public List<String> toTab(ZPlugin plugin, CommandSender sender, String[] args) {
+    public List<String> toTab(TextGeneratorPlugin plugin, CommandSender sender, String[] args) {
 
         this.parentCount = this.parentCount(0);
 
