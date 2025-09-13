@@ -1,7 +1,7 @@
 package fr.maxlego08.text.hooks;
 
 import com.nexomc.nexo.NexoPlugin;
-import fr.maxlego08.text.api.font.FontImage;
+import fr.maxlego08.text.api.fonts.FontImage;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

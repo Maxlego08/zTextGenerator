@@ -3,7 +3,7 @@ package fr.maxlego08.text;
 import fr.maxlego08.text.api.Alphabet;
 import fr.maxlego08.text.api.FontTransformation;
 import fr.maxlego08.text.api.TextGeneratorPlugin;
-import fr.maxlego08.text.api.records.FontInfo;
+import fr.maxlego08.text.api.fonts.FontInfo;
 
 import java.io.File;
 import java.util.List;

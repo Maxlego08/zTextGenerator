@@ -2,7 +2,7 @@ package fr.maxlego08.text;
 
 import fr.maxlego08.text.api.TextManager;
 import fr.maxlego08.text.api.color.ColorHelper;
-import fr.maxlego08.text.api.font.FontImage;
+import fr.maxlego08.text.api.fonts.FontImage;
 import fr.maxlego08.text.api.messages.MessageManager;
 import fr.maxlego08.text.api.utils.Plugins;
 import fr.maxlego08.text.color.PaperColor;

@@ -1,7 +1,7 @@
 package fr.maxlego08.text;
 
 import fr.maxlego08.text.api.FontTransformation;
-import fr.maxlego08.text.api.records.SpecialFontTransformation;
+import fr.maxlego08.text.api.fonts.SpecialFontTransformation;
 
 import java.util.List;
 import java.util.Optional;
