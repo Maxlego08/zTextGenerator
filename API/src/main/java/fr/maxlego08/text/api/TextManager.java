@@ -3,6 +3,7 @@ package fr.maxlego08.text.api;
 import fr.maxlego08.text.api.book.Book;
 import fr.maxlego08.text.api.book.BookPage;
 import fr.maxlego08.text.api.text.Text;
+import fr.maxlego08.text.api.text.animation.TextAnimationOptions;
 import fr.maxlego08.text.api.utils.Alignment;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -166,4 +167,23 @@ public interface TextManager {
      * @param bookPage the page of the book to open
      */
     void openBook(Player player, Book book, BookPage bookPage);
+
+    /**
+     * Displays the specified text to the player using the provided animation options.
+     *
+     * @param player   the player who should see the text
+     * @param text     the text to display
+     * @param options  the animation options to use when displaying the text
+     */
+    void displayText(Player player, Text text, TextAnimationOptions options);
+
+    /**
+     * Displays the text associated with the provided name to the player using the
+     * given animation options.
+     *
+     * @param player   the player who should see the text
+     * @param textName the name of the text to display
+     * @param options  the animation options to use when displaying the text
+     */
+    void displayText(Player player, String textName, TextAnimationOptions options);
 }

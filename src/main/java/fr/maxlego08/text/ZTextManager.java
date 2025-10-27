@@ -14,11 +14,13 @@ import fr.maxlego08.text.api.fonts.SpecialFontTransformation;
 import fr.maxlego08.text.api.text.Text;
 import fr.maxlego08.text.api.text.TextElement;
 import fr.maxlego08.text.api.text.TextLine;
+import fr.maxlego08.text.api.text.animation.TextAnimationOptions;
 import fr.maxlego08.text.api.utils.Alignment;
 import fr.maxlego08.text.api.utils.ZUtils;
 import fr.maxlego08.text.book.ZBook;
 import fr.maxlego08.text.text.ZText;
 import fr.maxlego08.text.text.ZTextLine;
+import fr.maxlego08.text.text.animation.TextAnimationTask;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -419,5 +421,38 @@ public class ZTextManager extends ZUtils implements TextManager {
     public void openBook(Player player, Book book, BookPage bookPage) {
         var inventory = this.plugin.getColorHelper().createBook(player, book, bookPage, this);
         player.openInventory(inventory);
+    }
+
+    @Override
+    public void displayText(Player player, Text text, TextAnimationOptions options) {
+
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null when displaying a text.");
+        }
+
+        if (text == null) {
+            throw new IllegalArgumentException("Text cannot be null when displaying it to a player.");
+        }
+
+        TextAnimationOptions effectiveOptions = options == null ? TextAnimationOptions.none() : options;
+        String renderedText = text.getResult(player);
+
+        new TextAnimationTask(this.plugin, player, renderedText, effectiveOptions).start();
+    }
+
+    @Override
+    public void displayText(Player player, String textName, TextAnimationOptions options) {
+
+        if (textName == null || textName.isEmpty()) {
+            throw new IllegalArgumentException("Text name cannot be null or empty when displaying it to a player.");
+        }
+
+        var optional = this.getText(textName);
+        if (optional.isEmpty()) {
+            this.plugin.getLogger().warning("Unable to display text '" + textName + "' because it does not exist.");
+            return;
+        }
+
+        this.displayText(player, optional.get(), options);
     }
 }

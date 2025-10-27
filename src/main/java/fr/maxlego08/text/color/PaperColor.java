@@ -7,6 +7,7 @@ import fr.maxlego08.text.api.book.BookPage;
 import fr.maxlego08.text.api.color.ColorHelper;
 import fr.maxlego08.text.api.color.Result;
 import fr.maxlego08.text.book.BookInventory;
+import fr.maxlego08.text.text.TextInventory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -131,6 +132,14 @@ public class PaperColor implements ColorHelper {
         BookInventory bookInventory = new BookInventory();
         var inventory = Bukkit.createInventory(bookInventory, 54, getComponent(book.getInventoryName() + book.toBookString(textManager, this, page)));
         bookInventory.setInventory(inventory);
+        return inventory;
+    }
+
+    @Override
+    public Inventory createTextInventory(Player player, String title) {
+        TextInventory textInventory = new TextInventory();
+        var inventory = Bukkit.createInventory(textInventory, 9, getComponent(title));
+        textInventory.setInventory(inventory);
         return inventory;
     }
 }
