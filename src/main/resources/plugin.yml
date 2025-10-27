@@ -5,3 +5,12 @@ api-version: '1.21'
 authors: [Maxlego08]
 description: Add texts inside your inventories
 website: https://groupez.dev/
+commands:
+  ztext:
+    description: Affiche un texte avec ou sans animation.
+    usage: /<command> <mode> [ticks] <text>
+    permission: ztextgenerator.use
+permissions:
+  ztextgenerator.use:
+    description: Autorise l'utilisation de la commande /ztext
+    default: true
