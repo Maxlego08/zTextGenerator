@@ -1,6 +1,7 @@
 package fr.maxlego08.text.text.animation;
 
 import fr.maxlego08.text.TextPlugin;
+import fr.maxlego08.text.ZTextManager;
 import fr.maxlego08.text.api.color.ColorHelper;
 import fr.maxlego08.text.api.text.animation.TextAnimationOptions;
 import fr.maxlego08.text.api.text.animation.TextAnimationType;
@@ -9,6 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Handles the display of a text to a player using different animation strategies.
@@ -17,21 +19,29 @@ public class TextAnimationTask extends BukkitRunnable {
 
     private final TextPlugin plugin;
     private final Player player;
+    private final UUID playerId;
     private final String originalText;
     private final TextAnimationOptions options;
     private final ColorHelper colorHelper;
     private final List<String> frames;
+    private final String finalFrame;
+    private final boolean animated;
+    private final ZTextManager textManager;
+    private boolean stopped = false;
     private int index = 0;
 
-    public TextAnimationTask(TextPlugin plugin, Player player, String originalText, TextAnimationOptions options) {
+    public TextAnimationTask(TextPlugin plugin, ZTextManager textManager, Player player, String originalText, TextAnimationOptions options) {
         this.plugin = plugin;
+        this.textManager = textManager;
         this.player = player;
+        this.playerId = player.getUniqueId();
         String sanitized = originalText == null ? "" : originalText;
-        sanitized = plugin.getTextManager().stripOffsets(sanitized);
         this.originalText = sanitized;
         this.options = options;
         this.colorHelper = plugin.getColorHelper();
         this.frames = buildFrames(this.originalText, options.type());
+        this.finalFrame = this.frames.isEmpty() ? "" : this.frames.get(this.frames.size() - 1);
+        this.animated = options.type() != TextAnimationType.NONE && this.frames.size() > 1 && options.stepDelayMillis() > 0;
     }
 
     /**
@@ -40,26 +50,36 @@ public class TextAnimationTask extends BukkitRunnable {
      */
     public void start() {
         if (this.frames.isEmpty()) {
+            this.textManager.onAnimationStopped(this.playerId, this);
             return;
         }
 
-        if (this.options.type() == TextAnimationType.NONE || this.frames.size() <= 1 || this.options.stepDelayTicks() <= 0) {
-            displayFrame(this.frames.get(this.frames.size() - 1));
+        if (!this.animated) {
+            displayFrame(this.finalFrame);
+            this.textManager.onAnimationStopped(this.playerId, this);
             return;
         }
 
-        this.runTaskTimer(this.plugin, this.options.initialDelayTicks(), this.options.stepDelayTicks());
+        long initialDelayTicks = this.options.initialDelayTicks();
+        long stepDelayTicks = this.options.stepDelayTicks();
+        if (stepDelayTicks <= 0) {
+            displayFrame(this.finalFrame);
+            this.textManager.onAnimationStopped(this.playerId, this);
+            return;
+        }
+
+        this.runTaskTimer(this.plugin, initialDelayTicks, stepDelayTicks);
     }
 
     @Override
     public void run() {
         if (!this.player.isOnline()) {
-            this.cancel();
+            stop();
             return;
         }
 
         if (this.index >= this.frames.size()) {
-            this.cancel();
+            stop();
             return;
         }
 
@@ -67,7 +87,7 @@ public class TextAnimationTask extends BukkitRunnable {
         this.index++;
 
         if (this.index >= this.frames.size()) {
-            this.cancel();
+            stop();
         }
     }
 
@@ -76,6 +96,35 @@ public class TextAnimationTask extends BukkitRunnable {
             return;
         }
         this.player.openInventory(this.colorHelper.createTextInventory(this.player, frame));
+    }
+
+    public boolean isAnimated() {
+        return this.animated;
+    }
+
+    public void cancelAnimation() {
+        stop();
+    }
+
+    public void stopAndShowFinal() {
+        stop();
+        displayFrame(this.finalFrame);
+    }
+
+    private void stop() {
+        if (this.stopped) {
+            return;
+        }
+        this.stopped = true;
+        if (this.getTaskId() != -1) {
+            super.cancel();
+        }
+        this.textManager.onAnimationStopped(this.playerId, this);
+    }
+
+    @Override
+    public synchronized void cancel() throws IllegalStateException {
+        stop();
     }
 
     private List<String> buildFrames(String text, TextAnimationType type) {
@@ -118,6 +167,19 @@ public class TextAnimationTask extends BukkitRunnable {
                 continue;
             }
 
+            if (c == ':') {
+                int tokenEnd = findCustomTokenEnd(text, i);
+                if (tokenEnd != -1) {
+                    String token = text.substring(i, tokenEnd + 1);
+                    raw.append(token);
+                    if (wordMode) {
+                        currentWord.append(token);
+                    }
+                    i = tokenEnd + 1;
+                    continue;
+                }
+            }
+
             raw.append(c);
             if (wordMode) {
                 currentWord.append(c);
@@ -135,6 +197,13 @@ public class TextAnimationTask extends BukkitRunnable {
             addFrame(frames, buildFrame(raw, openTags));
         }
 
+        if (!frames.isEmpty()) {
+            String completed = buildFrame(raw, openTags);
+            if (!completed.isEmpty()) {
+                frames.set(frames.size() - 1, completed);
+            }
+        }
+
         if (frames.isEmpty()) {
             frames.add(text);
         }
@@ -144,6 +213,20 @@ public class TextAnimationTask extends BukkitRunnable {
 
     private int findTagEnd(String text, int start) {
         return text.indexOf('>', start);
+    }
+
+    private int findCustomTokenEnd(String text, int start) {
+        int end = text.indexOf(':', start + 1);
+        if (end == -1) {
+            return -1;
+        }
+        for (int i = start + 1; i < end; i++) {
+            char c = text.charAt(i);
+            if (Character.isWhitespace(c)) {
+                return -1;
+            }
+        }
+        return end;
     }
 
     private void processTag(String tag, String fullText, int tagEnd, List<String> openTags) {

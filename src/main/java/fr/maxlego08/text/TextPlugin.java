@@ -48,7 +48,7 @@ public final class TextPlugin extends ZPlugin {
         placeholders.forEach(placeholder -> placeholder.register(this.textManager));
 
         this.registerCommand("text-generator", new CommandTextGenerator(this), "text", "tg");
-        this.registerListener(new InventoryListener());
+        this.registerListener(new InventoryListener(this));
 
         this.createInstances();
 

@@ -98,14 +98,6 @@ public interface TextManager {
      */
     String getNegativeOffset(int pixels);
 
-    /**
-     * Removes any configured offset tokens from the provided text.
-     *
-     * @param text the text that may contain offset tokens
-     * @return the text without any offset tokens
-     */
-    String stripOffsets(String text);
-
     Alphabet getInventoryTitleAlphabet();
 
     /**
@@ -194,4 +186,13 @@ public interface TextManager {
      * @param options  the animation options to use when displaying the text
      */
     void displayText(Player player, String textName, TextAnimationOptions options);
+
+    /**
+     * Handles the closure of a text inventory by a player. Implementations should ensure
+     * any active animation is stopped and the final text is displayed once the inventory
+     * is closed for the first time.
+     *
+     * @param player the player who closed the inventory displaying a text
+     */
+    void handleTextInventoryClose(Player player);
 }

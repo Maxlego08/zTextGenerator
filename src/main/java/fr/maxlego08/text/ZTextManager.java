@@ -30,7 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Pattern;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ZTextManager extends ZUtils implements TextManager {
 
@@ -39,7 +40,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     private final List<Text> texts = new ArrayList<>();
     private final List<Book> books = new ArrayList<>();
     private String offset;
-    private Pattern offsetPattern;
+    private final Map<UUID, TextAnimationTask> activeTextAnimations = new ConcurrentHashMap<>();
 
     public ZTextManager(TextPlugin plugin) {
         this.plugin = plugin;
@@ -255,7 +256,6 @@ public class ZTextManager extends ZUtils implements TextManager {
         this.files(folder, this::loadAlphabet);
 
         this.offset = this.plugin.getConfig().getString("offset", ":offset-%pixels%:");
-        this.rebuildOffsetPattern();
     }
 
     @Override
@@ -296,36 +296,6 @@ public class ZTextManager extends ZUtils implements TextManager {
         return getOffset(-pixels);
     }
 
-    @Override
-    public String stripOffsets(String text) {
-        if (text == null || text.isEmpty()) {
-            return text == null ? "" : text;
-        }
-
-        if (this.offsetPattern == null) {
-            return text;
-        }
-
-        return this.offsetPattern.matcher(text).replaceAll("");
-    }
-
-    private void rebuildOffsetPattern() {
-        String template = this.offset;
-        if (template == null || template.isEmpty()) {
-            this.offsetPattern = null;
-            return;
-        }
-
-        int placeholderIndex = template.indexOf("%pixels%");
-        if (placeholderIndex == -1) {
-            this.offsetPattern = null;
-            return;
-        }
-
-        String before = Pattern.quote(template.substring(0, placeholderIndex));
-        String after = Pattern.quote(template.substring(placeholderIndex + "%pixels%".length()));
-        this.offsetPattern = Pattern.compile(before + "-?\\d+" + after);
-    }
 
     private List<FontInfo> loadFontInfo(YamlConfiguration configuration) {
 
@@ -469,9 +439,15 @@ public class ZTextManager extends ZUtils implements TextManager {
         }
 
         TextAnimationOptions effectiveOptions = options == null ? TextAnimationOptions.none() : options;
-        String renderedText = stripOffsets(text.getResult(player));
+        String renderedText = text.getResult(player);
 
-        new TextAnimationTask(this.plugin, player, renderedText, effectiveOptions).start();
+        TextAnimationTask task = new TextAnimationTask(this.plugin, this, player, renderedText, effectiveOptions);
+        if (task.isAnimated()) {
+            this.registerAnimation(player, task);
+        } else {
+            this.clearAnimation(player);
+        }
+        task.start();
     }
 
     @Override
@@ -488,5 +464,38 @@ public class ZTextManager extends ZUtils implements TextManager {
         }
 
         this.displayText(player, optional.get(), options);
+    }
+
+    @Override
+    public void handleTextInventoryClose(Player player) {
+        if (player == null) {
+            return;
+        }
+
+        UUID uuid = player.getUniqueId();
+        TextAnimationTask task = this.activeTextAnimations.remove(uuid);
+        if (task != null) {
+            task.stopAndShowFinal();
+        }
+    }
+
+    public void onAnimationStopped(UUID uuid, TextAnimationTask task) {
+        this.activeTextAnimations.compute(uuid, (key, current) -> current == task ? null : current);
+    }
+
+    private void registerAnimation(Player player, TextAnimationTask task) {
+        UUID uuid = player.getUniqueId();
+        TextAnimationTask previous = this.activeTextAnimations.put(uuid, task);
+        if (previous != null && previous != task) {
+            previous.cancelAnimation();
+        }
+    }
+
+    private void clearAnimation(Player player) {
+        UUID uuid = player.getUniqueId();
+        TextAnimationTask previous = this.activeTextAnimations.remove(uuid);
+        if (previous != null) {
+            previous.cancelAnimation();
+        }
     }
 }
