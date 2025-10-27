@@ -25,11 +25,14 @@ public abstract class PlaceholderRegister extends ZUtils {
     /**
      * Splits the given input string by '_' character, but ignores when it's inside a pair of curly braces.
      * The resulting list is then mapped to replace '{' and '}' characters with '%'.
+     * A maximum number of parts can be specified. If maxParts is greater than 0, the result will contain
+     * at most maxParts elements, with the last element containing the rest of the string.
      *
-     * @param input the string to be split
+     * @param input    the string to be split
+     * @param maxParts maximum number of parts to split into (<= 0 means no limit)
      * @return the list of strings as described
      */
-    protected List<String> splitIgnoringBraces(String input) {
+    protected List<String> splitIgnoringBraces(String input, int maxParts) {
         List<String> result = new ArrayList<>();
         StringBuilder current = new StringBuilder();
         boolean insideBraces = false;
@@ -41,7 +44,8 @@ public abstract class PlaceholderRegister extends ZUtils {
                 insideBraces = false;
             }
 
-            if (c == '_' && !insideBraces) {
+            if (c == '_' && !insideBraces
+                    && (maxParts <= 0 || result.size() < maxParts - 1)) {
                 if (!current.isEmpty()) {
                     result.add(current.toString());
                     current.setLength(0);
@@ -55,7 +59,10 @@ public abstract class PlaceholderRegister extends ZUtils {
             result.add(current.toString());
         }
 
-        return result.stream().map(e -> e.replace("{", "%").replace("}", "%")).toList();
+        return result.stream()
+                .map(e -> e.replace("{", "%").replace("}", "%"))
+                .toList();
     }
+
 
 }

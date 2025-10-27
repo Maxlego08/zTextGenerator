@@ -29,7 +29,8 @@ public class AlignedPlaceholders extends PlaceholderRegister {
     private BiFunction<Player, String, String> getTextLength(TextManager textManager) {
         return (player, args) -> {
 
-            List<String> values = splitIgnoringBraces(args);
+            List<String> values = splitIgnoringBraces(args, 2);
+
             if (values.size() != 2) {
                 return "The format is invalid! Please try again (" + values.size() + ")";
             }
@@ -49,7 +50,9 @@ public class AlignedPlaceholders extends PlaceholderRegister {
 
     private BiFunction<Player, String, String> createAlignedPlaceholder(TextManager textManager, Alignment alignment) {
         return (player, args) -> {
-            List<String> values = splitIgnoringBraces(args);
+
+            List<String> values = splitIgnoringBraces(args, 3);
+
             if (values.size() != 3) {
                 return "The format is invalid! Please try again (" + values.size() + ")";
             }

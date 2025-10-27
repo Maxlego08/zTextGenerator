@@ -23,7 +23,9 @@ public class BookPlaceholders extends PlaceholderRegister {
 
     private BiFunction<Player, String, String> getBook(TextManager textManager) {
         return (player, args) -> {
-            List<String> values = splitIgnoringBraces(args);
+
+            List<String> values = splitIgnoringBraces(args, 2);
+
             if (values.size() != 2) return "The format is invalid! Please try again (" + values.size() + ")";
 
             String bookName = values.getFirst();
