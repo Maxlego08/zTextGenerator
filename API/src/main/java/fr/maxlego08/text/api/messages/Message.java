@@ -16,10 +16,15 @@ public enum Message {
     RELOAD("&aYou have just reloaded the configuration files."),
     DESCRIPTION_RELOAD("Reload configuration files"),
     DESCRIPTION_BOOK("Open a book"),
+    DESCRIPTION_TEXT("Open a text"),
 
     BOOK_NOT_FOUND("&cImpossible to find the book &f%book%&c."),
     BOOK_PAGE_NOT_FOUND("&cImpossible to find the book page &f%page%&c."),
-    ;
+    TEXT_NOT_FOUND("&cImpossible to find the text &f%text%&c."),
+    TEXT_PLAYER_NOT_FOUND("&cImpossible to find the player &f%player%&c."),
+    TEXT_ANIMATION_TYPE_UNKNOWN("&cUnknown animation type &f%type%&c."),
+    TEXT_ANIMATION_SPEED_INVALID("&cThe animation speed must be greater than 0."),
+;
 
     private List<String> messages;
     private String message;

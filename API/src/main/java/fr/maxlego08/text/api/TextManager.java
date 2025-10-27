@@ -98,6 +98,14 @@ public interface TextManager {
      */
     String getNegativeOffset(int pixels);
 
+    /**
+     * Removes any configured offset tokens from the provided text.
+     *
+     * @param text the text that may contain offset tokens
+     * @return the text without any offset tokens
+     */
+    String stripOffsets(String text);
+
     Alphabet getInventoryTitleAlphabet();
 
     /**

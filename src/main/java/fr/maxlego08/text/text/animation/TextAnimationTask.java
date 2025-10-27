@@ -26,7 +26,9 @@ public class TextAnimationTask extends BukkitRunnable {
     public TextAnimationTask(TextPlugin plugin, Player player, String originalText, TextAnimationOptions options) {
         this.plugin = plugin;
         this.player = player;
-        this.originalText = originalText == null ? "" : originalText;
+        String sanitized = originalText == null ? "" : originalText;
+        sanitized = plugin.getTextManager().stripOffsets(sanitized);
+        this.originalText = sanitized;
         this.options = options;
         this.colorHelper = plugin.getColorHelper();
         this.frames = buildFrames(this.originalText, options.type());
