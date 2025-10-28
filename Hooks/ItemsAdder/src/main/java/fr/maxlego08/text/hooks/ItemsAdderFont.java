@@ -19,6 +19,6 @@ public class ItemsAdderFont implements FontImage {
             matcher.appendReplacement(result, replacement);
         }
         matcher.appendTail(result);
-        return result.toString();
+        return result.toString().replace("§f", "").replace("§r", "");
     }
 }

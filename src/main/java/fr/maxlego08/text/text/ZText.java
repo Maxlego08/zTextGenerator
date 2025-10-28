@@ -77,7 +77,7 @@ public class ZText extends ZUtils implements Text {
             builder.append(textManager.getNegativeOffset(size));
         }
 
-        builder.append(textManager.processText(this.lines, this.length));
+        builder.append(textManager.processText(this.lines, this.length, "%player%", player));
         return builder.toString();
     }
 }

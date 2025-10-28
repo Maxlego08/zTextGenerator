@@ -471,6 +471,8 @@ public class ZTextManager extends ZUtils implements TextManager {
             var currentAlphabet = textLine.alphabet();
 
             var result = colorHelper.transformString(currentAlphabet, text, height);
+            var content = this.plugin.getFontImage().replace(result.string());
+
             switch (alignment) {
                 case CENTER -> {
                     int centerWidth = maxWidth / 2;
@@ -480,16 +482,16 @@ public class ZTextManager extends ZUtils implements TextManager {
                     int start = centerWidth - (length + rest);
 
                     builder.append(this.getOffset(start));
-                    builder.append(result.string());
+                    builder.append(content);
                     builder.append(this.getNegativeOffset(start + result.length()));
                 }
                 case LEFT -> {
-                    builder.append(result.string());
+                    builder.append(content);
                     builder.append(this.getNegativeOffset(result.length()));
                 }
                 case RIGHT -> {
                     builder.append(this.getOffset(maxWidth - result.length()));
-                    builder.append(result.string());
+                    builder.append(content);
                     builder.append(this.getNegativeOffset(maxWidth));
                 }
             }
