@@ -3,6 +3,7 @@ package fr.maxlego08.text.api;
 import fr.maxlego08.text.api.book.Book;
 import fr.maxlego08.text.api.book.BookPage;
 import fr.maxlego08.text.api.text.Text;
+import fr.maxlego08.text.api.text.TextLine;
 import fr.maxlego08.text.api.text.animation.TextAnimationOptions;
 import fr.maxlego08.text.api.utils.Alignment;
 import org.bukkit.command.CommandSender;
@@ -171,9 +172,9 @@ public interface TextManager {
     /**
      * Displays the specified text to the player using the provided animation options.
      *
-     * @param player   the player who should see the text
-     * @param text     the text to display
-     * @param options  the animation options to use when displaying the text
+     * @param player  the player who should see the text
+     * @param text    the text to display
+     * @param options the animation options to use when displaying the text
      */
     void displayText(Player player, Text text, TextAnimationOptions options);
 
@@ -195,4 +196,6 @@ public interface TextManager {
      * @param player the player who closed the inventory displaying a text
      */
     void handleTextInventoryClose(Player player);
+
+    String processText(List<TextLine> textLines, int maxWidth, Object... arguments);
 }

@@ -51,10 +51,10 @@ public class ZMessageManager extends ZUtils implements MessageManager {
         return getMessage(String.join("\n", message.getMessage()), args);
     }
 
-    private String getMessage(String message, Object... args) {
+    private String getMessage(String message, Object... arguments) {
 
         List<Object> modifiedArgs = new ArrayList<>();
-        for (Object arg : args) handleArg(arg, modifiedArgs);
+        for (Object arg : arguments) handleArg(arg, modifiedArgs);
         Object[] newArgs = modifiedArgs.toArray();
 
         return getString(message, newArgs);

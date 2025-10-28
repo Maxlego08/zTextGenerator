@@ -19,7 +19,7 @@ public class CommandTextGeneratorText extends VCommand {
     public CommandTextGeneratorText(TextGeneratorPlugin plugin) {
         super(plugin);
         this.setPermission(Permission.ZTEXTGENERATOR_TEXT);
-        this.addSubCommand("text");
+        this.addSubCommand("open");
         this.setDescription(Message.DESCRIPTION_TEXT);
         this.addRequireArg("player");
         this.addRequireArg("text", (sender, args) -> plugin.getTextManager().getTexts().stream().map(Text::getName).collect(Collectors.toList()));

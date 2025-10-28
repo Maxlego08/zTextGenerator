@@ -35,12 +35,11 @@ public class TextAnimationTask extends BukkitRunnable {
         this.textManager = textManager;
         this.player = player;
         this.playerId = player.getUniqueId();
-        String sanitized = originalText == null ? "" : originalText;
-        this.originalText = sanitized;
+        this.originalText = originalText == null ? "" : originalText;
         this.options = options;
         this.colorHelper = plugin.getColorHelper();
         this.frames = buildFrames(this.originalText, options.type());
-        this.finalFrame = this.frames.isEmpty() ? "" : this.frames.get(this.frames.size() - 1);
+        this.finalFrame = this.frames.isEmpty() ? "" : this.frames.getLast();
         this.animated = options.type() != TextAnimationType.NONE && this.frames.size() > 1 && options.stepDelayMillis() > 0;
     }
 

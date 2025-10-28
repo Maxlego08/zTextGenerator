@@ -5,10 +5,10 @@ import fr.maxlego08.text.api.TextManager;
 import fr.maxlego08.text.api.book.Book;
 import fr.maxlego08.text.api.book.BookPage;
 import fr.maxlego08.text.api.book.Page;
-import fr.maxlego08.text.api.book.PageContent;
 import fr.maxlego08.text.api.book.PageType;
 import fr.maxlego08.text.api.color.ColorHelper;
 import fr.maxlego08.text.api.color.Result;
+import fr.maxlego08.text.api.text.TextLine;
 
 import java.util.List;
 import java.util.Optional;
@@ -94,46 +94,10 @@ public class ZBook implements Book {
     private String processText(Page page, Alphabet alphabet, int maxWidth, ColorHelper colorHelper, TextManager textManager) {
 
         if (page.pageType() == PageType.FILL) {
-            return processText(page.pageContents().getFirst().content(), alphabet, maxWidth, colorHelper, textManager);
+            return processText(page.textLines().getFirst().content(), alphabet, maxWidth, colorHelper, textManager);
         }
 
-        StringBuilder builder = new StringBuilder();
-        int height = 0;
-
-        for (PageContent pageContent : page.pageContents()) {
-
-            var text = pageContent.content();
-            var alignment = pageContent.alignment();
-            var currentAlphabet = pageContent.alphabet();
-
-            var result = colorHelper.transformString(currentAlphabet, text, height);
-            switch (alignment) {
-                case CENTER -> {
-                    int centerWidth = maxWidth / 2;
-                    int length = result.length() / 2;
-                    int rest = result.length() % 2;
-
-                    int start = centerWidth - (length + rest);
-
-                    builder.append(textManager.getOffset(start));
-                    builder.append(result.string());
-                    builder.append(textManager.getNegativeOffset(start + result.length()));
-                }
-                case LEFT -> {
-                    builder.append(result.string());
-                    builder.append(textManager.getNegativeOffset(result.length()));
-                }
-                case RIGHT -> {
-                    builder.append(textManager.getOffset(maxWidth - result.length()));
-                    builder.append(result.string());
-                    builder.append(textManager.getNegativeOffset(maxWidth));
-                }
-            }
-
-            height += 1;
-        }
-
-        return builder.toString();
+        return textManager.processText(page.textLines(), maxWidth);
     }
 
     private String processText(String text, Alphabet alphabet, int maxWidth, ColorHelper colorHelper, TextManager textManager) {

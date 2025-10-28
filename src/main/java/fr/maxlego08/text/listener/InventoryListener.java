@@ -31,7 +31,7 @@ public class InventoryListener implements Listener {
         }
 
         if (event.getPlayer() instanceof Player player) {
-            this.plugin.getTextManager().handleTextInventoryClose(player);
+            // this.plugin.getTextManager().handleTextInventoryClose(player);
         }
     }
 }
