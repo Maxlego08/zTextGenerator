@@ -7,6 +7,7 @@ import fr.maxlego08.text.api.text.Text;
 import fr.maxlego08.text.api.text.animation.TextAnimationOptions;
 import fr.maxlego08.text.api.text.animation.TextAnimationType;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -101,7 +102,9 @@ public class TextAnimationTask extends BukkitRunnable {
         if (text.isEmpty()) {
             return;
         }
+        this.player.setMetadata("cant-close-inventory", new FixedMetadataValue(this.plugin, true));
         this.player.openInventory(this.colorHelper.createTextInventory(this.player, this.inventorySize, text));
+        this.player.removeMetadata("cant-close-inventory", this.plugin);
     }
 
     public boolean isAnimated() {

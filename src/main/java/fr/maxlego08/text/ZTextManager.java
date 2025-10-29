@@ -615,7 +615,7 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     @Override
     public void handleTextInventoryClose(Player player) {
-        if (player == null) {
+        if (player == null || player.hasMetadata("cant-close-inventory")) {
             return;
         }
 
