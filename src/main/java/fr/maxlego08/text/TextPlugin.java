@@ -5,6 +5,7 @@ import fr.maxlego08.text.api.color.ColorHelper;
 import fr.maxlego08.text.api.fonts.FontImage;
 import fr.maxlego08.text.api.hooks.HookProvider;
 import fr.maxlego08.text.api.messages.MessageManager;
+import fr.maxlego08.text.api.text.Text;
 import fr.maxlego08.text.api.utils.Plugins;
 import fr.maxlego08.text.color.PaperColor;
 import fr.maxlego08.text.command.ZCommandManager;
@@ -56,6 +57,7 @@ public final class TextPlugin extends ZPlugin {
         this.registerListener(new InventoryListener(this));
 
         this.createInstances();
+        this.textManager.getTexts().forEach(Text::createCacheResult);
 
         this.hookProviders.forEach(hookProvider -> hookProvider.onEnable(this));
 

@@ -217,10 +217,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             }
         }
 
-        Text text = new ZText(this.plugin, name, language, title, length, textLines);
-        text.createCacheResult();
-
-        this.texts.add(text);
+        this.texts.add(new ZText(this.plugin, name, language, title, length, textLines));
     }
 
     @Override

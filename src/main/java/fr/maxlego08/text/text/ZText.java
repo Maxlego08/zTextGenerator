@@ -7,7 +7,6 @@ import fr.maxlego08.text.api.utils.ZUtils;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.Locale;
 
 public class ZText extends ZUtils implements Text {
 
@@ -66,9 +65,7 @@ public class ZText extends ZUtils implements Text {
     @Override
     public String getResult(Player player) {
 
-        if (hasResult()) {
-            return this.result.toLowerCase(Locale.ROOT);
-        }
+        if (hasResult()) return this.result;
 
         StringBuilder builder = new StringBuilder();
         var textManager = this.plugin.getTextManager();

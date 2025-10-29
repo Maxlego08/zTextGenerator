@@ -39,7 +39,7 @@ public class TextAnimationTask extends BukkitRunnable {
         this.options = options;
         this.colorHelper = plugin.getColorHelper();
         this.frames = buildFrames(this.originalText, options.type());
-        this.finalFrame = this.frames.isEmpty() ? "" : this.frames.getLast();
+        this.finalFrame = this.originalText;
         this.animated = options.type() != TextAnimationType.NONE && this.frames.size() > 1 && options.stepDelayMillis() > 0;
     }
 
@@ -48,12 +48,8 @@ public class TextAnimationTask extends BukkitRunnable {
      * text does not require animation, the text is sent immediately.
      */
     public void start() {
-        if (this.frames.isEmpty()) {
-            this.textManager.onAnimationStopped(this.playerId, this);
-            return;
-        }
 
-        if (!this.animated) {
+        if (!this.animated || this.frames.isEmpty()) {
             displayFrame(this.finalFrame);
             this.textManager.onAnimationStopped(this.playerId, this);
             return;
