@@ -208,6 +208,14 @@ font-infos:
     length: 5
   - char: 'à'
     length: 5
+  - char: 'ê'
+    length: 5
+  - char: 'Ê'
+    length: 5
+  - char: 'â'
+    length: 5
+  - char: 'Â'
+    length: 5
 
 font-transformations:
   specials:
