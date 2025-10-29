@@ -173,6 +173,19 @@ public class TextAnimationTask extends BukkitRunnable {
                 continue;
             }
 
+            if (c == ':') {
+                int tokenEnd = findCustomTokenEnd(text, i);
+                if (tokenEnd != -1) {
+                    String token = text.substring(i, tokenEnd + 1);
+                    raw.append(token);
+                    if (wordMode) {
+                        currentWord.append(token);
+                    }
+                    i = tokenEnd + 1;
+                    continue;
+                }
+            }
+
             raw.append(c);
             if (wordMode) {
                 currentWord.append(c);
@@ -269,7 +282,7 @@ public class TextAnimationTask extends BukkitRunnable {
         if (spaceIndex != -1 && spaceIndex < end) {
             end = spaceIndex;
         }
-        if (end <= 0) {
+        if (end == 0) {
             return "";
         }
         return tagContent.substring(0, end);
@@ -285,7 +298,7 @@ public class TextAnimationTask extends BukkitRunnable {
     }
 
     private String buildFrame(CharSequence raw, List<String> openTags) {
-        if (raw.length() == 0) {
+        if (raw.isEmpty()) {
             return "";
         }
 
@@ -302,13 +315,11 @@ public class TextAnimationTask extends BukkitRunnable {
 
     private void addFrame(List<String> frames, String frame) {
         if (frame == null || frame.isEmpty()) {
-            System.out.println("Current frame is empty");
             return;
         }
 
         if (frames.isEmpty() || !frames.getLast().equals(frame)) {
-            System.out.println("Try add frame : " + frame);
             frames.add(frame);
-        } else System.out.println("Impossible to add frame : '" + frame + "'");
+        }
     }
 }
