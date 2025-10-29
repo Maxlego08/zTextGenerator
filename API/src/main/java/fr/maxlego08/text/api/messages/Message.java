@@ -16,7 +16,7 @@ public enum Message {
     RELOAD("&aYou have just reloaded the configuration files."),
     DESCRIPTION_RELOAD("Reload configuration files"),
     DESCRIPTION_BOOK("Open a book"),
-    DESCRIPTION_TEXT("Open a text"),
+    DESCRIPTION_OPEN("Open a text"),
 
     BOOK_NOT_FOUND("&cImpossible to find the book &f%book%&c."),
     BOOK_PAGE_NOT_FOUND("&cImpossible to find the book page &f%page%&c."),

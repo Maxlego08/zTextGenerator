@@ -7,6 +7,7 @@ import fr.maxlego08.text.api.utils.ZUtils;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ZText extends ZUtils implements Text {
 
@@ -58,11 +59,6 @@ public class ZText extends ZUtils implements Text {
     }
 
     @Override
-    public void createResult() {
-
-    }
-
-    @Override
     public boolean hasResult() {
         return this.result != null;
     }
@@ -70,21 +66,35 @@ public class ZText extends ZUtils implements Text {
     @Override
     public String getResult(Player player) {
 
-        if (hasResult()) return this.result;
+        if (hasResult()) {
+            return this.result.toLowerCase(Locale.ROOT);
+        }
 
         StringBuilder builder = new StringBuilder();
         var textManager = this.plugin.getTextManager();
 
         if (this.title != null) {
 
-            String title = papi(this.title.replace("%player%", player.getName()), player);
+            String title = player == null ? this.title : papi(this.title.replace("%player%", player.getName()), player);
 
             builder.append(title);
             int size = textManager.getInventoryTitleAlphabet().getTextLength(title);
             builder.append(textManager.getNegativeOffset(size));
         }
 
-        builder.append(textManager.processText(this.lines, this.length, "%player%", player.getName()));
+        var args = player == null ? new Object[0] : new Object[]{"%player%", player.getName()};
+        builder.append(textManager.processText(this.lines, this.length, args));
         return builder.toString();
+    }
+
+    @Override
+    public void createCacheResult() {
+        if (this.containsPlaceholder(this.title)) return;
+
+        for (TextLine line : this.lines) {
+            if (this.containsPlaceholder(line.content())) return;
+        }
+
+        this.result = this.getResult(null);
     }
 }

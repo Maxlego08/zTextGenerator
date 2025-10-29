@@ -23,9 +23,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -100,7 +100,6 @@ public class ZTextManager extends ZUtils implements TextManager {
             int page = Integer.parseInt(map.get("page").toString());
             bookPages.add(new BookPage(page, loadPage(right, alphabet, alignment), loadPage(left, alphabet, alignment)));
         });
-        this.books.removeIf(book -> book.getName().equalsIgnoreCase(name) && book.getLanguage().equalsIgnoreCase(language));
         this.books.add(new ZBook(name, language, inventoryName, bookPages, startOffset, leftSize, rightSize, offsetBetween, alphabet));
     }
 
@@ -149,6 +148,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             this.plugin.saveResource("texts/text-example.yml", false);
         }
 
+        this.texts.clear();
         this.files(folder, this::loadTexts);
     }
 
@@ -180,7 +180,6 @@ public class ZTextManager extends ZUtils implements TextManager {
 
         String name = (String) map.get("name");
         String language = normalizeLanguage(map.containsKey("language") ? map.get("language").toString() : this.getDefaultLanguage());
-        this.texts.removeIf(text -> text.getName().equalsIgnoreCase(name) && text.getLanguage().equalsIgnoreCase(language));
 
         String title = map.containsKey("title") ? (String) map.get("title") : null;
         Alignment alignment = map.containsKey("alignment") ? Alignment.valueOf(((String) map.get("alignment")).toUpperCase()) : Alignment.LEFT;
@@ -219,7 +218,7 @@ public class ZTextManager extends ZUtils implements TextManager {
         }
 
         Text text = new ZText(this.plugin, name, language, title, length, textLines);
-        text.createResult();
+        text.createCacheResult();
 
         this.texts.add(text);
     }
@@ -401,9 +400,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     }
 
     private Optional<Text> matchText(String name, String language) {
-        return this.texts.stream()
-                .filter(text -> text.getName().equalsIgnoreCase(name) && text.getLanguage().equalsIgnoreCase(language))
-                .findFirst();
+        return this.texts.stream().filter(text -> text.getName().equalsIgnoreCase(name) && text.getLanguage().equalsIgnoreCase(language)).findFirst();
     }
 
     private Optional<Book> findBook(String name, String language) {
@@ -433,9 +430,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     }
 
     private Optional<Book> matchBook(String name, String language) {
-        return this.books.stream()
-                .filter(book -> book.getName().equalsIgnoreCase(name) && book.getLanguage().equalsIgnoreCase(language))
-                .findFirst();
+        return this.books.stream().filter(book -> book.getName().equalsIgnoreCase(name) && book.getLanguage().equalsIgnoreCase(language)).findFirst();
     }
 
     private String resolveLanguage(Player player) {
@@ -445,14 +440,12 @@ public class ZTextManager extends ZUtils implements TextManager {
 
         try {
             Locale locale = player.locale();
-            if (locale != null) {
-                String language = locale.toString();
-                if (language == null || language.isEmpty()) {
-                    language = locale.toLanguageTag();
-                }
-                if (language != null && !language.isEmpty()) {
-                    return normalizeLanguage(language);
-                }
+            String language = locale.toString();
+            if (language.isEmpty()) {
+                language = locale.toLanguageTag();
+            }
+            if (language != null && !language.isEmpty()) {
+                return normalizeLanguage(language);
             }
         } catch (NoSuchMethodError ignored) {
             // Fallback to legacy API

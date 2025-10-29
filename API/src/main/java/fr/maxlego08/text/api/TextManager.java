@@ -240,5 +240,13 @@ public interface TextManager {
      */
     void handleTextInventoryClose(Player player);
 
+    /**
+     * Processes a list of text lines and returns the resulting string.
+     *
+     * @param textLines the list of text lines to process
+     * @param maxWidth the maximum width of the resulting string
+     * @param arguments the arguments to pass to the text line's process method
+     * @return the processed string
+     */
     String processText(List<TextLine> textLines, int maxWidth, Object... arguments);
 }

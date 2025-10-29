@@ -14,17 +14,17 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class CommandTextGeneratorText extends VCommand {
+public class CommandTextGeneratorOpen extends VCommand {
 
-    public CommandTextGeneratorText(TextGeneratorPlugin plugin) {
+    public CommandTextGeneratorOpen(TextGeneratorPlugin plugin) {
         super(plugin);
-        this.setPermission(Permission.ZTEXTGENERATOR_TEXT);
+        this.setPermission(Permission.ZTEXTGENERATOR_OPEN);
         this.addSubCommand("open");
-        this.setDescription(Message.DESCRIPTION_TEXT);
+        this.setDescription(Message.DESCRIPTION_OPEN);
         this.addRequireArg("player");
         this.addRequireArg("text", (sender, args) -> plugin.getTextManager().getTexts().stream().map(Text::getName).distinct().collect(Collectors.toList()));
-        this.addRequireArg("animation", (sender, args) -> Arrays.stream(TextAnimationType.values()).map(type -> type.name().toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
-        this.addRequireArg("speed");
+        this.addOptionalArg("animation", (sender, args) -> Arrays.stream(TextAnimationType.values()).map(type -> type.name().toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
+        this.addOptionalArg("speed", (sender, args) -> Arrays.asList("10", "20", "30", "50", "100", "200", "300", "500", "1000"));
     }
 
     @Override
@@ -49,18 +49,18 @@ public class CommandTextGeneratorText extends VCommand {
             return CommandType.SUCCESS;
         }
 
-        String animationName = this.argAsString(2);
+        String animationName = this.argAsString(2, TextAnimationType.NONE.name());
         TextAnimationType animationType;
         try {
             animationType = TextAnimationType.valueOf(animationName.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException exception) {
-            message(plugin, sender, Message.TEXT_ANIMATION_TYPE_UNKNOWN, "%type%", animationName == null ? "unknown" : animationName);
+            message(plugin, sender, Message.TEXT_ANIMATION_TYPE_UNKNOWN, "%type%", animationName);
             return CommandType.SUCCESS;
         }
 
         long speed;
         try {
-            speed = this.argAsLong(3);
+            speed = this.argAsLong(3, 50);
         } catch (Exception exception) {
             message(plugin, sender, Message.TEXT_ANIMATION_SPEED_INVALID);
             return CommandType.SUCCESS;
@@ -71,10 +71,7 @@ public class CommandTextGeneratorText extends VCommand {
             return CommandType.SUCCESS;
         }
 
-        TextAnimationOptions options = animationType == TextAnimationType.NONE
-                ? TextAnimationOptions.none()
-                : new TextAnimationOptions(animationType, 0L, speed);
-
+        TextAnimationOptions options = animationType == TextAnimationType.NONE ? TextAnimationOptions.none() : new TextAnimationOptions(animationType, 0L, speed);
         plugin.getTextManager().displayText(target, optionalText.get(), options);
         return CommandType.SUCCESS;
     }

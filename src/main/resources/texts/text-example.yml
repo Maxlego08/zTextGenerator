@@ -1,18 +1,68 @@
 texts:
   - name: "text-example"
-    language: en_us
-    title: "<white>Example"
+    title: "<red>Example"
     alignment: LEFT
     alphabet: "normal"
     length: 200
     lines:
-      - alignment: RIGHT
-        alphabet: "normal"
-        element: "AAAAA"
+      - alignment: CENTER
+        element: "<rainbow>%player%</rainbow>"
       - "BBBBBBBBBBBBBBBBBBB"
-      - "CCCCCCCCCCCCCCCCCCC"
+      - ""
       - "DDDDDDDDDDDDDDDDDDD"
-      - "EEEEEEEEEEEEEEEEEEE"
+      - ""
       - "FFFFFFFFFFFFFFFFFFF"
-      - "GGGGGGGGGGGGGGGGGGG"
+      - ""
       - "HHHHHHHHHHHHHHHHHHH"
+
+  - name: "didacticiel-1"
+    title: "<gradient:#f7eafc:#ba73f1>Welcome</gradient>"
+    alignment: LEFT
+    alphabet: "normal"
+    length: 200
+    lines:
+      - "<#f7eafc>Hello <#b170e8>%player%<#f7eafc>!"
+      - "<#f7eafc>Welcome<#f7eafc>!"
+      - "At each <#fea0f0>step <#f7eafc>of your <#fea0f0>adventure<#f7eafc>, you will be"
+      - "able to <#fed268>use /quest <#f7eafc>to <#fed268>reread <#f7eafc>a <#fea0f0>quest<#f7eafc>, <#fed268>see"
+      - "<#f7eafc>the <#fea0f0>history <#f7eafc>of <#fea0f0>completed quests<#f7eafc> or"
+      - "<#fed268>check <#f7eafc>your <#fea0f0>current objectives<#f7eafc>!"
+      - "<#fed268>Try <#f7eafc>also <#fed268>/menu <#f7eafc>to <#fed268>access <#f7eafc>the <#fea0f0>main menu"
+      - "<#f7eafc>of your <#fea0f0>adventure<#f7eafc>!"
+      - "<#264de2>Objective: <#fed268>Check <#8388cb>the <#fed268>/quest"
+      - "          <#8388cb>and <#fed268>open <#8388cb>the <#fed268>/menu"
+
+  - name: "didacticiel-1"
+    title: "<gradient:#f7eafc:#ba73f1>Bienvenue</gradient>"
+    alignment: LEFT
+    alphabet: "normal"
+    language: 'fr_fr'
+    length: 200
+    lines:
+      - "<#f7eafc>Salut <#b170e8>%player%<#f7eafc>!"
+      - "<#f7eafc>Bienvenue<#f7eafc>!"
+      - "A chaque <#fea0f0>étape <#f7eafc>de ton <#fea0f0>aventure<#f7eafc>, tu pourras"
+      - "<#fed268>faire /quete <#f7eafc>pour <#fed268>relire <#f7eafc>une <#fea0f0>quête<#f7eafc>, <#fed268>voir"
+      - "<#f7eafc>l'<#fea0f0>historique <#f7eafc>des <#fea0f0>quêtes <#f7eafc>déjà <#fea0f0>accomplies <#f7eafc>ou"
+      - "<#fed268>consulter <#f7eafc>tes <#fea0f0>objectifs en cours<#f7eafc>!"
+      - "<#fed268>Essaye <#f7eafc>aussi le <#fed268>/menu <#f7eafc>pour <#fed268>accéder <#f7eafc>au <#fea0f0>menu"
+      - "principal <#f7eafc>de ton <#fea0f0>aventure<#f7eafc>!"
+      - "<#264de2>Objectif: <#fed268>Consulter <#8388cb>le <#fed268>/quete"
+      - "          <#8388cb>et <#fed268>ouvrir <#8388cb>le <#fed268>/menu"
+
+  - name: "didacticiel-2"
+    title: "<gradient:#f7eafc:#ba73f1>Bienvenue</gradient>"
+    alignment: LEFT
+    alphabet: "normal"
+    length: 200
+    lines:
+      - "Il faut <#fed268>retrouver <#f7eafc>un <#fea0f0>maximum <#f7eafc>d'<#fea0f0>îlots <#f7eafc>pour"
+      - "<#fed268>rebâtir <#f7eafc>le <#fea0f0>royaume <#f7eafc>et <#fed268>restaurer <#f7eafc>sa <#fea0f0>gloire<#f7eafc>."
+      - "Mais avant, il te faut ton propre <#fea0f0>morceau de"
+      - "terre <#f7eafc>à chérir! Tu peux <#fed268>créer <#f7eafc>une <#fea0f0>île <#f7eafc>ou"
+      - "être <#fed268>invité <#f7eafc>sur une <#fea0f0>île <#f7eafc>déjà existante!"
+      - "<#fed268>/is <#f7eafc>pour <#fed268>créer <#f7eafc>ton <#fea0f0>île"
+      - "<#fed268>/is join <#f7eafc>pour <#fed268>accepter <#f7eafc>une invitation"
+      - " "
+      - "<#264de2>Objectif: <#fed268>Créer <#8388cb>ou <#fed268>rejoindre <#8388cb>une <#fea0f0>île"
+      - "          <#8388cb>et <#fed268>suivre <#8388cb>les <#fea0f0>objectifs"

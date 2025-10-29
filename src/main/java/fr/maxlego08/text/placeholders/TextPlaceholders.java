@@ -29,5 +29,4 @@ public class TextPlaceholders extends PlaceholderRegister {
             return text.getResult(player);
         };
     }
-
 }

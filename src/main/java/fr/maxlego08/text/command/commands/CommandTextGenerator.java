@@ -12,7 +12,7 @@ public class CommandTextGenerator extends VCommand {
         this.setPermission(Permission.ZTEXTGENERATOR_USE);
         this.addSubCommand(new CommandTextGeneratorReload(plugin));
         this.addSubCommand(new CommandTextGeneratorBook(plugin));
-        this.addSubCommand(new CommandTextGeneratorText(plugin));
+        this.addSubCommand(new CommandTextGeneratorOpen(plugin));
     }
 
     @Override

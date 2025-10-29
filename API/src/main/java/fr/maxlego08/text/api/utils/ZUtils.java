@@ -61,13 +61,19 @@ public abstract class ZUtils {
 
     protected String parseContent(String content, Object... arguments) {
 
-        if (arguments.length % 2 != 0) throw new IllegalArgumentException("Number of invalid arguments. Arguments must be in pairs.");
+        if (arguments.length % 2 != 0)
+            throw new IllegalArgumentException("Number of invalid arguments. Arguments must be in pairs.");
 
         for (int i = 0; i < arguments.length; i += 2) {
-            if (arguments[i] == null || arguments[i + 1] == null) throw new IllegalArgumentException("Keys or replacement values must not be null.");
+            if (arguments[i] == null || arguments[i + 1] == null)
+                throw new IllegalArgumentException("Keys or replacement values must not be null.");
             content = content.replace(arguments[i].toString(), arguments[i + 1].toString());
         }
         return content;
     }
-    
+
+    protected boolean containsPlaceholder(String element) {
+        return element.contains("%");
+    }
+
 }

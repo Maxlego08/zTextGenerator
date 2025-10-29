@@ -1,7 +1,5 @@
 package fr.maxlego08.text.api.text;
 
-import fr.maxlego08.text.api.Alphabet;
-import fr.maxlego08.text.api.utils.Alignment;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -53,15 +51,6 @@ public interface Text {
     String getResult();
 
     /**
-     * Creates the result of this text.
-     *
-     * <p>This method builds the result of the text using its lines and elements.</p>
-     *
-     * @see #getResult()
-     */
-    void createResult();
-
-    /**
      * Check if this text has a result.
      *
      * <p>This method check if the result of this text has been created.</p>
@@ -79,6 +68,14 @@ public interface Text {
      * @return the result of this text for the given player
      */
     String getResult(Player player);
+
+    /**
+     * Creates the cached result of this text if the text does not have a placeholder.
+     * This method builds the cached result of the text using its lines and elements. The result is built using the name of the player.
+     *
+     * @see #getResult(Player)
+     */
+    void createCacheResult();
 }
 
 

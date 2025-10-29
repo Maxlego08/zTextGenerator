@@ -6,7 +6,7 @@ public enum Permission {
     ZTEXTGENERATOR_RELOAD,
 
     ZTEXTGENERATOR_BOOK,
-    ZTEXTGENERATOR_TEXT;
+    ZTEXTGENERATOR_OPEN;
 
     private final String permission;
 
