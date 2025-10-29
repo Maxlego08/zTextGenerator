@@ -186,13 +186,29 @@ public class TextAnimationTask extends BukkitRunnable {
                 }
             }
 
+            if (Character.isWhitespace(c)) {
+                int whitespaceEnd = i + 1;
+                while (whitespaceEnd < text.length() && Character.isWhitespace(text.charAt(whitespaceEnd))) {
+                    whitespaceEnd++;
+                }
+
+                String whitespaces = text.substring(i, whitespaceEnd);
+                raw.append(whitespaces);
+                if (wordMode) {
+                    currentWord.append(whitespaces);
+                    addFrame(frames, buildFrame(raw, openTags));
+                    currentWord.setLength(0);
+                } else {
+                    addFrame(frames, buildFrame(raw, openTags));
+                }
+
+                i = whitespaceEnd;
+                continue;
+            }
+
             raw.append(c);
             if (wordMode) {
                 currentWord.append(c);
-                if (Character.isWhitespace(c)) {
-                    addFrame(frames, buildFrame(raw, openTags));
-                    currentWord.setLength(0);
-                }
             } else {
                 addFrame(frames, buildFrame(raw, openTags));
             }
