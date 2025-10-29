@@ -16,15 +16,19 @@ public class ZText extends ZUtils implements Text {
     private final String title;
     private final int length;
     private final List<TextLine> lines;
+    private final int inventorySize;
+    private final String inventoryName;
     private String result;
 
-    public ZText(TextGeneratorPlugin plugin, String name, String language, String title, int length, List<TextLine> lines) {
+    public ZText(TextGeneratorPlugin plugin, String name, String language, String title, int length, List<TextLine> lines, int inventorySize, String inventoryName) {
         this.plugin = plugin;
         this.name = name;
         this.language = language;
         this.title = title;
         this.length = length;
         this.lines = lines;
+        this.inventorySize = inventorySize;
+        this.inventoryName = inventoryName == null ? "" : inventoryName;
     }
 
     @Override
@@ -50,6 +54,24 @@ public class ZText extends ZUtils implements Text {
     @Override
     public List<TextLine> getLines() {
         return lines;
+    }
+
+    @Override
+    public String getInventoryName() {
+        return this.inventoryName;
+    }
+
+    @Override
+    public String getInventoryName(Player player) {
+        if (player == null || this.inventoryName.isEmpty()) {
+            return this.inventoryName;
+        }
+        return papi(this.inventoryName.replace("%player%", player.getName()), player);
+    }
+
+    @Override
+    public int getInventorySize() {
+        return this.inventorySize;
     }
 
     @Override

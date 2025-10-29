@@ -3,6 +3,7 @@ package fr.maxlego08.text.text.animation;
 import fr.maxlego08.text.TextPlugin;
 import fr.maxlego08.text.ZTextManager;
 import fr.maxlego08.text.api.color.ColorHelper;
+import fr.maxlego08.text.api.text.Text;
 import fr.maxlego08.text.api.text.animation.TextAnimationOptions;
 import fr.maxlego08.text.api.text.animation.TextAnimationType;
 import org.bukkit.entity.Player;
@@ -27,20 +28,31 @@ public class TextAnimationTask extends BukkitRunnable {
     private final String finalFrame;
     private final boolean animated;
     private final ZTextManager textManager;
+    private final String inventoryName;
+    private final int inventorySize;
     private boolean stopped = false;
     private int index = 0;
 
-    public TextAnimationTask(TextPlugin plugin, ZTextManager textManager, Player player, String originalText, TextAnimationOptions options) {
+    public TextAnimationTask(TextPlugin plugin, ZTextManager textManager, Player player, Text text, String originalText, TextAnimationOptions options) {
         this.plugin = plugin;
         this.textManager = textManager;
         this.player = player;
         this.playerId = player.getUniqueId();
         this.originalText = originalText == null ? "" : originalText;
-        this.options = options;
+        this.options = options == null ? TextAnimationOptions.none() : options;
         this.colorHelper = plugin.getColorHelper();
-        this.frames = buildFrames(this.originalText, options.type());
+        TextAnimationType animationType = this.options.type();
+        this.frames = buildFrames(this.originalText, animationType);
         this.finalFrame = this.originalText;
-        this.animated = options.type() != TextAnimationType.NONE && this.frames.size() > 1 && options.stepDelayMillis() > 0;
+        this.animated = animationType != TextAnimationType.NONE && this.frames.size() > 1 && this.options.stepDelayMillis() > 0;
+        String prefix = text == null ? "" : text.getInventoryName(player);
+        this.inventoryName = prefix == null ? "" : prefix;
+        int size = text == null ? 54 : text.getInventorySize();
+        int clampedSize = Math.max(9, Math.min(54, size));
+        this.inventorySize = clampedSize - (clampedSize % 9);
+        if (this.inventorySize < 9) {
+            this.inventorySize = 9;
+        }
     }
 
     /**
@@ -87,10 +99,14 @@ public class TextAnimationTask extends BukkitRunnable {
     }
 
     private void displayFrame(String frame) {
-        if (frame == null || frame.isEmpty() || !this.player.isOnline()) {
+        if (!this.player.isOnline()) {
             return;
         }
-        this.player.openInventory(this.colorHelper.createTextInventory(this.player, frame));
+        String text = (this.inventoryName == null ? "" : this.inventoryName) + (frame == null ? "" : frame);
+        if (text.isEmpty()) {
+            return;
+        }
+        this.player.openInventory(this.colorHelper.createTextInventory(this.player, this.inventorySize, text));
     }
 
     public boolean isAnimated() {
