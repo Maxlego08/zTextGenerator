@@ -25,12 +25,16 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.reflect.Method;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ZTextManager extends ZUtils implements TextManager {
+
+    private static final String ENGLISH_LANGUAGE = "en_us";
 
     private final TextPlugin plugin;
     private final List<Alphabet> alphabets = new ArrayList<>();
@@ -75,6 +79,7 @@ public class ZTextManager extends ZUtils implements TextManager {
 
         String name = configuration.getString("name");
         String inventoryName = configuration.getString("inventory-name");
+        String language = normalizeLanguage(configuration.getString("language", this.getDefaultLanguage()));
         String alphabetName = configuration.getString("alphabet");
         Alignment alignment = Alignment.valueOf(configuration.getString("alignment", Alignment.LEFT.name()));
         int startOffset = configuration.getInt("start-offset");
@@ -95,9 +100,8 @@ public class ZTextManager extends ZUtils implements TextManager {
             int page = Integer.parseInt(map.get("page").toString());
             bookPages.add(new BookPage(page, loadPage(right, alphabet, alignment), loadPage(left, alphabet, alignment)));
         });
-
-
-        this.books.add(new ZBook(name, inventoryName, bookPages, startOffset, leftSize, rightSize, offsetBetween, alphabet));
+        this.books.removeIf(book -> book.getName().equalsIgnoreCase(name) && book.getLanguage().equalsIgnoreCase(language));
+        this.books.add(new ZBook(name, language, inventoryName, bookPages, startOffset, leftSize, rightSize, offsetBetween, alphabet));
     }
 
     private Page loadPage(Object object, Alphabet alphabet, Alignment alignment) {
@@ -175,7 +179,8 @@ public class ZTextManager extends ZUtils implements TextManager {
         }
 
         String name = (String) map.get("name");
-        this.texts.removeIf(text -> text.getName().equalsIgnoreCase(name));
+        String language = normalizeLanguage(map.containsKey("language") ? map.get("language").toString() : this.getDefaultLanguage());
+        this.texts.removeIf(text -> text.getName().equalsIgnoreCase(name) && text.getLanguage().equalsIgnoreCase(language));
 
         String title = map.containsKey("title") ? (String) map.get("title") : null;
         Alignment alignment = map.containsKey("alignment") ? Alignment.valueOf(((String) map.get("alignment")).toUpperCase()) : Alignment.LEFT;
@@ -213,7 +218,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             }
         }
 
-        Text text = new ZText(this.plugin, name, title, length, textLines);
+        Text text = new ZText(this.plugin, name, language, title, length, textLines);
         text.createResult();
 
         this.texts.add(text);
@@ -331,12 +336,32 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     @Override
     public Optional<Text> getText(String name) {
-        return this.texts.stream().filter(text -> text.getName().equalsIgnoreCase(name)).findFirst();
+        return this.getText(name, this.getDefaultLanguage());
+    }
+
+    @Override
+    public Optional<Text> getText(String name, String language) {
+        return findText(name, normalizeLanguage(language));
+    }
+
+    @Override
+    public Optional<Text> getText(String name, Player player) {
+        return findText(name, resolveLanguage(player));
     }
 
     @Override
     public Optional<Book> getBook(String name) {
-        return this.books.stream().filter(book -> book.getName().equalsIgnoreCase(name)).findFirst();
+        return this.getBook(name, this.getDefaultLanguage());
+    }
+
+    @Override
+    public Optional<Book> getBook(String name, String language) {
+        return findBook(name, normalizeLanguage(language));
+    }
+
+    @Override
+    public Optional<Book> getBook(String name, Player player) {
+        return findBook(name, resolveLanguage(player));
     }
 
     @Override
@@ -345,6 +370,119 @@ public class ZTextManager extends ZUtils implements TextManager {
     }
 
     @Override
+    public String getDefaultLanguage() {
+        return this.plugin.getDefaultLanguage();
+    }
+
+    private Optional<Text> findText(String name, String language) {
+        String normalized = language == null || language.isEmpty() ? this.getDefaultLanguage() : language;
+
+        Optional<Text> optional = matchText(name, normalized);
+        if (optional.isPresent()) {
+            return optional;
+        }
+
+        if (!normalized.equalsIgnoreCase(ENGLISH_LANGUAGE)) {
+            optional = matchText(name, ENGLISH_LANGUAGE);
+            if (optional.isPresent()) {
+                return optional;
+            }
+        }
+
+        String defaultLanguage = this.getDefaultLanguage();
+        if (!normalized.equalsIgnoreCase(defaultLanguage) && !defaultLanguage.equalsIgnoreCase(ENGLISH_LANGUAGE)) {
+            optional = matchText(name, defaultLanguage);
+            if (optional.isPresent()) {
+                return optional;
+            }
+        }
+
+        return this.texts.stream().filter(text -> text.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    private Optional<Text> matchText(String name, String language) {
+        return this.texts.stream()
+                .filter(text -> text.getName().equalsIgnoreCase(name) && text.getLanguage().equalsIgnoreCase(language))
+                .findFirst();
+    }
+
+    private Optional<Book> findBook(String name, String language) {
+        String normalized = language == null || language.isEmpty() ? this.getDefaultLanguage() : language;
+
+        Optional<Book> optional = matchBook(name, normalized);
+        if (optional.isPresent()) {
+            return optional;
+        }
+
+        if (!normalized.equalsIgnoreCase(ENGLISH_LANGUAGE)) {
+            optional = matchBook(name, ENGLISH_LANGUAGE);
+            if (optional.isPresent()) {
+                return optional;
+            }
+        }
+
+        String defaultLanguage = this.getDefaultLanguage();
+        if (!normalized.equalsIgnoreCase(defaultLanguage) && !defaultLanguage.equalsIgnoreCase(ENGLISH_LANGUAGE)) {
+            optional = matchBook(name, defaultLanguage);
+            if (optional.isPresent()) {
+                return optional;
+            }
+        }
+
+        return this.books.stream().filter(book -> book.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    private Optional<Book> matchBook(String name, String language) {
+        return this.books.stream()
+                .filter(book -> book.getName().equalsIgnoreCase(name) && book.getLanguage().equalsIgnoreCase(language))
+                .findFirst();
+    }
+
+    private String resolveLanguage(Player player) {
+        if (player == null) {
+            return this.getDefaultLanguage();
+        }
+
+        try {
+            Locale locale = player.locale();
+            if (locale != null) {
+                String language = locale.toString();
+                if (language == null || language.isEmpty()) {
+                    language = locale.toLanguageTag();
+                }
+                if (language != null && !language.isEmpty()) {
+                    return normalizeLanguage(language);
+                }
+            }
+        } catch (NoSuchMethodError ignored) {
+            // Fallback to legacy API
+        }
+
+        try {
+            Method legacyMethod = Player.class.getMethod("getLocale");
+            Object legacy = legacyMethod.invoke(player);
+            if (legacy != null) {
+                String legacyLocale = legacy.toString();
+                if (!legacyLocale.isEmpty()) {
+                    return normalizeLanguage(legacyLocale);
+                }
+            }
+        } catch (ReflectiveOperationException ignored) {
+            // Method not available or failed to invoke
+        } catch (NoSuchMethodError ignored) {
+            // API not available on this version
+        }
+
+        return this.getDefaultLanguage();
+    }
+
+    private String normalizeLanguage(String language) {
+        if (language == null || language.isEmpty()) {
+            return this.getDefaultLanguage();
+        }
+        return language.replace('-', '_').toLowerCase(Locale.ROOT);
+    }
+
     public String replaceText(Alphabet alphabet, Alignment alignment, String content, int height) {
         var result = this.plugin.getColorHelper().transformString(alphabet, content, height);
         var textLength = result.length();
@@ -380,7 +518,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     @Override
     public void openBook(CommandSender sender, Player player, String bookName, int page) {
 
-        var optional = getBook(bookName);
+        var optional = getBook(bookName, player);
         if (optional.isEmpty()) {
             message(plugin, sender, Message.BOOK_NOT_FOUND, "%book%", bookName);
             return;
@@ -433,7 +571,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             throw new IllegalArgumentException("Text name cannot be null or empty when displaying it to a player.");
         }
 
-        var optional = this.getText(textName);
+        var optional = this.getText(textName, player);
         if (optional.isEmpty()) {
             this.plugin.getLogger().warning("Unable to display text '" + textName + "' because it does not exist.");
             return;

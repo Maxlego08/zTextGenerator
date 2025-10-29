@@ -17,6 +17,13 @@ public interface Book {
     String getName();
 
     /**
+     * Get the language code of the book.
+     *
+     * @return the language of the book, expressed using lowercase language and country codes (for example {@code en_us}).
+     */
+    String getLanguage();
+
+    /**
      * Get the name of the book as it appears in the inventory.
      *
      * @return The name of the book as it appears in the inventory.

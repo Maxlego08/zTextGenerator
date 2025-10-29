@@ -1,5 +1,6 @@
 texts:
   - name: "text-example"
+    language: en_us
     title: "<white>Example"
     alignment: LEFT
     alphabet: "normal"

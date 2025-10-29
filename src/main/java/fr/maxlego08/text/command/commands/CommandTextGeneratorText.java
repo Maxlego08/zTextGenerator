@@ -22,7 +22,7 @@ public class CommandTextGeneratorText extends VCommand {
         this.addSubCommand("open");
         this.setDescription(Message.DESCRIPTION_TEXT);
         this.addRequireArg("player");
-        this.addRequireArg("text", (sender, args) -> plugin.getTextManager().getTexts().stream().map(Text::getName).collect(Collectors.toList()));
+        this.addRequireArg("text", (sender, args) -> plugin.getTextManager().getTexts().stream().map(Text::getName).distinct().collect(Collectors.toList()));
         this.addRequireArg("animation", (sender, args) -> Arrays.stream(TextAnimationType.values()).map(type -> type.name().toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
         this.addRequireArg("speed");
     }
@@ -43,7 +43,7 @@ public class CommandTextGeneratorText extends VCommand {
             return CommandType.SUCCESS;
         }
 
-        var optionalText = plugin.getTextManager().getText(textName);
+        var optionalText = plugin.getTextManager().getText(textName, target);
         if (optionalText.isEmpty()) {
             message(plugin, sender, Message.TEXT_NOT_FOUND, "%text%", textName);
             return CommandType.SUCCESS;

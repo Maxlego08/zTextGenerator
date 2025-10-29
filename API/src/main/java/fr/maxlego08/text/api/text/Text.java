@@ -16,6 +16,13 @@ public interface Text {
     String getName();
 
     /**
+     * Get the language code of this text.
+     *
+     * @return the language of this text, expressed using lowercase language and country codes (for example {@code en_us}).
+     */
+    String getLanguage();
+
+    /**
      * Get the title of this text.
      *
      * @return the title of this text.

@@ -117,6 +117,24 @@ public interface TextManager {
     Optional<Text> getText(String name);
 
     /**
+     * Retrieves a text registered in the text manager by its name and language.
+     *
+     * @param name     the name of the text to retrieve
+     * @param language the preferred language of the text
+     * @return an optional containing the text associated with the given name and language, or an empty optional if no such text exists
+     */
+    Optional<Text> getText(String name, String language);
+
+    /**
+     * Retrieves a text registered in the text manager by its name and the player's language.
+     *
+     * @param name   the name of the text to retrieve
+     * @param player the player whose language should be used to resolve the text
+     * @return an optional containing the text associated with the given name for the player's language, or an empty optional if no such text exists
+     */
+    Optional<Text> getText(String name, Player player);
+
+    /**
      * Retrieves the list of books registered in the text manager.
      *
      * @return the list of books registered in the text manager
@@ -130,6 +148,31 @@ public interface TextManager {
      * @return an optional containing the book associated with the given name, or an empty optional if no such book exists
      */
     Optional<Book> getBook(String name);
+
+    /**
+     * Retrieves a book registered in the text manager by its name and language.
+     *
+     * @param name     the name of the book to retrieve
+     * @param language the preferred language of the book
+     * @return an optional containing the book associated with the given name and language, or an empty optional if no such book exists
+     */
+    Optional<Book> getBook(String name, String language);
+
+    /**
+     * Retrieves a book registered in the text manager by its name for the provided player's language.
+     *
+     * @param name   the name of the book to retrieve
+     * @param player the player whose language should be used to resolve the book
+     * @return an optional containing the book associated with the given name for the player's language, or an empty optional if no such book exists
+     */
+    Optional<Book> getBook(String name, Player player);
+
+    /**
+     * Gets the default language configured for texts and books.
+     *
+     * @return the default language code, expressed using lowercase language and country codes (for example {@code en_us})
+     */
+    String getDefaultLanguage();
 
     /**
      * Replaces all occurrences of special characters in the given content with their respective transformations in the given alphabet.

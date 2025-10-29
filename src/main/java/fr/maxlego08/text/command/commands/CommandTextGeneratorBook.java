@@ -21,10 +21,10 @@ public class CommandTextGeneratorBook extends VCommand {
         this.addSubCommand("book");
         this.setDescription(Message.DESCRIPTION_BOOK);
         this.addRequireArg("player");
-        this.addRequireArg("book", (a, b) -> plugin.getTextManager().getBooks().stream().map(Book::getName).collect(Collectors.toList()));
+        this.addRequireArg("book", (a, b) -> plugin.getTextManager().getBooks().stream().map(Book::getName).distinct().collect(Collectors.toList()));
         this.addRequireArg("page", (sender, args) -> {
             String bookName = args[2];
-            var optional = plugin.getTextManager().getBook(bookName);
+            var optional = plugin.getTextManager().getBook(bookName, plugin.getTextManager().getDefaultLanguage());
             if (optional.isEmpty()) return List.of();
             var book = optional.get();
             return book.getPages().stream().map(BookPage::page).map(String::valueOf).collect(Collectors.toList());

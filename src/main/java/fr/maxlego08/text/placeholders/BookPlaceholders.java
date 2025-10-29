@@ -30,7 +30,7 @@ public class BookPlaceholders extends PlaceholderRegister {
 
             String bookName = values.getFirst();
             int pageNumber = Integer.parseInt(values.get(1));
-            var bookOpt = textManager.getBook(bookName);
+            var bookOpt = textManager.getBook(bookName, player);
             if (bookOpt.isEmpty()) return "Book " + bookName + " not found";
 
             var book = bookOpt.get();

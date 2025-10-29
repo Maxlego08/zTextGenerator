@@ -20,7 +20,7 @@ public class TextPlaceholders extends PlaceholderRegister {
     private BiFunction<Player, String, String> getText(TextManager textManager) {
         return (player, textName) -> {
 
-            var optional = textManager.getText(textName);
+            var optional = textManager.getText(textName, player);
             if (optional.isEmpty()) {
                 return "Text " + textName + " not found";
             }
