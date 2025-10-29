@@ -20,9 +20,12 @@ import fr.maxlego08.text.zcore.utils.EmptyFont;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public final class TextPlugin extends ZPlugin {
+
+    private static final String DEFAULT_LANGUAGE = "en_us";
 
     private final TextManager textManager = new ZTextManager(this);
     private final ColorHelper colorHelper = new PaperColor();
@@ -30,6 +33,7 @@ public final class TextPlugin extends ZPlugin {
     private boolean enableDebug = false;
     private FontImage fontImage = new EmptyFont();
     private final List<HookProvider> hookProviders = new ArrayList<>();
+    private String defaultLanguage = DEFAULT_LANGUAGE;
 
     @Override
     public void onEnable() {
@@ -40,6 +44,7 @@ public final class TextPlugin extends ZPlugin {
         this.saveDefaultConfig();
 
         this.enableDebug = this.getConfig().getBoolean("enable-debug", false);
+        this.defaultLanguage = normalizeLanguage(this.getConfig().getString("default-language", DEFAULT_LANGUAGE));
         this.textManager.loadAlphabets();
         this.textManager.loadTexts();
         this.textManager.loadBooks();
@@ -92,6 +97,7 @@ public final class TextPlugin extends ZPlugin {
     public void reloadConfigurations() {
 
         this.enableDebug = this.getConfig().getBoolean("enable-debug", false);
+        this.defaultLanguage = normalizeLanguage(this.getConfig().getString("default-language", DEFAULT_LANGUAGE));
 
         this.textManager.loadAlphabets();
         this.textManager.loadTexts();
@@ -110,6 +116,18 @@ public final class TextPlugin extends ZPlugin {
     @Override
     public FontImage getFontImage() {
         return this.fontImage;
+    }
+
+    @Override
+    public String getDefaultLanguage() {
+        return this.defaultLanguage;
+    }
+
+    private String normalizeLanguage(String language) {
+        if (language == null || language.isEmpty()) {
+            return DEFAULT_LANGUAGE;
+        }
+        return language.replace('-', '_').toLowerCase(Locale.ROOT);
     }
 
     private void createInstances() {

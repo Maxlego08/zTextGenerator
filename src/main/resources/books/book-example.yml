@@ -1,4 +1,5 @@
 name: "example"
+language: en_us
 inventory-name: ":offset_-48::book:"
 start-offset: 10
 left-size: 100

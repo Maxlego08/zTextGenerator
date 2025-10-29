@@ -78,4 +78,11 @@ public interface TextGeneratorPlugin extends Plugin {
     void registerCommand(String command, VCommand vCommand, String... aliases);
 
     <T> T getProvider(Class<T> classz);
+
+    /**
+     * Gets the default language configured for the plugin.
+     *
+     * @return the default language code, expressed using lowercase language and country codes (for example {@code en_us})
+     */
+    String getDefaultLanguage();
 }

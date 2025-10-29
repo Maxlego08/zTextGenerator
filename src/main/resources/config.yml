@@ -1,4 +1,5 @@
 enable-debug: true
+default-language: en_us
 
 # Allows horizontal text adjustment.
 # For ItemsAdder you should use: :offset-%pixels%: - https://itemsadder.devs.beer/plugin-usage/adding-content/font-images#offsets

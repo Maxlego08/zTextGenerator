@@ -16,6 +16,7 @@ import java.util.Optional;
 public class ZBook implements Book {
 
     private final String name;
+    private final String language;
     private final String inventoryName;
     private final List<BookPage> pages;
     private final int startOffset;
@@ -24,8 +25,9 @@ public class ZBook implements Book {
     private final int offsetBetween;
     private final Alphabet alphabet;
 
-    public ZBook(String name, String inventoryName, List<BookPage> pages, int startOffset, int leftSize, int rightSize, int offsetBetween, Alphabet alphabet) {
+    public ZBook(String name, String language, String inventoryName, List<BookPage> pages, int startOffset, int leftSize, int rightSize, int offsetBetween, Alphabet alphabet) {
         this.name = name;
+        this.language = language;
         this.inventoryName = inventoryName;
         this.pages = pages;
         this.startOffset = startOffset;
@@ -38,6 +40,11 @@ public class ZBook implements Book {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public String getLanguage() {
+        return this.language;
     }
 
     @Override

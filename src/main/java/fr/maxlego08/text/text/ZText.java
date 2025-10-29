@@ -12,14 +12,16 @@ public class ZText extends ZUtils implements Text {
 
     private final TextGeneratorPlugin plugin;
     private final String name;
+    private final String language;
     private final String title;
     private final int length;
     private final List<TextLine> lines;
     private String result;
 
-    public ZText(TextGeneratorPlugin plugin, String name, String title, int length, List<TextLine> lines) {
+    public ZText(TextGeneratorPlugin plugin, String name, String language, String title, int length, List<TextLine> lines) {
         this.plugin = plugin;
         this.name = name;
+        this.language = language;
         this.title = title;
         this.length = length;
         this.lines = lines;
@@ -28,6 +30,11 @@ public class ZText extends ZUtils implements Text {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getLanguage() {
+        return this.language;
     }
 
     @Override
