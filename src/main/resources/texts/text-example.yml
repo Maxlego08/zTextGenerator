@@ -1,11 +1,12 @@
+inventory-size: 54
+inventory-name: ":offset_-48::dialogue::offset_-227:"
+
 texts:
   - name: "text-example"
     title: "<red>Example"
     alignment: LEFT
     alphabet: "normal"
     length: 200
-    inventory-size: 27
-    inventory-name: ":offset_-48::book:"
     lines:
       - alignment: CENTER
         element: "<rainbow>%player%</rainbow>"

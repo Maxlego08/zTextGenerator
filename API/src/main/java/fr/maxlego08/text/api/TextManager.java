@@ -7,6 +7,7 @@ import fr.maxlego08.text.api.text.TextLine;
 import fr.maxlego08.text.api.text.animation.TextAnimationOptions;
 import fr.maxlego08.text.api.utils.Alignment;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -60,7 +61,7 @@ public interface TextManager {
      *
      * @param map the map containing the text information to load
      */
-    void loadText(Map<?, ?> map);
+    void loadText(Map<?, ?> map, YamlConfiguration configuration);
 
     /**
      * Loads all alphabets from the configuration files.

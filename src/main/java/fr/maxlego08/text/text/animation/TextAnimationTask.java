@@ -47,12 +47,7 @@ public class TextAnimationTask extends BukkitRunnable {
         this.animated = animationType != TextAnimationType.NONE && this.frames.size() > 1 && this.options.stepDelayMillis() > 0;
         String prefix = text == null ? "" : text.getInventoryName(player);
         this.inventoryName = prefix == null ? "" : prefix;
-        int size = text == null ? 54 : text.getInventorySize();
-        int clampedSize = Math.max(9, Math.min(54, size));
-        this.inventorySize = clampedSize - (clampedSize % 9);
-        if (this.inventorySize < 9) {
-            this.inventorySize = 9;
-        }
+        this.inventorySize = text == null ? 54 : text.getInventorySize();
     }
 
     /**

@@ -28,10 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.Objects;
 
 public class ZTextManager extends ZUtils implements TextManager {
 
@@ -165,13 +165,13 @@ public class ZTextManager extends ZUtils implements TextManager {
         YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
         List<Map<?, ?>> maps = configuration.getMapList("texts");
         int before = this.texts.size();
-        maps.forEach(this::loadText);
+        maps.forEach(map -> loadText(map, configuration));
 
         this.plugin.getLogger().info("Loaded " + (this.texts.size() - before) + " texts from " + file.getName());
     }
 
     @Override
-    public void loadText(Map<?, ?> map) {
+    public void loadText(Map<?, ?> map, YamlConfiguration configuration) {
 
         if (!map.containsKey("name")) {
             throw new IllegalArgumentException("Text must have a name.");
@@ -224,12 +224,12 @@ public class ZTextManager extends ZUtils implements TextManager {
             }
         }
 
-        int inventorySize = this.defaultTextInventorySize;
+        int inventorySize = configuration.contains("inventory-size") ? sanitizeInventorySize(parseInventorySize(map.get("inventory-size")), this.defaultTextInventorySize) : this.defaultTextInventorySize;
         if (map.containsKey("inventory-size")) {
             inventorySize = sanitizeInventorySize(parseInventorySize(map.get("inventory-size")), this.defaultTextInventorySize);
         }
 
-        String inventoryName = this.defaultTextInventoryName;
+        String inventoryName = configuration.contains("inventory-name") ? configuration.getString("inventory-name") : this.defaultTextInventoryName;
         if (map.containsKey("inventory-name")) {
             Object value = map.get("inventory-name");
             inventoryName = value == null ? "" : value.toString();
