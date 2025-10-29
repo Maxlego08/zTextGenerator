@@ -59,4 +59,15 @@ public abstract class ZUtils {
         plugin.getMessageManager().message(sender, message, args);
     }
 
+    protected String parseContent(String content, Object... arguments) {
+
+        if (arguments.length % 2 != 0) throw new IllegalArgumentException("Number of invalid arguments. Arguments must be in pairs.");
+
+        for (int i = 0; i < arguments.length; i += 2) {
+            if (arguments[i] == null || arguments[i + 1] == null) throw new IllegalArgumentException("Keys or replacement values must not be null.");
+            content = content.replace(arguments[i].toString(), arguments[i + 1].toString());
+        }
+        return content;
+    }
+    
 }

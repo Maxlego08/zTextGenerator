@@ -23,20 +23,6 @@ public interface Text {
     String getTitle();
 
     /**
-     * Get the alignment of this text.
-     *
-     * @return the alignment of this text.
-     */
-    Alignment getAlignment();
-
-    /**
-     * Get the alphabet used by this text.
-     *
-     * @return the alphabet used by this text.
-     */
-    Alphabet getAlphabet();
-
-    /**
      * Get the length of this text.
      *
      * @return the length of this text.

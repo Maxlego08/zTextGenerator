@@ -6,19 +6,18 @@ import fr.maxlego08.text.api.TextManager;
 import fr.maxlego08.text.api.book.Book;
 import fr.maxlego08.text.api.book.BookPage;
 import fr.maxlego08.text.api.book.Page;
-import fr.maxlego08.text.api.book.PageContent;
 import fr.maxlego08.text.api.book.PageType;
-import fr.maxlego08.text.api.messages.Message;
 import fr.maxlego08.text.api.fonts.FontInfo;
 import fr.maxlego08.text.api.fonts.SpecialFontTransformation;
+import fr.maxlego08.text.api.messages.Message;
 import fr.maxlego08.text.api.text.Text;
-import fr.maxlego08.text.api.text.TextElement;
 import fr.maxlego08.text.api.text.TextLine;
+import fr.maxlego08.text.api.text.animation.TextAnimationOptions;
 import fr.maxlego08.text.api.utils.Alignment;
 import fr.maxlego08.text.api.utils.ZUtils;
 import fr.maxlego08.text.book.ZBook;
 import fr.maxlego08.text.text.ZText;
-import fr.maxlego08.text.text.ZTextLine;
+import fr.maxlego08.text.text.animation.TextAnimationTask;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -28,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ZTextManager extends ZUtils implements TextManager {
 
@@ -35,6 +36,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     private final List<Alphabet> alphabets = new ArrayList<>();
     private final List<Text> texts = new ArrayList<>();
     private final List<Book> books = new ArrayList<>();
+    private final Map<UUID, TextAnimationTask> activeTextAnimations = new ConcurrentHashMap<>();
     private String offset;
 
     public ZTextManager(TextPlugin plugin) {
@@ -101,13 +103,14 @@ public class ZTextManager extends ZUtils implements TextManager {
     private Page loadPage(Object object, Alphabet alphabet, Alignment alignment) {
 
         if (object instanceof String string) {
-            return new Page(PageType.FILL, List.of(new PageContent(alignment, alphabet, string)));
+            return new Page(PageType.FILL, List.of(new TextLine(alignment, alphabet, string)));
         } else if (object instanceof List<?> list) {
 
-            List<PageContent> pageContents = new ArrayList<>();
+            List<TextLine> pageContents = new ArrayList<>();
             for (Object o : list) {
 
                 if (o instanceof Map<?, ?> map) {
+                    Alphabet lineAlphabet = alphabet;
                     Alignment pageAlignment = map.containsKey("alignment") ? Alignment.valueOf(map.get("alignment").toString()) : alignment;
                     if (map.containsKey("alphabet")) {
                         String alphabetName = map.get("alphabet").toString();
@@ -115,11 +118,11 @@ public class ZTextManager extends ZUtils implements TextManager {
                         if (optional.isEmpty()) {
                             throw new IllegalArgumentException("Alphabet " + alphabetName + " not found");
                         }
-                        alphabet = optional.get();
+                        lineAlphabet = optional.get();
                     }
 
                     String content = map.get("content").toString();
-                    pageContents.add(new PageContent(pageAlignment, alphabet, content));
+                    pageContents.add(new TextLine(pageAlignment, lineAlphabet, content));
                 } else {
                     throw new IllegalArgumentException("Invalid page for " + object);
                 }
@@ -175,7 +178,7 @@ public class ZTextManager extends ZUtils implements TextManager {
         this.texts.removeIf(text -> text.getName().equalsIgnoreCase(name));
 
         String title = map.containsKey("title") ? (String) map.get("title") : null;
-        Alignment alignment = map.containsKey("alignment") ? Alignment.valueOf((String) map.get("alignment")) : Alignment.LEFT;
+        Alignment alignment = map.containsKey("alignment") ? Alignment.valueOf(((String) map.get("alignment")).toUpperCase()) : Alignment.LEFT;
 
         String alphabetName = (String) map.get("alphabet");
         var optional = this.getAlphabet(alphabetName);
@@ -190,15 +193,13 @@ public class ZTextManager extends ZUtils implements TextManager {
         List<TextLine> textLines = new ArrayList<>();
         for (Object line : lines) {
 
-            System.out.println(line);
-
             if (line instanceof String string) {
 
-                textLines.add(new ZTextLine(string));
+                textLines.add(new TextLine(alignment, alphabet, string));
             } else if (line instanceof Map<?, ?> lineMap) {
 
-                Alignment ligneAlignment = lineMap.containsKey("alignment") ? Alignment.valueOf((String) lineMap.get("alignment")) : null;
-                Alphabet ligneAlphabet = null;
+                Alignment ligneAlignment = lineMap.containsKey("alignment") ? Alignment.valueOf(((String) lineMap.get("alignment")).toUpperCase()) : alignment;
+                Alphabet ligneAlphabet = alphabet;
                 if (lineMap.containsKey("alphabet")) {
                     alphabetName = (String) lineMap.get("alphabet");
                     optional = this.getAlphabet(alphabetName);
@@ -207,32 +208,12 @@ public class ZTextManager extends ZUtils implements TextManager {
                     }
                 }
 
-                if (!lineMap.containsKey("elements")) {
-                    throw new IllegalArgumentException("Text line must have an elements.");
-                }
-
-                List<TextElement> textElements = new ArrayList<>();
-
-                List<Map<?, ?>> elements = (List<Map<?, ?>>) lineMap.get("elements");
-                for (Map<?, ?> elementMap : elements) {
-                    Alphabet elementAlphabet = null;
-                    if (elementMap.containsKey("alphabet")) {
-                        alphabetName = (String) elementMap.get("alphabet");
-                        optional = this.getAlphabet(alphabetName);
-                        if (optional.isPresent()) {
-                            elementAlphabet = optional.get();
-                        }
-                    }
-
-                    String element = (String) elementMap.get("element");
-                    textElements.add(new TextElement(elementAlphabet, element));
-                }
-
-                textLines.add(new ZTextLine(ligneAlphabet, ligneAlignment, textElements));
+                String element = (String) lineMap.get("element");
+                textLines.add(new TextLine(ligneAlignment, ligneAlphabet, element));
             }
         }
 
-        Text text = new ZText(this.plugin, name, title, alignment, alphabet, length, textLines);
+        Text text = new ZText(this.plugin, name, title, length, textLines);
         text.createResult();
 
         this.texts.add(text);
@@ -290,6 +271,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     public String getNegativeOffset(int pixels) {
         return getOffset(-pixels);
     }
+
 
     private List<FontInfo> loadFontInfo(YamlConfiguration configuration) {
 
@@ -419,5 +401,123 @@ public class ZTextManager extends ZUtils implements TextManager {
     public void openBook(Player player, Book book, BookPage bookPage) {
         var inventory = this.plugin.getColorHelper().createBook(player, book, bookPage, this);
         player.openInventory(inventory);
+    }
+
+    @Override
+    public void displayText(Player player, Text text, TextAnimationOptions options) {
+
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null when displaying a text.");
+        }
+
+        if (text == null) {
+            throw new IllegalArgumentException("Text cannot be null when displaying it to a player.");
+        }
+
+        TextAnimationOptions effectiveOptions = options == null ? TextAnimationOptions.none() : options;
+        String renderedText = text.getResult(player);
+
+        TextAnimationTask task = new TextAnimationTask(this.plugin, this, player, renderedText, effectiveOptions);
+        if (task.isAnimated()) {
+            this.registerAnimation(player, task);
+        } else {
+            this.clearAnimation(player);
+        }
+        task.start();
+    }
+
+    @Override
+    public void displayText(Player player, String textName, TextAnimationOptions options) {
+
+        if (textName == null || textName.isEmpty()) {
+            throw new IllegalArgumentException("Text name cannot be null or empty when displaying it to a player.");
+        }
+
+        var optional = this.getText(textName);
+        if (optional.isEmpty()) {
+            this.plugin.getLogger().warning("Unable to display text '" + textName + "' because it does not exist.");
+            return;
+        }
+
+        this.displayText(player, optional.get(), options);
+    }
+
+    @Override
+    public void handleTextInventoryClose(Player player) {
+        if (player == null) {
+            return;
+        }
+
+        UUID uuid = player.getUniqueId();
+        TextAnimationTask task = this.activeTextAnimations.remove(uuid);
+        if (task != null) {
+            task.stopAndShowFinal();
+        }
+    }
+
+    @Override
+    public String processText(List<TextLine> textLines, int maxWidth, Object... arguments) {
+
+        var colorHelper = this.plugin.getColorHelper();
+
+        StringBuilder builder = new StringBuilder();
+        int height = 0;
+        boolean hasArguments = arguments.length != 0;
+
+        for (TextLine textLine : textLines) {
+
+            var text = hasArguments ? parseContent(textLine.content(), arguments) : textLine.content();
+            var alignment = textLine.alignment();
+            var currentAlphabet = textLine.alphabet();
+
+            var result = colorHelper.transformString(currentAlphabet, text, height);
+            var content = this.plugin.getFontImage().replace(result.string());
+
+            switch (alignment) {
+                case CENTER -> {
+                    int centerWidth = maxWidth / 2;
+                    int length = result.length() / 2;
+                    int rest = result.length() % 2;
+
+                    int start = centerWidth - (length + rest);
+
+                    builder.append(this.getOffset(start));
+                    builder.append(content);
+                    builder.append(this.getNegativeOffset(start + result.length()));
+                }
+                case LEFT -> {
+                    builder.append(content);
+                    builder.append(this.getNegativeOffset(result.length()));
+                }
+                case RIGHT -> {
+                    builder.append(this.getOffset(maxWidth - result.length()));
+                    builder.append(content);
+                    builder.append(this.getNegativeOffset(maxWidth));
+                }
+            }
+            height += 1;
+        }
+
+        return builder.toString();
+    }
+
+    public void onAnimationStopped(UUID uuid, TextAnimationTask task) {
+        this.activeTextAnimations.compute(uuid, (key, current) -> current == task ? null : current);
+    }
+
+    private void registerAnimation(Player player, TextAnimationTask task) {
+        UUID uuid = player.getUniqueId();
+        TextAnimationTask previous = this.activeTextAnimations.put(uuid, task);
+        if (previous != null && previous != task) {
+            previous.cancelAnimation();
+        }
+    }
+
+    private void clearAnimation(Player player) {
+        UUID uuid = player.getUniqueId();
+        TextAnimationTask previous = this.activeTextAnimations.remove(uuid);
+        if (previous != null) {
+            previous.cancelAnimation();
+        }
     }
 }

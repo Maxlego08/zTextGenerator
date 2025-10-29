@@ -7,13 +7,7 @@ texts:
     lines:
       - alignment: RIGHT
         alphabet: "normal"
-        elements:
-          - alphabet: "normal"
-            element: "AAAAA"
-          - alphabet: "normal"
-            element: "aaaaaa"
-          - alphabet: "normal"
-            element: "AAAAA"
+        element: "AAAAA"
       - "BBBBBBBBBBBBBBBBBBB"
       - "CCCCCCCCCCCCCCCCCCC"
       - "DDDDDDDDDDDDDDDDDDD"

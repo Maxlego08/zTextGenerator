@@ -46,4 +46,13 @@ public interface ColorHelper {
      * @return The inventory of the created book.
      */
     Inventory createBook(Player player, Book book, BookPage page, TextManager textManager);
+
+    /**
+     * Creates an inventory used to display a generated text to a player.
+     *
+     * @param player The player who will view the inventory.
+     * @param title  The inventory title to display.
+     * @return The created inventory.
+     */
+    Inventory createTextInventory(Player player, String title);
 }
