@@ -215,7 +215,7 @@ public class TextAnimationTask extends BukkitRunnable {
             i++;
         }
 
-        if (wordMode && currentWord.length() > 0) {
+        if (wordMode && !currentWord.isEmpty()) {
             addFrame(frames, buildFrame(raw, openTags));
         }
 
