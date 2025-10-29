@@ -51,8 +51,9 @@ public interface ColorHelper {
      * Creates an inventory used to display a generated text to a player.
      *
      * @param player The player who will view the inventory.
+     * @param size   The size of the inventory.
      * @param title  The inventory title to display.
      * @return The created inventory.
      */
-    Inventory createTextInventory(Player player, String title);
+    Inventory createTextInventory(Player player, int size, String title);
 }

@@ -1,6 +1,9 @@
 enable-debug: true
 default-language: en_us
 
+text-inventory-size: 54
+text-inventory-name: ""
+
 # Allows horizontal text adjustment.
 # For ItemsAdder you should use: :offset-%pixels%: - https://itemsadder.devs.beer/plugin-usage/adding-content/font-images#offsets
 # For Oraxen you should use: <shift:%pixels%> - https://docs.oraxen.com/configuration/glyphs/custom-gui#how-do-i-get-the-unicode-for-the-glyph

@@ -4,6 +4,8 @@ texts:
     alignment: LEFT
     alphabet: "normal"
     length: 200
+    inventory-size: 27
+    inventory-name: ":offset_-48::book:"
     lines:
       - alignment: CENTER
         element: "<rainbow>%player%</rainbow>"

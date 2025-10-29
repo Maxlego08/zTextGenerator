@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Objects;
 
 public class ZTextManager extends ZUtils implements TextManager {
 
@@ -42,6 +43,8 @@ public class ZTextManager extends ZUtils implements TextManager {
     private final List<Book> books = new ArrayList<>();
     private final Map<UUID, TextAnimationTask> activeTextAnimations = new ConcurrentHashMap<>();
     private String offset;
+    private int defaultTextInventorySize = 54;
+    private String defaultTextInventoryName = "";
 
     public ZTextManager(TextPlugin plugin) {
         this.plugin = plugin;
@@ -148,6 +151,10 @@ public class ZTextManager extends ZUtils implements TextManager {
             this.plugin.saveResource("texts/text-example.yml", false);
         }
 
+        int configuredSize = this.plugin.getConfig().getInt("text-inventory-size", 54);
+        this.defaultTextInventorySize = sanitizeInventorySize(configuredSize, 54);
+        this.defaultTextInventoryName = Objects.requireNonNullElse(this.plugin.getConfig().getString("text-inventory-name"), "");
+
         this.texts.clear();
         this.files(folder, this::loadTexts);
     }
@@ -217,7 +224,43 @@ public class ZTextManager extends ZUtils implements TextManager {
             }
         }
 
-        this.texts.add(new ZText(this.plugin, name, language, title, length, textLines));
+        int inventorySize = this.defaultTextInventorySize;
+        if (map.containsKey("inventory-size")) {
+            inventorySize = sanitizeInventorySize(parseInventorySize(map.get("inventory-size")), this.defaultTextInventorySize);
+        }
+
+        String inventoryName = this.defaultTextInventoryName;
+        if (map.containsKey("inventory-name")) {
+            Object value = map.get("inventory-name");
+            inventoryName = value == null ? "" : value.toString();
+        }
+
+        this.texts.add(new ZText(this.plugin, name, language, title, length, textLines, inventorySize, inventoryName));
+    }
+
+    private int parseInventorySize(Object value) {
+        if (value instanceof Number number) {
+            return number.intValue();
+        }
+
+        if (value != null) {
+            try {
+                return Integer.parseInt(value.toString());
+            } catch (NumberFormatException ignored) {
+                // Ignore invalid values and fallback to the default size
+            }
+        }
+
+        return this.defaultTextInventorySize;
+    }
+
+    private int sanitizeInventorySize(int requested, int fallback) {
+        int effective = requested <= 0 ? fallback : requested;
+        effective = Math.max(9, Math.min(54, effective));
+        if (effective % 9 != 0) {
+            effective -= effective % 9;
+        }
+        return effective;
     }
 
     @Override
@@ -545,7 +588,7 @@ public class ZTextManager extends ZUtils implements TextManager {
         TextAnimationOptions effectiveOptions = options == null ? TextAnimationOptions.none() : options;
         String renderedText = text.getResult(player);
 
-        TextAnimationTask task = new TextAnimationTask(this.plugin, this, player, renderedText, effectiveOptions);
+        TextAnimationTask task = new TextAnimationTask(this.plugin, this, player, text, renderedText, effectiveOptions);
         if (task.isAnimated()) {
             this.registerAnimation(player, task);
         } else {

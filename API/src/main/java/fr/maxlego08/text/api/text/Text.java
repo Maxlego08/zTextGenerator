@@ -28,6 +28,30 @@ public interface Text {
     String getTitle();
 
     /**
+     * Get the inventory name prefix applied to the generated title.
+     *
+     * @return the inventory name prefix, or an empty string if none is configured.
+     */
+    String getInventoryName();
+
+    /**
+     * Get the inventory name prefix for the specified player.
+     *
+     * @param player the player requesting the inventory name
+     * @return the inventory name prefix, potentially personalized for the player
+     */
+    default String getInventoryName(Player player) {
+        return getInventoryName();
+    }
+
+    /**
+     * Get the size of the inventory used to display this text.
+     *
+     * @return the inventory size.
+     */
+    int getInventorySize();
+
+    /**
      * Get the length of this text.
      *
      * @return the length of this text.

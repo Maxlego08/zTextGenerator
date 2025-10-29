@@ -44,9 +44,9 @@ public class SpigotColor implements ColorHelper {
     }
 
     @Override
-    public Inventory createTextInventory(Player player, String title) {
+    public Inventory createTextInventory(Player player, int size, String title) {
         TextInventory textInventory = new TextInventory();
-        var inventory = Bukkit.createInventory(textInventory, 9, title.replace("&", "§"));
+        var inventory = Bukkit.createInventory(textInventory, size, title.replace("&", "§"));
         textInventory.setInventory(inventory);
         return inventory;
     }

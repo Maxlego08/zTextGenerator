@@ -136,10 +136,9 @@ public class PaperColor implements ColorHelper {
     }
 
     @Override
-    public Inventory createTextInventory(Player player, String title) {
+    public Inventory createTextInventory(Player player, int size, String title) {
         TextInventory textInventory = new TextInventory();
-        System.out.println("TITLE : " + title);
-        var inventory = Bukkit.createInventory(textInventory, 9, getComponent(title));
+        var inventory = Bukkit.createInventory(textInventory, size, getComponent(title));
         textInventory.setInventory(inventory);
         return inventory;
     }
