@@ -42,7 +42,7 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     private static final int DEFAULT_VALIDATION_LETTERS_PER_LINE = 10;
     private static final int DEFAULT_VALIDATION_MAX_LINES = 6;
-    private static final String DEFAULT_VALIDATION_INVENTORY_NAME = ":offset_-48::generic_dark::offset_-182:";
+    private static final String DEFAULT_VALIDATION_INVENTORY_NAME = ":offset_-48::generic_dark::offset_-168:";
     private static final int DEFAULT_VALIDATION_INVENTORY_SIZE = 54;
 
     private final TextPlugin plugin;
