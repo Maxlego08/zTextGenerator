@@ -17,6 +17,7 @@ public enum Message {
     DESCRIPTION_RELOAD("Reload configuration files"),
     DESCRIPTION_BOOK("Open a book"),
     DESCRIPTION_OPEN("Open a text"),
+    DESCRIPTION_TEST_ALPHABET("Test alphabet alignment"),
 
     BOOK_NOT_FOUND("&cImpossible to find the book &f%book%&c."),
     BOOK_PAGE_NOT_FOUND("&cImpossible to find the book page &f%page%&c."),
@@ -24,7 +25,7 @@ public enum Message {
     TEXT_PLAYER_NOT_FOUND("&cImpossible to find the player &f%player%&c."),
     TEXT_ANIMATION_TYPE_UNKNOWN("&cUnknown animation type &f%type%&c."),
     TEXT_ANIMATION_SPEED_INVALID("&cThe animation speed must be greater than 0."),
-;
+    ALPHABET_NOT_FOUND("&cImpossible to find the alphabet &f%alphabet%&c.");
 
     private List<String> messages;
     private String message;

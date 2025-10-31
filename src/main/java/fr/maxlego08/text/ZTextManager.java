@@ -1,5 +1,6 @@
 package fr.maxlego08.text;
 
+import com.google.common.base.Strings;
 import fr.maxlego08.text.api.Alphabet;
 import fr.maxlego08.text.api.FontTransformation;
 import fr.maxlego08.text.api.TextManager;
@@ -670,6 +671,30 @@ public class ZTextManager extends ZUtils implements TextManager {
         }
 
         return builder.toString();
+    }
+
+    @Override
+    public void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize) {
+
+        var colorHelper = this.plugin.getColorHelper();
+        var letterChar = letter.charAt(0);
+
+        alphabet.getFontInfos().removeIf(e -> e.character() == letterChar);
+        alphabet.getFontInfos().add(new FontInfo(letterChar, letterLength));
+
+
+        StringBuilder builder = new StringBuilder(inventoryName);
+        for (int height = 0; height != maxLines; height++) {
+
+            var line = Strings.repeat(letter, letterByLine);
+            var result = colorHelper.transformString(alphabet, line, height);
+
+            builder.append(result.string());
+            builder.append(this.getNegativeOffset(result.length()));
+        }
+
+        var inventory = colorHelper.createTextInventory(player, inventorySize, builder.toString());
+        player.openInventory(inventory);
     }
 
     public void onAnimationStopped(UUID uuid, TextAnimationTask task) {

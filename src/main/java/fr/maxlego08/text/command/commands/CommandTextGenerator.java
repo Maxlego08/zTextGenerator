@@ -13,6 +13,7 @@ public class CommandTextGenerator extends VCommand {
         this.addSubCommand(new CommandTextGeneratorReload(plugin));
         this.addSubCommand(new CommandTextGeneratorBook(plugin));
         this.addSubCommand(new CommandTextGeneratorOpen(plugin));
+        this.addSubCommand(new CommandTextGeneratorTestAlphabet(plugin));
     }
 
     @Override

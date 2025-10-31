@@ -250,4 +250,6 @@ public interface TextManager {
      * @return the processed string
      */
     String processText(List<TextLine> textLines, int maxWidth, Object... arguments);
+
+    void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize);
 }
