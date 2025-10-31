@@ -17,7 +17,7 @@ public enum Message {
     DESCRIPTION_RELOAD("Reload configuration files"),
     DESCRIPTION_BOOK("Open a book"),
     DESCRIPTION_OPEN("Open a text"),
-    DESCRIPTION_TEST_ALPHABET("Test alphabet alignment"),
+    DESCRIPTION_TEST_ALPHABET("Manage alphabet testing"),
 
     BOOK_NOT_FOUND("&cImpossible to find the book &f%book%&c."),
     BOOK_PAGE_NOT_FOUND("&cImpossible to find the book page &f%page%&c."),
@@ -25,7 +25,15 @@ public enum Message {
     TEXT_PLAYER_NOT_FOUND("&cImpossible to find the player &f%player%&c."),
     TEXT_ANIMATION_TYPE_UNKNOWN("&cUnknown animation type &f%type%&c."),
     TEXT_ANIMATION_SPEED_INVALID("&cThe animation speed must be greater than 0."),
-    ALPHABET_NOT_FOUND("&cImpossible to find the alphabet &f%alphabet%&c.");
+    ALPHABET_NOT_FOUND("&cImpossible to find the alphabet &f%alphabet%&c."),
+    ALPHABET_VALIDATION_STARTED("&aAlphabet validation started for &f%alphabet% &a(every &f%delay% &asecond(s))."),
+    ALPHABET_VALIDATION_ALREADY_RUNNING("&cYou already have an active alphabet validation."),
+    ALPHABET_VALIDATION_DELAY_INVALID("&cThe delay between two letters must be at least 1 second."),
+    ALPHABET_VALIDATION_EMPTY("&cThe selected alphabet does not contain any letters to validate."),
+    ALPHABET_VALIDATION_CANCELLED("&aYou stopped the alphabet validation for &f%player%&a."),
+    ALPHABET_VALIDATION_CANCELLED_TARGET("&cYour alphabet validation has been cancelled."),
+    ALPHABET_VALIDATION_NOT_RUNNING("&cNo alphabet validation is currently running for &f%player%&c."),
+    ALPHABET_VALIDATION_COMPLETED("&aAlphabet validation finished for &f%alphabet%&a.");
 
     private List<String> messages;
     private String message;

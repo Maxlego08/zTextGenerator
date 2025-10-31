@@ -10,26 +10,35 @@ import fr.maxlego08.text.api.utils.Permission;
 import java.util.Arrays;
 import java.util.List;
 
-public class CommandTextGeneratorTestAlphabet extends VCommand {
+public class CommandTextGeneratorAlphabetLetter extends VCommand {
 
-    public CommandTextGeneratorTestAlphabet(TextGeneratorPlugin plugin) {
+    public CommandTextGeneratorAlphabetLetter(TextGeneratorPlugin plugin) {
         super(plugin);
         this.setPermission(Permission.ZTEXTGENERATOR_TEST_ALPHABET);
-        this.addSubCommand("test-alphabet");
-        this.setDescription(Message.DESCRIPTION_TEST_ALPHABET);
-        this.addRequireArg("letter", (sender, args) -> Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"));
+        this.addSubCommand("letter");
+        this.addRequireArg("letter", (sender, args) -> Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
+                "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"));
         this.addRequireArg("alphabet", (sender, args) -> plugin.getTextManager().getAlphabets().stream().map(Alphabet::getName).toList());
         this.addOptionalArg("letter by line", (sender, args) -> Arrays.asList("10", "20", "30", "40", "50", "60", "70", "80", "90", "100"));
         this.addOptionalArg("max lines", (sender, args) -> Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"));
         this.addOptionalArg("letter length", (sender, args) -> {
-            var letter = args[1].charAt(0);
-            var alphabetName = args[2];
+            if (args.length <= 3) {
+                return Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20");
+            }
+
+            String letterArg = args[2];
+            String alphabetName = args[3];
+            if (letterArg.isEmpty()) {
+                return Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20");
+            }
+
             var optional = plugin.getTextManager().getAlphabet(alphabetName);
             if (optional.isEmpty()) {
                 return Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20");
             }
+
             var alphabet = optional.get();
-            return List.of(String.valueOf(alphabet.getLength(letter)));
+            return List.of(String.valueOf(alphabet.getLength(letterArg.charAt(0))));
         });
         this.addOptionalArg("inventory title", (sender, args) -> List.of(":offset_-48::generic_dark::offset_-168:"));
         this.addOptionalArg("inventory size", (sender, args) -> Arrays.asList("9", "18", "27", "36", "45", "53"));

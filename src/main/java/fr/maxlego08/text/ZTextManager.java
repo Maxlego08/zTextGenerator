@@ -18,6 +18,8 @@ import fr.maxlego08.text.api.utils.Alignment;
 import fr.maxlego08.text.api.utils.ZUtils;
 import fr.maxlego08.text.book.ZBook;
 import fr.maxlego08.text.text.ZText;
+import fr.maxlego08.text.text.alphabet.AlphabetValidationStopReason;
+import fr.maxlego08.text.text.alphabet.AlphabetValidationTask;
 import fr.maxlego08.text.text.animation.TextAnimationTask;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -38,11 +40,17 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     private static final String ENGLISH_LANGUAGE = "en_us";
 
+    private static final int DEFAULT_VALIDATION_LETTERS_PER_LINE = 10;
+    private static final int DEFAULT_VALIDATION_MAX_LINES = 6;
+    private static final String DEFAULT_VALIDATION_INVENTORY_NAME = ":offset_-48::generic_dark::offset_-182:";
+    private static final int DEFAULT_VALIDATION_INVENTORY_SIZE = 54;
+
     private final TextPlugin plugin;
     private final List<Alphabet> alphabets = new ArrayList<>();
     private final List<Text> texts = new ArrayList<>();
     private final List<Book> books = new ArrayList<>();
     private final Map<UUID, TextAnimationTask> activeTextAnimations = new ConcurrentHashMap<>();
+    private final Map<UUID, AlphabetValidationTask> alphabetValidationTasks = new ConcurrentHashMap<>();
     private String offset;
     private int defaultTextInventorySize = 54;
     private String defaultTextInventoryName = "";
@@ -674,13 +682,88 @@ public class ZTextManager extends ZUtils implements TextManager {
     }
 
     @Override
+    public boolean startAlphabetValidation(Player player, Alphabet alphabet, int delaySeconds) {
+
+        UUID uuid = player.getUniqueId();
+        if (this.alphabetValidationTasks.containsKey(uuid)) {
+            return false;
+        }
+
+        List<FontInfo> letters = alphabet.getFontInfos().stream()
+                .map(info -> new FontInfo(info.character(), info.length()))
+                .toList();
+
+        if (letters.isEmpty()) {
+            return false;
+        }
+
+        AlphabetValidationTask task = new AlphabetValidationTask(this.plugin, this, player, alphabet, letters,
+                DEFAULT_VALIDATION_LETTERS_PER_LINE, DEFAULT_VALIDATION_MAX_LINES,
+                DEFAULT_VALIDATION_INVENTORY_NAME, DEFAULT_VALIDATION_INVENTORY_SIZE);
+
+        this.alphabetValidationTasks.put(uuid, task);
+
+        long delayTicks = Math.max(1L, delaySeconds * 20L);
+        task.schedule(delayTicks);
+        return true;
+    }
+
+    @Override
+    public boolean cancelAlphabetValidation(UUID playerId) {
+        AlphabetValidationTask task = this.alphabetValidationTasks.remove(playerId);
+        if (task == null) {
+            return false;
+        }
+
+        if (!task.isCancelled()) {
+            task.cancel();
+        }
+
+        Player player = this.plugin.getServer().getPlayer(playerId);
+        if (player != null && player.isOnline()) {
+            player.closeInventory();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isAlphabetValidationRunning(UUID playerId) {
+        AlphabetValidationTask task = this.alphabetValidationTasks.get(playerId);
+        return task != null && !task.isCancelled();
+    }
+
+    public void finishAlphabetValidation(UUID playerId, AlphabetValidationTask task, AlphabetValidationStopReason reason) {
+        boolean removed = this.alphabetValidationTasks.remove(playerId, task);
+        if (!removed) {
+            return;
+        }
+
+        if (!task.isCancelled()) {
+            task.cancel();
+        }
+
+        Player player = this.plugin.getServer().getPlayer(playerId);
+        if (player != null && player.isOnline()) {
+            if (reason == AlphabetValidationStopReason.COMPLETED) {
+                this.plugin.getMessageManager().message(player, Message.ALPHABET_VALIDATION_COMPLETED, "%alphabet%", task.getAlphabetName());
+            } else if (reason == AlphabetValidationStopReason.PLAYER_LEFT) {
+                player.closeInventory();
+            }
+        }
+    }
+
+    @Override
     public void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize) {
 
         var colorHelper = this.plugin.getColorHelper();
         var letterChar = letter.charAt(0);
 
-        alphabet.getFontInfos().removeIf(e -> e.character() == letterChar);
-        alphabet.getFontInfos().add(new FontInfo(letterChar, letterLength));
+        List<FontInfo> fontInfos = alphabet.getFontInfos();
+        boolean needsUpdate = fontInfos.stream().noneMatch(info -> info.character() == letterChar && info.length() == letterLength);
+        if (needsUpdate) {
+            fontInfos.removeIf(info -> info.character() == letterChar);
+            fontInfos.add(new FontInfo(letterChar, letterLength));
+        }
 
 
         StringBuilder builder = new StringBuilder(inventoryName);
