@@ -1,4 +1,4 @@
-package fr.maxlego08.text.command.commands;
+package fr.maxlego08.text.command.commands.alphabet;
 
 import fr.maxlego08.text.api.Alphabet;
 import fr.maxlego08.text.api.TextGeneratorPlugin;
@@ -64,7 +64,7 @@ public class CommandTextGeneratorAlphabetLetter extends VCommand {
 
         var alphabet = optional.get();
         int letterLength = this.argAsInteger(4, alphabet.getLength(letter.charAt(0)));
-        String inventoryName = this.argAsString(5, ":offset_-48::generic_dark::offset_-182:");
+        String inventoryName = this.argAsString(5, ":offset_-48::generic_dark::offset_-168:");
         int inventorySize = this.argAsInteger(6, 54);
 
         manager.displayAlphabet(player, alphabet, letter, letterByLine, maxLines, letterLength, inventoryName, inventorySize);

@@ -1,4 +1,4 @@
-package fr.maxlego08.text.command.commands;
+package fr.maxlego08.text.command.commands.alphabet;
 
 import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.commands.CommandType;

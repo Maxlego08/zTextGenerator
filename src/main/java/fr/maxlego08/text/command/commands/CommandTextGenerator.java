@@ -4,6 +4,7 @@ import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.utils.Permission;
 import fr.maxlego08.text.api.commands.VCommand;
 import fr.maxlego08.text.api.commands.CommandType;
+import fr.maxlego08.text.command.commands.alphabet.CommandTextGeneratorAlphabet;
 
 public class CommandTextGenerator extends VCommand {
 
