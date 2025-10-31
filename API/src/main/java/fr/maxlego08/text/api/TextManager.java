@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface TextManager {
 
@@ -250,6 +251,12 @@ public interface TextManager {
      * @return the processed string
      */
     String processText(List<TextLine> textLines, int maxWidth, Object... arguments);
+
+    boolean startAlphabetValidation(Player player, Alphabet alphabet, int delaySeconds);
+
+    boolean cancelAlphabetValidation(UUID playerId);
+
+    boolean isAlphabetValidationRunning(UUID playerId);
 
     void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize);
 }
