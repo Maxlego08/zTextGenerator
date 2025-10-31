@@ -54,6 +54,10 @@ public class ZTextManager extends ZUtils implements TextManager {
     private String offset;
     private int defaultTextInventorySize = 54;
     private String defaultTextInventoryName = "";
+    private int validationLettersPerLine = DEFAULT_VALIDATION_LETTERS_PER_LINE;
+    private int validationMaxLines = DEFAULT_VALIDATION_MAX_LINES;
+    private String validationInventoryName = DEFAULT_VALIDATION_INVENTORY_NAME;
+    private int validationInventorySize = DEFAULT_VALIDATION_INVENTORY_SIZE;
 
     public ZTextManager(TextPlugin plugin) {
         this.plugin = plugin;
@@ -284,7 +288,13 @@ public class ZTextManager extends ZUtils implements TextManager {
 
         this.files(folder, this::loadAlphabet);
 
-        this.offset = this.plugin.getConfig().getString("offset", ":offset-%pixels%:");
+        var config = this.plugin.getConfig();
+        this.offset = config.getString("offset", ":offset-%pixels%:");
+        this.validationLettersPerLine = Math.max(1, config.getInt("validation.letters-per-line", DEFAULT_VALIDATION_LETTERS_PER_LINE));
+        this.validationMaxLines = Math.max(1, config.getInt("validation.max-lines", DEFAULT_VALIDATION_MAX_LINES));
+        this.validationInventoryName = Objects.requireNonNullElse(config.getString("validation.inventory-name"), DEFAULT_VALIDATION_INVENTORY_NAME);
+        int configuredValidationSize = config.getInt("validation.inventory-size", DEFAULT_VALIDATION_INVENTORY_SIZE);
+        this.validationInventorySize = sanitizeInventorySize(configuredValidationSize, DEFAULT_VALIDATION_INVENTORY_SIZE);
     }
 
     @Override
@@ -698,8 +708,8 @@ public class ZTextManager extends ZUtils implements TextManager {
         }
 
         AlphabetValidationTask task = new AlphabetValidationTask(this.plugin, this, player, alphabet, letters,
-                DEFAULT_VALIDATION_LETTERS_PER_LINE, DEFAULT_VALIDATION_MAX_LINES,
-                DEFAULT_VALIDATION_INVENTORY_NAME, DEFAULT_VALIDATION_INVENTORY_SIZE);
+                this.validationLettersPerLine, this.validationMaxLines,
+                this.validationInventoryName, this.validationInventorySize);
 
         this.alphabetValidationTasks.put(uuid, task);
 
