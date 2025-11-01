@@ -59,7 +59,7 @@ font-infos:
   - char: 'L'
     length: 4
   - char: 'l'
-    length: 1
+    length: 2
   - char: 'M'
     length: 4
   - char: 'm'
