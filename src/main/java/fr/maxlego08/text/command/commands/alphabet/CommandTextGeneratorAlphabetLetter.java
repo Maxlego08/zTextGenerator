@@ -41,7 +41,7 @@ public class CommandTextGeneratorAlphabetLetter extends VCommand {
             return List.of(String.valueOf(alphabet.getLength(letterArg.charAt(0))));
         });
         this.addOptionalArg("inventory title", (sender, args) -> List.of(":offset_-48::generic_dark::offset_-168:"));
-        this.addOptionalArg("inventory size", (sender, args) -> Arrays.asList("9", "18", "27", "36", "45", "53"));
+        this.addOptionalArg("inventory size", (sender, args) -> Arrays.asList("9", "18", "27", "36", "45", "54"));
         this.onlyPlayers();
     }
 
