@@ -151,7 +151,7 @@ font-infos:
   - char: '&'
     length: 5
   - char: '*'
-    length: 5
+    length: 3
   - char: '('
     length: 4
   - char: ')'
@@ -213,10 +213,9 @@ font-infos:
   - char: 'Â'
     length: 5
   - char: '²'
-    length: 5
+    length: 4
   - char: '€'
     length: 5
-
 
 font-transformations:
   specials:

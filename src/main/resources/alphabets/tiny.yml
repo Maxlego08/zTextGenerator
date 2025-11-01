@@ -37,17 +37,17 @@ font-infos:
   - char: 'h'
     length: 4
   - char: 'I'
-    length: 2
+    length: 3
   - char: 'i'
-    length: 1
+    length: 2
   - char: 'î'
-    length: 2
+    length: 3
   - char: 'Î'
-    length: 2
+    length: 3
   - char: 'ï'
-    length: 2
+    length: 3
   - char: 'Ï'
-    length: 2
+    length: 3
   - char: 'J'
     length: 4
   - char: 'j'
@@ -91,7 +91,7 @@ font-infos:
   - char: 'T'
     length: 4
   - char: 't'
-    length: 2
+    length: 3
   - char: 'U'
     length: 4
   - char: 'u'
@@ -137,9 +137,9 @@ font-infos:
   - char: '0'
     length: 4
   - char: '!'
-    length: 1
+    length: 2
   - char: '@'
-    length: 5
+    length: 4
   - char: '#'
     length: 4
   - char: '$'
@@ -151,13 +151,13 @@ font-infos:
   - char: '&'
     length: 4
   - char: '*'
-    length: 4
+    length: 3
   - char: '('
     length: 3
   - char: ')'
     length: 3
   - char: '-'
-    length: 2
+    length: 3
   - char: '_'
     length: 4
   - char: '+'
@@ -169,17 +169,17 @@ font-infos:
   - char: '}'
     length: 3
   - char: '['
-    length: 2
+    length: 3
   - char: ']'
-    length: 2
+    length: 3
   - char: ':'
-    length: 1
-  - char: ';'
-    length: 1
-  - char: '"'
     length: 2
+  - char: ';'
+    length: 2
+  - char: '"'
+    length: 3
   - char: "'"
-    length: 1
+    length: 2
   - char: '<'
     length: 3
   - char: '>'
@@ -197,9 +197,9 @@ font-infos:
   - char: '`'
     length: 2
   - char: '.'
-    length: 1
+    length: 2
   - char: ','
-    length: 1
+    length: 2
   - char: ' '
     length: 3
   - char: 'é'
@@ -213,7 +213,7 @@ font-infos:
   - char: 'Â'
     length: 4
   - char: '²'
-    length: 4
+    length: 3
   - char: '€'
     length: 4
 
