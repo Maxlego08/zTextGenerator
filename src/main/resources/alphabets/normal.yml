@@ -139,7 +139,7 @@ font-infos:
   - char: '!'
     length: 2
   - char: '@'
-    length: 6
+    length: 5
   - char: '#'
     length: 5
   - char: '$'
