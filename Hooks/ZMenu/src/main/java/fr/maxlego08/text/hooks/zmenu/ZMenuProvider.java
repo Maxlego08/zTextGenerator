@@ -40,9 +40,11 @@ public class ZMenuProvider extends ZUtils implements HookProvider {
             folder.mkdirs();
         }
 
+        this.inventoryManager.deleteInventories(plugin);
+
         files(folder, file -> {
             try {
-                inventoryManager.loadInventory(plugin, file);
+                this.inventoryManager.loadInventory(plugin, file);
             } catch (InventoryException e) {
                 throw new RuntimeException(e);
             }

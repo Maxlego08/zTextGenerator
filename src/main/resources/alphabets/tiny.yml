@@ -201,7 +201,7 @@ font-infos:
   - char: ','
     length: 2
   - char: ' '
-    length: 3
+    length: 4
   - char: 'é'
     length: 4
   - char: 'è'
