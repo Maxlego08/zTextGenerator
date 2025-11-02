@@ -40,7 +40,7 @@ public class CommandTextGeneratorAlphabetLetter extends VCommand {
             var alphabet = optional.get();
             return List.of(String.valueOf(alphabet.getLength(letterArg.charAt(0))));
         });
-        this.addOptionalArg("inventory title", (sender, args) -> List.of(":offset_-48::generic_dark::offset_-168:"));
+        this.addOptionalArg("inventory title", (sender, args) -> List.of(":offset_-48::generic_dark_full::offset_-168:"));
         this.addOptionalArg("inventory size", (sender, args) -> Arrays.asList("9", "18", "27", "36", "45", "54"));
         this.onlyPlayers();
     }
@@ -64,7 +64,7 @@ public class CommandTextGeneratorAlphabetLetter extends VCommand {
 
         var alphabet = optional.get();
         int letterLength = this.argAsInteger(4, alphabet.getLength(letter.charAt(0)));
-        String inventoryName = this.argAsString(5, ":offset_-48::generic_dark::offset_-168:");
+        String inventoryName = this.argAsString(5, ":offset_-48::generic_dark_full::offset_-168:");
         int inventorySize = this.argAsInteger(6, 54);
 
         manager.displayAlphabet(player, alphabet, letter, letterByLine, maxLines, letterLength, inventoryName, inventorySize);

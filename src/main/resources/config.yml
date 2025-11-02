@@ -13,6 +13,6 @@ offset: ":offset_%pixels%:"
 validation:
   letters-per-line: 10
   max-lines: 6
-  inventory-name: ":offset_-48::generic_dark::offset_-168:"
+  inventory-name: ":offset_-48::generic_dark_full::offset_-168:"
   inventory-size: 54
 
