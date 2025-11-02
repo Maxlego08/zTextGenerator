@@ -58,3 +58,27 @@ texts:
       - "bibendum. Vestibulum malesuada ac lacus eu"
       - "consequat. Sed lobortis quis tortor sed"
       - "mollis. Praesent at nibh sem."
+
+  - name: "example-dialogue"
+    title: "<#fffaee>From Steve Title<white>"
+    alignment: LEFT
+    alphabet: "tiny"
+    inventory-size: 54
+    inventory-name: ":offset_-48::exemple_dialog::offset_-190:"
+    length: 180
+    lines:
+      - "<black>Lorem ipsum dolor sit amet, consectetur"
+      - "adipiscing elit. Integer eleifend odio ut"
+      - "turpis faucibus, ac laoreet ante maximus."
+      - "Duis lacinia nibh a odio accumsan bibendum."
+      - "Vestibulum malesuada ac lacus eu consequat."
+      - "Sed lobortis quis tortor sed mollis."
+      - "Praesent at nibh sem. Donec ac arcu non"
+      - "nisi feugiat pretium. Nunc consequat maximus"
+      - "lectus at eleifend. Nunc convallis lacus"
+      - "erat, nec finibus est suscipit eget."
+      - "Curabitur sit amet tristique nisl. Integer"
+      - "condimentum egestas erat quis placerat."
+      - "Duis lobortis ex vitae massa tristique"
+      - "aliquam. Sed feugiat pharetra urna, sit amet"
+      - "malesuada lacus fermentum ac."
