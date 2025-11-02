@@ -2,14 +2,14 @@ name: "example"
 language: en_us
 inventory-name: ":offset_-48::exemple_book::offset_-250:"
 start-offset: 10
-left-size: 100
-right-size: 100
+left-size: 110
+right-size: 110
 offset-between: 10
 alphabet: "normal"
 pages:
   - page: 1
-    left: "Un exemple de livre pour montrer comment a marche."
-    right: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam."
+    left: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultrices felis a libero tempus, at dignissim arcu vehicula. Vestibulum id consequat risus. Vestibulum viverra condimentum consequat. Aenean nulla libero, lacinia id iaculis in, lacinia lobortis enim."
+    right: "Etiam sit amet dictum nunc. Nam eget placerat turpis. Suspendisse ullamcorper molestie metus vitae pharetra. Phasellus varius, sem vel tristique placerat, nisl nibh consectetur eros, quis tincidunt augue leo a risus."
   - page: 2
-    left: "Nan en vrai mon livre est pas si ouf"
-    right: "Bla bla bla un superbe livre vachement sympa!"
+    left: "Mauris malesuada eros viverra elementum efficitur. Sed tellus metus, cursus lobortis felis et, fermentum vestibulum eros. Nunc fermentum ornare erat eget rutrum."
+    right: "Quisque orci erat, tempus ut nunc at, accumsan ullamcorper erat. Quisque et vulputate nisi. Vestibulum vel massa augue. Integer quis ornare odio."
