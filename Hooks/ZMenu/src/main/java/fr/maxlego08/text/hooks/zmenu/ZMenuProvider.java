@@ -6,6 +6,8 @@ import fr.maxlego08.menu.api.exceptions.InventoryException;
 import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.hooks.HookProvider;
 import fr.maxlego08.text.api.utils.ZUtils;
+import fr.maxlego08.text.hooks.zmenu.loader.OpenBookLoader;
+import fr.maxlego08.text.hooks.zmenu.loader.OpenTextLoader;
 
 import java.io.File;
 
@@ -19,6 +21,9 @@ public class ZMenuProvider extends ZUtils implements HookProvider {
 
         this.inventoryManager = plugin.getProvider(InventoryManager.class);
         this.buttonManager = plugin.getProvider(ButtonManager.class);
+
+        this.buttonManager.registerAction(new OpenTextLoader(plugin));
+        this.buttonManager.registerAction(new OpenBookLoader(plugin));
 
         this.loadInventories(plugin);
     }
