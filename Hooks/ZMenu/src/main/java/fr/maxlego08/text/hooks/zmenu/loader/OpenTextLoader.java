@@ -23,7 +23,7 @@ public class OpenTextLoader extends ActionLoader {
 
         String text = accessor.getString("text");
         TextAnimationType textAnimationType = accessor.contains("animation") ? TextAnimationType.valueOf(accessor.getString("animation")) : TextAnimationType.NONE;
-        long delay = accessor.getLong("delay", 0);
+        long delay = accessor.getLong("animation-delay", 0);
         if (delay <= 0 && textAnimationType != TextAnimationType.NONE) {
             this.plugin.getLogger().warning("Delay must be greater than 0 for text open action, path: " + path + ", file: " + file.getPath());
             return null;

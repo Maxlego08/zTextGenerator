@@ -246,17 +246,52 @@ public interface TextManager {
      * Processes a list of text lines and returns the resulting string.
      *
      * @param textLines the list of text lines to process
-     * @param maxWidth the maximum width of the resulting string
+     * @param maxWidth  the maximum width of the resulting string
      * @param arguments the arguments to pass to the text line's process method
      * @return the processed string
      */
     String processText(List<TextLine> textLines, int maxWidth, Object... arguments);
 
+    /**
+     * Starts an alphabet validation process for the given player using the specified alphabet and delay.
+     *
+     * @param player       the player to start the alphabet validation for
+     * @param alphabet     the alphabet to use for the validation
+     * @param delaySeconds the delay in seconds before the validation starts
+     * @return true if the validation was started, false otherwise
+     */
     boolean startAlphabetValidation(Player player, Alphabet alphabet, int delaySeconds);
 
+    /**
+     * Cancels an alphabet validation process for the given player, if any is running.
+     *
+     * @param playerId the player ID of the player to cancel the alphabet validation for
+     * @return true if the validation was cancelled, false otherwise
+     */
     boolean cancelAlphabetValidation(UUID playerId);
 
+    /**
+     * Checks if an alphabet validation process is running for the given player.
+     *
+     * @param playerId the player ID of the player to check for an active alphabet validation
+     * @return true if an alphabet validation process is running for the given player, false otherwise
+     */
     boolean isAlphabetValidationRunning(UUID playerId);
 
+    /**
+     * Displays the given alphabet to the player in an inventory with the
+     * specified name and size. The alphabet is displayed letter by letter,
+     * with the specified number of letters per line. The inventory is
+     * refreshed every maxLines lines.
+     *
+     * @param player        the player to display the alphabet to
+     * @param alphabet      the alphabet to display
+     * @param letter        the letter to start displaying the alphabet from
+     * @param letterByLine  the number of letters to display per line
+     * @param maxLines      the maximum number of lines to display before refreshing the inventory
+     * @param letterLength  the length of each letter in the alphabet
+     * @param inventoryName the name of the inventory to display the alphabet in
+     * @param inventorySize the size of the inventory to display the alphabet in
+     */
     void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize);
 }
