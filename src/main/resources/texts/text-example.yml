@@ -59,12 +59,12 @@ texts:
       - "consequat. Sed lobortis quis tortor sed"
       - "mollis. Praesent at nibh sem."
 
-  - name: "example-dialogue"
+  - name: "example-dialogue"  
     title: "<#fffaee>From Steve Title<white>"
     alignment: LEFT
     alphabet: "tiny"
     inventory-size: 54
-    inventory-name: ":offset_-48::exemple_dialog::offset_-190:"
+    inventory-name: ":offset_-48::exemple_dialog::offset_-190:"    
     length: 180
     lines:
       - "<black>Lorem ipsum dolor sit amet, consectetur"
@@ -81,4 +81,4 @@ texts:
       - "condimentum egestas erat quis placerat."
       - "Duis lobortis ex vitae massa tristique"
       - "aliquam. Sed feugiat pharetra urna, sit amet"
-      - "malesuada lacus fermentum ac."
+      - "malesuada lacus fermentum ac."      

@@ -1,10 +1,11 @@
-name: ":offset_-48::generic_dark_full::offset_-168:<white>:offset_80:%ztextgenerator_center_normal_0_{ztextgenerator_test}%"
+name: ":offset_-48::exemple_actions::offset_-168:<white>:offset_80:%ztextgenerator_center_normal_0_{ztextgenerator_test}%"
 size: 54
 items:
   add:
     slot: 14
     item:
       material: PAPER
+      model-id: 1
       name: "<green>Add"
     actions:
       - type: ztextgenerator-add-value
@@ -13,15 +14,59 @@ items:
     slot: 12
     item:
       material: PAPER
+      model-id: 1
       name: "<red>Remove"
     actions:
       - type: ztextgenerator-remove-value
       - type: refresh inventory
 
-  open-text:
-    slot: 32
+  close:
+    slot: 8
     item:
       material: PAPER
+      model-id: 1
+      name: "<red>Close"
+    actions:
+      - type: close
+
+  open-book:
+    slots: 
+    - 27-30
+    item:
+      material: PAPER
+      model-id: 1
+      name: "<green>Open Book"
+    actions:
+      - type: book open
+        # Book name
+        book: example
+        # Book page
+        page: 1
+
+  open-dialog:
+    slots: 
+    - 32-35
+    item:
+      material: PAPER
+      model-id: 1
+      name: "<green>Open Book"
+    actions:
+      - type: text open
+        # Text name
+        text: example-dialogue
+        # NONE, No animation, the full text is displayed immediately.
+        # LETTER_BY_LETTER, Reveals the text character by character.
+        # WORD_BY_WORD, Reveals the text word by word.
+        animation: WORD_BY_WORD
+        # Delay between each frame in ticks for the animation
+        animation-delay: 2 # 2 ticks = 10 frames per second
+
+  open-text:
+    slots: 
+    - 36-39
+    item:
+      material: PAPER
+      model-id: 1
       name: "<green>Open text"
       lore:
         - "&8Open text with normal alphabet"
@@ -37,9 +82,11 @@ items:
         animation-delay: 2 # 2 ticks = 10 frames per second
 
   open-text-tiny:
-    slot: 41
+    slots: 
+    - 41-44
     item:
       material: PAPER
+      model-id: 1
       name: "<green>Open text"
       lore:
         - "&8Open text with tiny alphabet"
@@ -53,15 +100,3 @@ items:
         animation: NONE
         # Delay between each frame in ticks for the animation
         animation-delay: 2 # 2 ticks = 10 frames per second
-
-  open-book:
-    slot: 30
-    item:
-      material: PAPER
-      name: "<green>Open Book"
-    actions:
-      - type: book open
-        # Book name
-        book: example
-        # Book page
-        page: 1
