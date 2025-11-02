@@ -1,0 +1,357 @@
+name: "normal"
+font-infos:
+  - char: 'ç'
+    length: 4
+  - char: 'Ç'
+    length: 4
+  - char: 'A'
+    length: 5
+  - char: 'a'
+    length: 5
+  - char: 'B'
+    length: 5
+  - char: 'b'
+    length: 5
+  - char: 'C'
+    length: 5
+  - char: 'c'
+    length: 5
+  - char: 'D'
+    length: 5
+  - char: 'd'
+    length: 5
+  - char: 'E'
+    length: 5
+  - char: 'e'
+    length: 5
+  - char: 'F'
+    length: 5
+  - char: 'f'
+    length: 4
+  - char: 'G'
+    length: 5
+  - char: 'g'
+    length: 5
+  - char: 'H'
+    length: 5
+  - char: 'h'
+    length: 5
+  - char: 'I'
+    length: 3
+  - char: 'i'
+    length: 2
+  - char: 'î'
+    length: 3
+  - char: 'Î'
+    length: 3
+  - char: 'ï'
+    length: 3
+  - char: 'Ï'
+    length: 3
+  - char: 'J'
+    length: 5
+  - char: 'j'
+    length: 5
+  - char: 'K'
+    length: 5
+  - char: 'k'
+    length: 4
+  - char: 'L'
+    length: 5
+  - char: 'l'
+    length: 2
+  - char: 'M'
+    length: 5
+  - char: 'm'
+    length: 5
+  - char: 'N'
+    length: 5
+  - char: 'n'
+    length: 5
+  - char: 'O'
+    length: 5
+  - char: 'o'
+    length: 5
+  - char: 'P'
+    length: 5
+  - char: 'p'
+    length: 5
+  - char: 'Q'
+    length: 5
+  - char: 'q'
+    length: 5
+  - char: 'R'
+    length: 5
+  - char: 'r'
+    length: 5
+  - char: 'S'
+    length: 5
+  - char: 's'
+    length: 5
+  - char: 'T'
+    length: 5
+  - char: 't'
+    length: 3
+  - char: 'U'
+    length: 5
+  - char: 'u'
+    length: 5
+  - char: 'V'
+    length: 5
+  - char: 'v'
+    length: 5
+  - char: 'W'
+    length: 5
+  - char: 'w'
+    length: 5
+  - char: 'X'
+    length: 5
+  - char: 'x'
+    length: 5
+  - char: 'Y'
+    length: 5
+  - char: 'y'
+    length: 5
+  - char: 'Z'
+    length: 5
+  - char: 'z'
+    length: 5
+  - char: '1'
+    length: 3
+  - char: '2'
+    length: 5
+  - char: '3'
+    length: 5
+  - char: '4'
+    length: 5
+  - char: '5'
+    length: 5
+  - char: '6'
+    length: 5
+  - char: '7'
+    length: 5
+  - char: '8'
+    length: 5
+  - char: '9'
+    length: 5
+  - char: '0'
+    length: 5
+  - char: '!'
+    length: 2
+  - char: '@'
+    length: 5
+  - char: '#'
+    length: 5
+  - char: '$'
+    length: 5
+  - char: '%'
+    length: 5
+  - char: '^'
+    length: 5
+  - char: '&'
+    length: 5
+  - char: '*'
+    length: 3
+  - char: '('
+    length: 4
+  - char: ')'
+    length: 4
+  - char: '-'
+    length: 3
+  - char: '_'
+    length: 5
+  - char: '+'
+    length: 5
+  - char: '='
+    length: 5
+  - char: '{'
+    length: 3
+  - char: '}'
+    length: 3
+  - char: '['
+    length: 3
+  - char: ']'
+    length: 3
+  - char: ':'
+    length: 2
+  - char: ';'
+    length: 2
+  - char: '"'
+    length: 3
+  - char: "'"
+    length: 2
+  - char: '<'
+    length: 4
+  - char: '>'
+    length: 4
+  - char: '?'
+    length: 5
+  - char: '/'
+    length: 5
+  - char: '\\'
+    length: 5
+  - char: '|'
+    length: 2
+  - char: '~'
+    length: 5
+  - char: '`'
+    length: 3
+  - char: '.'
+    length: 2
+  - char: ','
+    length: 2
+  - char: ' '
+    length: 4
+  - char: 'é'
+    length: 5
+  - char: 'è'
+    length: 5
+  - char: 'à'
+    length: 5
+  - char: 'â'
+    length: 5
+  - char: 'Â'
+    length: 5
+  - char: '²'
+    length: 4
+  - char: '€'
+    length: 5
+
+font-transformations:
+  specials:
+    - char: "'"
+      replacement: ':apostrophe_%height%:'
+    - char: '.'
+      replacement: ':dot_%height%:'
+    - char: ':'
+      replacement: ':colon_%height%:'
+    - char: ';'
+      replacement: ':semicolon_%height%:'
+    - char: ','
+      replacement: ':comma_%height%:'
+    - char: '-'
+      replacement: ':dash_%height%:'
+    - char: '"'
+      replacement: ':quote_%height%:'
+    - char: '?'
+      replacement: ':question_mark_%height%:'
+    - char: '!'
+      replacement: ':exclamation_mark_%height%:'
+    - char: '('
+      replacement: ':parenthesis_open_%height%:'
+    - char: ')'
+      replacement: ':parenthesis_close_%height%:'
+    - char: '/'
+      replacement: ':slash_%height%:'
+    - char: '_'
+      replacement: ':underscore_%height%:'
+    - char: '*'
+      replacement: ':asterisk_%height%:'
+    - char: '^'
+      replacement: ':caret_%height%:'
+    - char: '$'
+      replacement: ':dollar_%height%:'
+    - char: '€'
+      replacement: ':euro_%height%:'
+    - char: '¤'
+      replacement: ':currency_%height%:'
+    - char: '<'
+      replacement: ':less_than_%height%:'
+    - char: '>'
+      replacement: ':greater_than_%height%:'
+    - char: '°'
+      replacement: ':degree_%height%:'
+    - char: '='
+      replacement: ':equal_%height%:'
+    - char: '+'
+      replacement: ':plus_%height%:'
+    - char: '['
+      replacement: ':bracket_left_%height%:'
+    - char: ']'
+      replacement: ':bracket_right_%height%:'
+    - char: '{'
+      replacement: ':brace_left_%height%:'
+    - char: '}'
+      replacement: ':brace_right_%height%:'
+    - char: '@'
+      replacement: ':arob_%height%:'
+    - char: '#'
+      replacement: ':htag_%height%:'
+    - char: '&'
+      replacement: ':and_%height%:'
+    - char: '%'
+      replacement: ':percent_%height%:'
+    - char: '²'
+      replacement: ':superscript_2_%height%:'
+    - char: 'ü'
+      replacement: ':u_l_tr_%height%:'
+    - char: 'Ü'
+      replacement: ':u_u_tr_%height%:'
+    - char: 'û'
+      replacement: ':u_l_ac_%height%:'
+    - char: 'ù'
+      replacement: ':u_l_ag_%height%:'
+    - char: 'Û'
+      replacement: ':u_u_ac_%height%:'
+    - char: 'ô'
+      replacement: ':o_l_ac_%height%:'
+    - char: 'Ô'
+      replacement: ':o_u_ac_%height%:'
+    - char: 'î'
+      replacement: ':i_l_ac_%height%:'
+    - char: 'Î'
+      replacement: ':i_u_ac_%height%:'
+    - char: 'ï'
+      replacement: ':i_l_tr_%height%:'
+    - char: 'Ï'
+      replacement: ':i_u_tr_%height%:'
+    - char: 'è'
+      replacement: ':e_l_ag_%height%:'
+    - char: 'é'
+      replacement: ':e_l_aa_%height%:'
+    - char: 'É'
+      replacement: ':e_u_ag_%height%:'
+    - char: 'È'
+      replacement: ':e_u_aa_%height%:'
+    - char: 'ê'
+      replacement: ':e_l_ac_%height%:'
+    - char: 'Ê'
+      replacement: ':e_u_ac_%height%:'
+    - char: 'ç'
+      replacement: ':c_c_l_%height%:'
+    - char: 'Ç'
+      replacement: ':c_c_u_%height%:'
+    - char: 'à'
+      replacement: ':a_l_ag_%height%:'
+    - char: 'À'
+      replacement: ':a_u_ag_%height%:'
+    - char: '/'
+      replacement: ':slach_%height%:'
+    - char: 'â'
+      replacement: ':a_ch_l_%height%:'
+    - char: 'Â'
+      replacement: ':a_ch_u_%height%:'
+    - char: '0'
+      replacement: ':zero_%height%:'
+    - char: '1'
+      replacement: ':on_%height%:'
+    - char: '2'
+      replacement: ':two_%height%:'
+    - char: '3'
+      replacement: ':three_%height%:'
+    - char: '4'
+      replacement: ':four_%height%:'
+    - char: '5'
+      replacement: ':five_%height%:'
+    - char: '6'
+      replacement: ':six_%height%:'
+    - char: '7'
+      replacement: ':seven_%height%:'
+    - char: '8'
+      replacement: ':eight_%height%:'
+    - char: '9'
+      replacement: ':nine_%height%:'
+    - char: ' '
+      replacement: ' '
+  upper-case: ":%char%_u_%height%:"
+  lower-case: ":%char%_l_%height%:"

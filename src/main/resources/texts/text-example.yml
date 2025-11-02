@@ -1,0 +1,84 @@
+inventory-size: 54
+inventory-name: ":offset_-48::generic_dark_full::offset_-168:"
+texts:
+  - name: "example-normal"
+    title: "<dark_gray>Lorem Ipsum<white>"
+    alignment: LEFT
+    alphabet: "normal"
+    lines:
+      - "Lorem ipsum dolor sit amet,"
+      - "consectetur adipiscing elit."
+      - "Integer eleifend odio ut turpis"
+      - "faucibus, ac laoreet ante maximus."
+      - "Duis lacinia nibh a odio accumsan"
+      - "bibendum. Vestibulum malesuada ac"
+      - "lacus eu consequat. Sed lobortis"
+      - "quis tortor sed mollis. Praesent at"
+      - "nibh sem. Donec ac arcu non nisi"
+      - "feugiat pretium. Nunc consequat"
+      - "maximus lectus at eleifend."
+
+  - name: "example-tiny"
+    title: "<dark_gray>Lorem Ipsum<white>"
+    alignment: CENTER
+    alphabet: "tiny"
+    length: 160
+    lines:
+      - "Lorem ipsum dolor sit amet, consectetur"
+      - "adipiscing elit. Integer eleifend odio ut"
+      - "turpis faucibus, ac laoreet ante maximus."
+      - "Duis lacinia nibh a odio accumsan bibendum."
+      - "Vestibulum malesuada ac lacus eu consequat."
+      - "Sed lobortis quis tortor sed mollis."
+      - "Praesent at nibh sem. Donec ac arcu non"
+      - "nisi feugiat pretium. Nunc consequat maximus"
+      - "lectus at eleifend. Nunc convallis lacus"
+      - "erat, nec finibus est suscipit eget."
+      - "Curabitur sit amet tristique nisl. Integer"
+      - "condimentum egestas erat quis placerat."
+      - "Duis lobortis ex vitae massa tristique"
+      - "aliquam. Sed feugiat pharetra urna, sit amet"
+      - "malesuada lacus fermentum ac."
+
+  - name: "example-both"
+    title: "<dark_gray>Lorem Ipsum<white>"
+    alignment: LEFT
+    alphabet: "tiny"
+    inventory-size: 45
+    inventory-name: ":offset_-48::generic_5::offset_-162:"
+    lines:
+      - alphabet: "normal"
+        element: "Lorem ipsum dolor sit amet,"
+      - "consectetur adipiscing elit. Integer eleifend"
+      - "odio ut turpis faucibus, ac laoreet ante"
+      - "maximus."
+      - alphabet: "normal"
+        element: "Duis lacinia nibh a odio accumsan"
+      - ""
+      - "bibendum. Vestibulum malesuada ac lacus eu"
+      - "consequat. Sed lobortis quis tortor sed"
+      - "mollis. Praesent at nibh sem."
+
+  - name: "example-dialogue"  
+    title: "<#fffaee>From Steve Title<white>"
+    alignment: LEFT
+    alphabet: "tiny"
+    inventory-size: 54
+    inventory-name: ":offset_-48::exemple_dialog::offset_-190:"    
+    length: 180
+    lines:
+      - "<black>Lorem ipsum dolor sit amet, consectetur"
+      - "adipiscing elit. Integer eleifend odio ut"
+      - "turpis faucibus, ac laoreet ante maximus."
+      - "Duis lacinia nibh a odio accumsan bibendum."
+      - "Vestibulum malesuada ac lacus eu consequat."
+      - "Sed lobortis quis tortor sed mollis."
+      - "Praesent at nibh sem. Donec ac arcu non"
+      - "nisi feugiat pretium. Nunc consequat maximus"
+      - "lectus at eleifend. Nunc convallis lacus"
+      - "erat, nec finibus est suscipit eget."
+      - "Curabitur sit amet tristique nisl. Integer"
+      - "condimentum egestas erat quis placerat."
+      - "Duis lobortis ex vitae massa tristique"
+      - "aliquam. Sed feugiat pharetra urna, sit amet"
+      - "malesuada lacus fermentum ac."      

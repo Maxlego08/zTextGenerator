@@ -1,7 +1,14 @@
 name: zTextGenerator
-version: '1.0.0'
-main: fr.maxlego08.text.ZTextPlugin
+version: ${version}
+main: fr.maxlego08.text.TextPlugin
 api-version: '1.21'
-authors: [Maxlego08]
+authors: [ Maxlego08 ]
 description: Add texts inside your inventories
 website: https://groupez.dev/
+depend:
+  - PlaceholderAPI
+softdepend:
+  - ItemsAdder
+  - Nexo
+  - Oraxen
+  - zMenu

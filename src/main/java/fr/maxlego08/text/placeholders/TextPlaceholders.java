@@ -1,0 +1,29 @@
+package fr.maxlego08.text.placeholders;
+
+import fr.maxlego08.text.api.TextManager;
+import fr.maxlego08.text.api.placeholders.PlaceholderRegister;
+import org.bukkit.entity.Player;
+
+import java.util.function.BiFunction;
+
+public class TextPlaceholders extends PlaceholderRegister {
+
+    @Override
+    public void register(TextManager textManager) {
+
+        register("text_", getText(textManager), "Get the text.", "text");
+    }
+
+    private BiFunction<Player, String, String> getText(TextManager textManager) {
+        return (player, textName) -> {
+
+            var optional = textManager.getText(textName, player);
+            if (optional.isEmpty()) {
+                return "Text " + textName + " not found";
+            }
+
+            var text = optional.get();
+            return text.getResult(player);
+        };
+    }
+}

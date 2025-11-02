@@ -1,0 +1,205 @@
+# Est utilisé pour gérer les titres des inventaires, ne pas supprimer ou modifier
+name: "inventory-title"
+font-infos:
+  - char: 'ç'
+    length: 5
+  - char: 'Ç'
+    length: 5
+  - char: 'A'
+    length: 6
+  - char: 'a'
+    length: 6
+  - char: 'B'
+    length: 6
+  - char: 'b'
+    length: 6
+  - char: 'C'
+    length: 6
+  - char: 'c'
+    length: 6
+  - char: 'D'
+    length: 6
+  - char: 'd'
+    length: 6
+  - char: 'E'
+    length: 6
+  - char: 'e'
+    length: 6
+  - char: 'F'
+    length: 6
+  - char: 'f'
+    length: 5
+  - char: 'G'
+    length: 6
+  - char: 'g'
+    length: 6
+  - char: 'H'
+    length: 6
+  - char: 'h'
+    length: 6
+  - char: 'I'
+    length: 4
+  - char: 'i'
+    length: 2
+  - char: 'î'
+    length: 4
+  - char: 'Î'
+    length: 4
+  - char: 'ï'
+    length: 4
+  - char: 'Ï'
+    length: 4
+  - char: 'J'
+    length: 6
+  - char: 'j'
+    length: 6
+  - char: 'K'
+    length: 6
+  - char: 'k'
+    length: 5
+  - char: 'L'
+    length: 6
+  - char: 'l'
+    length: 3
+  - char: 'M'
+    length: 6
+  - char: 'm'
+    length: 6
+  - char: 'N'
+    length: 6
+  - char: 'n'
+    length: 6
+  - char: 'O'
+    length: 6
+  - char: 'o'
+    length: 6
+  - char: 'P'
+    length: 6
+  - char: 'p'
+    length: 6
+  - char: 'Q'
+    length: 6
+  - char: 'q'
+    length: 6
+  - char: 'R'
+    length: 6
+  - char: 'r'
+    length: 6
+  - char: 'S'
+    length: 6
+  - char: 's'
+    length: 6
+  - char: 'T'
+    length: 6
+  - char: 't'
+    length: 4
+  - char: 'U'
+    length: 6
+  - char: 'u'
+    length: 6
+  - char: 'V'
+    length: 6
+  - char: 'v'
+    length: 6
+  - char: 'W'
+    length: 6
+  - char: 'w'
+    length: 6
+  - char: 'X'
+    length: 6
+  - char: 'x'
+    length: 6
+  - char: 'Y'
+    length: 6
+  - char: 'y'
+    length: 6
+  - char: 'Z'
+    length: 6
+  - char: 'z'
+    length: 6
+  - char: '1'
+    length: 4
+  - char: '2'
+    length: 6
+  - char: '3'
+    length: 6
+  - char: '4'
+    length: 6
+  - char: '5'
+    length: 6
+  - char: '6'
+    length: 6
+  - char: '7'
+    length: 6
+  - char: '8'
+    length: 6
+  - char: '9'
+    length: 6
+  - char: '0'
+    length: 6
+  - char: '!'
+    length: 2
+  - char: '@'
+    length: 6
+  - char: '#'
+    length: 6
+  - char: '$'
+    length: 6
+  - char: '%'
+    length: 6
+  - char: '^'
+    length: 6
+  - char: '&'
+    length: 6
+  - char: '*'
+    length: 6
+  - char: '('
+    length: 5
+  - char: ')'
+    length: 5
+  - char: '-'
+    length: 6
+  - char: '_'
+    length: 6
+  - char: '+'
+    length: 6
+  - char: '='
+    length: 6
+  - char: '{'
+    length: 5
+  - char: '}'
+    length: 5
+  - char: '['
+    length: 4
+  - char: ']'
+    length: 4
+  - char: ':'
+    length: 2
+  - char: ';'
+    length: 2
+  - char: '"'
+    length: 4
+  - char: "'"
+    length: 1
+  - char: '<'
+    length: 5
+  - char: '>'
+    length: 5
+  - char: '?'
+    length: 6
+  - char: '/'
+    length: 6
+  - char: '\'
+    length: 6
+  - char: '|'
+    length: 2
+  - char: '~'
+    length: 6
+  - char: '`'
+    length: 3
+  - char: '.'
+    length: 3
+  - char: ','
+    length: 2
+  - char: ' '
+    length: 4
