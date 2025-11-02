@@ -73,7 +73,7 @@ public abstract class ZUtils {
     }
 
     protected boolean containsPlaceholder(String element) {
-        return element.contains("%");
+        return element != null && element.contains("%");
     }
 
 }

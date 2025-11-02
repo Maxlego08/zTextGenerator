@@ -110,6 +110,7 @@ public final class TextPlugin extends ZPlugin {
         this.messageLoader.load();
 
         this.hookProviders.forEach(hookProvider -> hookProvider.onReload(this));
+        this.textManager.getTexts().forEach(Text::createCacheResult);
     }
 
     @Override

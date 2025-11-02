@@ -1,4 +1,4 @@
-group = 'Hooks:ZMenu'
+group = "Hooks:ZMenu"
 
 repositories {
     maven {
@@ -9,7 +9,6 @@ repositories {
 
 dependencies {
 
-    compileOnly project(":API")
-
+    compileOnly(projects.api)
     compileOnly("fr.maxlego08.menu:zmenu-api:1.1.0.2")
 }

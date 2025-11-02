@@ -29,7 +29,7 @@ public abstract class PlaceholderRegister extends ZUtils {
      * at most maxParts elements, with the last element containing the rest of the string.
      *
      * @param input    the string to be split
-     * @param maxParts maximum number of parts to split into (<= 0 means no limit)
+     * @param maxParts maximum number of parts to split into
      * @return the list of strings as described
      */
     protected List<String> splitIgnoringBraces(String input, int maxParts) {
