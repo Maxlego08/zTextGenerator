@@ -14,6 +14,7 @@ import fr.maxlego08.text.listener.InventoryListener;
 import fr.maxlego08.text.messages.ZMessageManager;
 import fr.maxlego08.text.placeholders.AlignedPlaceholders;
 import fr.maxlego08.text.placeholders.BookPlaceholders;
+import fr.maxlego08.text.placeholders.TestPlaceholders;
 import fr.maxlego08.text.placeholders.TextPlaceholders;
 import fr.maxlego08.text.placeholders.TitlePlaceholders;
 import fr.maxlego08.text.zcore.ZPlugin;
@@ -31,10 +32,11 @@ public final class TextPlugin extends ZPlugin {
     private final TextManager textManager = new ZTextManager(this);
     private final ColorHelper colorHelper = new PaperColor();
     private final MessageManager messageManager = new ZMessageManager(this);
+    private final List<HookProvider> hookProviders = new ArrayList<>();
     private boolean enableDebug = false;
     private FontImage fontImage = new EmptyFont();
-    private final List<HookProvider> hookProviders = new ArrayList<>();
     private String defaultLanguage = DEFAULT_LANGUAGE;
+    private int value;
 
     @Override
     public void onEnable() {
@@ -50,7 +52,7 @@ public final class TextPlugin extends ZPlugin {
         this.textManager.loadTexts();
         this.textManager.loadBooks();
 
-        var placeholders = List.of(new AlignedPlaceholders(this), new TitlePlaceholders(), new TextPlaceholders(), new BookPlaceholders(this));
+        var placeholders = List.of(new AlignedPlaceholders(this), new TitlePlaceholders(), new TextPlaceholders(), new BookPlaceholders(this), new TestPlaceholders(this));
         placeholders.forEach(placeholder -> placeholder.register(this.textManager));
 
         this.registerCommand("text-generator", new CommandTextGenerator(this), "text", "tg");
@@ -125,6 +127,16 @@ public final class TextPlugin extends ZPlugin {
         return this.defaultLanguage;
     }
 
+    @Override
+    public int getTestValue() {
+        return this.value;
+    }
+
+    @Override
+    public void setTestValue(int value) {
+        this.value = value;
+    }
+
     private String normalizeLanguage(String language) {
         if (language == null || language.isEmpty()) {
             return DEFAULT_LANGUAGE;
@@ -150,7 +162,7 @@ public final class TextPlugin extends ZPlugin {
             }, () -> getLogger().severe("Failed to load NexoFont"));
         }
 
-        if (isActive(Plugins.ZMENU)){
+        if (isActive(Plugins.ZMENU)) {
             Optional<HookProvider> optional = createInstance("zmenu.ZMenuProvider");
             optional.ifPresentOrElse(hookProvider -> {
                 this.hookProviders.add(hookProvider);

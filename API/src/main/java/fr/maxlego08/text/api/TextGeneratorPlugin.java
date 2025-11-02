@@ -85,4 +85,8 @@ public interface TextGeneratorPlugin extends Plugin {
      * @return the default language code, expressed using lowercase language and country codes (for example {@code en_us})
      */
     String getDefaultLanguage();
+
+    int getTestValue();
+
+    void setTestValue(int value);
 }

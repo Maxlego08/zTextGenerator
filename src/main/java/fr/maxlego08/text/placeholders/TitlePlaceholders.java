@@ -13,7 +13,6 @@ public class TitlePlaceholders extends PlaceholderRegister {
     public void register(TextManager textManager) {
 
         register("title_length_", getTitleLength(textManager), "Get the inventory title length.", "title");
-
     }
 
     private BiFunction<Player, String, String> getTitleLength(TextManager textManager) {
