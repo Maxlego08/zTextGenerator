@@ -211,7 +211,7 @@ public class ZTextManager extends ZUtils implements TextManager {
         }
         Alphabet alphabet = optional.get();
 
-        int length = map.containsKey("length") ? ((Number) map.get("length")).intValue() : 200;
+        int length = map.containsKey("length") ? ((Number) map.get("length")).intValue() : 160;
 
         List<?> lines = (List<?>) map.get("lines");
         List<TextLine> textLines = new ArrayList<>();

@@ -1,0 +1,67 @@
+name: ":offset_-48::generic_dark_full::offset_-168:<white>:offset_80:%ztextgenerator_center_normal_0_{ztextgenerator_test}%"
+size: 54
+items:
+  add:
+    slot: 14
+    item:
+      material: PAPER
+      name: "<green>Add"
+    actions:
+      - type: ztextgenerator-add-value
+      - type: refresh inventory
+  remove:
+    slot: 12
+    item:
+      material: PAPER
+      name: "<red>Remove"
+    actions:
+      - type: ztextgenerator-remove-value
+      - type: refresh inventory
+
+  open-text:
+    slot: 32
+    item:
+      material: PAPER
+      name: "<green>Open text"
+      lore:
+        - "&8Open text with normal alphabet"
+    actions:
+      - type: text open
+        # Text name
+        text: example-normal
+        # NONE, No animation, the full text is displayed immediately.
+        # LETTER_BY_LETTER, Reveals the text character by character.
+        # WORD_BY_WORD, Reveals the text word by word.
+        animation: NONE
+        # Delay between each frame in ticks for the animation
+        animation-delay: 2 # 2 ticks = 10 frames per second
+
+  open-text-tiny:
+    slot: 41
+    item:
+      material: PAPER
+      name: "<green>Open text"
+      lore:
+        - "&8Open text with tiny alphabet"
+    actions:
+      - type: text open
+        # Text name
+        text: example-tiny
+        # NONE, No animation, the full text is displayed immediately.
+        # LETTER_BY_LETTER, Reveals the text character by character.
+        # WORD_BY_WORD, Reveals the text word by word.
+        animation: NONE
+        # Delay between each frame in ticks for the animation
+        animation-delay: 2 # 2 ticks = 10 frames per second
+
+  open-book:
+    slot: 30
+    item:
+      material: PAPER
+      name: "<green>Open Book"
+    actions:
+      - type: book open
+        # Book name
+        book: example
+        # Book page
+        page: 1

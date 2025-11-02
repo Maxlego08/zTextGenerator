@@ -46,6 +46,7 @@ public class ZMenuProvider extends ZUtils implements HookProvider {
 
         var folder = new File(plugin.getDataFolder(), "inventories");
         if (!folder.exists()) {
+            plugin.saveResource("inventories/example-actions.yml", false);
             plugin.saveResource("inventories/example-center.yml", false);
             plugin.saveResource("inventories/example-left.yml", false);
             plugin.saveResource("inventories/example-right.yml", false);
