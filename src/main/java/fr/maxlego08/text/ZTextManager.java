@@ -237,7 +237,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             }
         }
 
-        int inventorySize = configuration.contains("inventory-size") ? sanitizeInventorySize(parseInventorySize(map.get("inventory-size")), this.defaultTextInventorySize) : this.defaultTextInventorySize;
+        int inventorySize = configuration.contains("inventory-size") ? sanitizeInventorySize(configuration.getInt("inventory-size"), this.defaultTextInventorySize) : this.defaultTextInventorySize;
         if (map.containsKey("inventory-size")) {
             inventorySize = sanitizeInventorySize(parseInventorySize(map.get("inventory-size")), this.defaultTextInventorySize);
         }
