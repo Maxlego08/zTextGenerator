@@ -10,13 +10,6 @@ default-language: en_us
 text-inventory-size: 54
 text-inventory-name: ""
 
-# Defines the syntax used to apply horizontal text offsets.
-# This setting depends on the plugin you're using:
-# - ItemsAdder: use ":offset_%pixels%:" → https://itemsadder.devs.beer/plugin-usage/adding-content/font-images#offsets
-# - Oraxen: use "<shift:%pixels%>" → https://docs.oraxen.com/configuration/glyphs/custom-gui#how-do-i-get-the-unicode-for-the-glyph
-# - Nexo: use "<shift:%pixels%>" → https://docs.nexomc.com/configuration/glyphs#custom-guis
-offset: ":offset_%pixels%:"
-
 # Validation system used with the command /text alphabet validation <alphabet>.
 # This tool helps you verify that each character in your custom alphabet
 # is properly displayed and aligned within the inventory interface.

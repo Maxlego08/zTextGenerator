@@ -51,7 +51,6 @@ public class ZTextManager extends ZUtils implements TextManager {
     private final List<Book> books = new ArrayList<>();
     private final Map<UUID, TextAnimationTask> activeTextAnimations = new ConcurrentHashMap<>();
     private final Map<UUID, AlphabetValidationTask> alphabetValidationTasks = new ConcurrentHashMap<>();
-    private String offset;
     private int defaultTextInventorySize = 54;
     private String defaultTextInventoryName = "";
     private int validationLettersPerLine = DEFAULT_VALIDATION_LETTERS_PER_LINE;
@@ -290,7 +289,6 @@ public class ZTextManager extends ZUtils implements TextManager {
         this.files(folder, this::loadAlphabet);
 
         var config = this.plugin.getConfig();
-        this.offset = config.getString("offset", ":offset-%pixels%:");
         this.validationLettersPerLine = Math.max(1, config.getInt("validation.letters-per-line", DEFAULT_VALIDATION_LETTERS_PER_LINE));
         this.validationMaxLines = Math.max(1, config.getInt("validation.max-lines", DEFAULT_VALIDATION_MAX_LINES));
         this.validationInventoryName = Objects.requireNonNullElse(config.getString("validation.inventory-name"), DEFAULT_VALIDATION_INVENTORY_NAME);
@@ -302,18 +300,19 @@ public class ZTextManager extends ZUtils implements TextManager {
     public void loadAlphabet(File file) {
 
         YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+        var fontType = this.plugin.getFontType();
         String name = configuration.getString("name");
 
         this.alphabets.removeIf(alphabet -> alphabet.getName().equalsIgnoreCase(name));
 
-        List<FontInfo> fontInfos = this.loadFontInfo(configuration);
+        List<FontInfo> fontInfos = this.loadFontInfo(configuration, name);
         if (fontInfos.isEmpty()) {
             this.plugin.getLogger().severe("No font infos found for alphabet " + name + " from " + file.getName());
         }
 
-        List<SpecialFontTransformation> specialFontTransformations = this.loadFontTransformations(configuration);
-        String upperCase = configuration.getString("font-transformations.upper-case");
-        String lowerCase = configuration.getString("font-transformations.lower-case");
+        List<SpecialFontTransformation> specialFontTransformations = this.loadFontTransformations(configuration, name);
+        String upperCase = fontType.getFormat(configuration.getString("font-transformations.upper-case", ""));
+        String lowerCase = fontType.getFormat(configuration.getString("font-transformations.lower-case", ""));
 
         FontTransformation fontTransformation = new ZFontTransformation(upperCase, lowerCase, specialFontTransformations);
 
@@ -323,12 +322,12 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     @Override
     public String getOffset() {
-        return this.offset;
+        return this.plugin.getFontType().getOffset();
     }
 
     @Override
     public String getOffset(int pixels) {
-        return pixels == 0 ? "" : this.offset.replace("%pixels%", String.valueOf(pixels));
+        return pixels == 0 ? "" : this.plugin.getFontType().getOffset(pixels);
     }
 
     @Override
@@ -337,7 +336,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     }
 
 
-    private List<FontInfo> loadFontInfo(YamlConfiguration configuration) {
+    private List<FontInfo> loadFontInfo(YamlConfiguration configuration, String name) {
 
         List<FontInfo> fontInfos = new ArrayList<>();
         List<Map<?, ?>> maps = configuration.getMapList("font-infos");
@@ -350,7 +349,7 @@ public class ZTextManager extends ZUtils implements TextManager {
                 fontInfos.add(new FontInfo(character, length));
 
             } catch (Exception exception) {
-                this.plugin.getLogger().severe("Error while loading font infos");
+                this.plugin.getLogger().severe("Error while loading font infos for " + map + " - aphabet: " + name);
                 exception.printStackTrace();
             }
         }
@@ -358,17 +357,24 @@ public class ZTextManager extends ZUtils implements TextManager {
         return fontInfos;
     }
 
-    private List<SpecialFontTransformation> loadFontTransformations(YamlConfiguration configuration) {
+    private List<SpecialFontTransformation> loadFontTransformations(YamlConfiguration configuration, String name) {
 
         List<SpecialFontTransformation> specialFontTransformations = new ArrayList<>();
         List<Map<?, ?>> maps = configuration.getMapList("font-transformations.specials");
+        var fontType = this.plugin.getFontType();
 
         for (Map<?, ?> map : maps) {
             try {
 
                 char character = ((String) map.get("char")).charAt(0);
                 String replacement = (String) map.get("replacement");
-                specialFontTransformations.add(new SpecialFontTransformation(character, replacement));
+
+                if (replacement == null) {
+                    this.plugin.getLogger().severe("Impossible to load replacement for " + character + " for aphabet " + name);
+                    continue;
+                }
+
+                specialFontTransformations.add(new SpecialFontTransformation(character, fontType.getFormat(replacement)));
 
             } catch (Exception exception) {
                 this.plugin.getLogger().severe("Error while loading font transformations");
