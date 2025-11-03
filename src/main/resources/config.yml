@@ -1,18 +1,29 @@
-enable-debug: true
+# Enables detailed logging and debugging messages in the console.
+enable-debug: false
+
+# Default language used for texts and books.
 default-language: en_us
 
+# Default inventory size and name used for text displays.
 text-inventory-size: 54
 text-inventory-name: ""
 
-# Allows horizontal text adjustment.
-# For ItemsAdder you should use: :offset_%pixels%: - https://itemsadder.devs.beer/plugin-usage/adding-content/font-images#offsets
-# For Oraxen you should use: <shift:%pixels%> - https://docs.oraxen.com/configuration/glyphs/custom-gui#how-do-i-get-the-unicode-for-the-glyph
-# For Nexos you should use: <shift:%pixels%> - https://docs.nexomc.com/configuration/glyphs#custom-guis
+# Defines the syntax used to apply horizontal text offsets.
+# This setting depends on the plugin you're using:
+# - ItemsAdder: use ":offset_%pixels%:" → https://itemsadder.devs.beer/plugin-usage/adding-content/font-images#offsets
+# - Oraxen: use "<shift:%pixels%>" → https://docs.oraxen.com/configuration/glyphs/custom-gui#how-do-i-get-the-unicode-for-the-glyph
+# - Nexo: use "<shift:%pixels%>" → https://docs.nexomc.com/configuration/glyphs#custom-guis
 offset: ":offset_%pixels%:"
 
+# Validation system used with the command /text alphabet validation <alphabet>.
+# This tool helps you verify that each character in your custom alphabet
+# is properly displayed and aligned within the inventory interface.
 validation:
+  # Number of letters displayed per line.
   letters-per-line: 10
+  # Maximum number of lines displayed.
   max-lines: 6
+  # Inventory name used during alphabet validation.
   inventory-name: ":offset_-48::generic_dark_full::offset_-168:"
+  # Inventory size used during alphabet validation.
   inventory-size: 54
-
