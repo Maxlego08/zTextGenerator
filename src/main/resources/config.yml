@@ -1,3 +1,5 @@
+# Documentation: https://ztextgenerator.groupez.dev/
+
 # Enables detailed logging and debugging messages in the console.
 enable-debug: false
 
