@@ -283,6 +283,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             folder.mkdirs();
 
             this.plugin.saveResource("alphabets/normal.yml", false);
+            this.plugin.saveResource("alphabets/tiny.yml", false);
             this.plugin.saveResource("alphabets/inventory-title.yml", false);
         }
 

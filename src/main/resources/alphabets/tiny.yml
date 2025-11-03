@@ -334,7 +334,7 @@ font-transformations:
     - char: '0'
       replacement: ':zero_t_%height%:'
     - char: '1'
-      replacement: ':on_t_%height%:'
+      replacement: ':one_t_%height%:'
     - char: '2'
       replacement: ':two_t_%height%:'
     - char: '3'
