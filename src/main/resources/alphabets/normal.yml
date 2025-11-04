@@ -188,7 +188,7 @@ font-infos:
     length: 5
   - char: '/'
     length: 5
-  - char: '\\'
+  - char: '\'
     length: 5
   - char: '|'
     length: 2
@@ -216,9 +216,21 @@ font-infos:
     length: 4
   - char: '€'
     length: 5
+  - char: '°'
+    length: 1
+  - char: '¤'
+    length: 5    
 
 font-transformations:
   specials:
+    - char: '\'
+      replacement: 'backslash_t_%height%'
+    - char: '`'
+      replacement: 'backtick_t_%height%'
+    - char: '|'
+      replacement: 'pipe_t_%height%'
+    - char: '~'
+      replacement: 'tilde_t_%height%'  
     - char: "'"
       replacement: 'apostrophe_%height%'
     - char: '.'
