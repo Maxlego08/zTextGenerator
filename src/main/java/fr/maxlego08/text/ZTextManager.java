@@ -584,7 +584,7 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     @Override
     public String transformFont(String text) {
-        return this.plugin.getFontImage().replace(text, true).replace("§f", "").replace("§r", "");
+        return this.plugin.getFontImage().replace(text, true);
     }
 
     @Override
