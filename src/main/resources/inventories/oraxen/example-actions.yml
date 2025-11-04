@@ -1,0 +1,122 @@
+name: ":offset_-48::exemple_actions::offset_-56:<white>%ztextgenerator_right_normal_0_{ztextgenerator_test}%"
+size: 54
+items:
+  add:
+    slot: 14
+    item:
+      material: PAPER
+      model-id: 1
+      name: "<gradient:#34d399:#22c55e><bold>Add Value</bold></gradient>"
+      lore:
+        - "&7Add a new entry to the generator."
+        - "<green>✔ Action: ztextgenerator-add-value"
+    actions:
+      - type: ztextgenerator-add-value
+      - type: refresh inventory
+
+  remove:
+    slot: 12
+    item:
+      material: PAPER
+      model-id: 1
+      name: "<gradient:#f97316:#ef4444><bold>Remove Value</bold></gradient>"
+      lore:
+        - "&7Remove the last recorded value."
+        - "<red>✖ Action: ztextgenerator-remove-value"
+    actions:
+      - type: ztextgenerator-remove-value
+      - type: refresh inventory
+
+  close:
+    slot: 8
+    item:
+      material: PAPER
+      model-id: 1
+      name: "<gradient:#f43f5e:#fb7185><bold>Close</bold></gradient>"
+    actions:
+      - type: close
+
+  open-book:
+    slots:
+      - 27-30
+    item:
+      material: PAPER
+      model-id: 1
+      name: "<gradient:#38bdf8:#0ea5e9><bold>Open Book</bold></gradient>"
+      lore:
+        - "&7Display the content of the &fexample book&7."
+        - "&8Perfect for tutorials or stories."
+        - "<aqua>📖 Book: example (page 1)"
+    actions:
+      - type: book open
+        # Book name
+        book: example
+        # Book page
+        page: 1
+
+  open-dialog:
+    slots:
+      - 32-35
+    item:
+      material: PAPER
+      model-id: 1
+      name: "<gradient:#a855f7:#6366f1><bold>Open Dialogue</bold></gradient>"
+      lore:
+        - "&7Launch a dialogue with a word-by-word animation."
+        - "&8Perfect for NPCs or quest scenes."
+        - "<light_purple>💬 Text: example-dialogue"
+        - "<gray>Animation: WORD_BY_WORD (2 ticks)"
+    actions:
+      - type: text open
+        # Text name
+        text: example-dialogue
+        # NONE, No animation, the full text is displayed immediately.
+        # LETTER_BY_LETTER, Reveals the text character by character.
+        # WORD_BY_WORD, Reveals the text word by word.
+        animation: WORD_BY_WORD
+        # Delay between each frame in ticks for the animation
+        animation-delay: 2 # 2 ticks = 10 frames per second
+
+  open-text:
+    slots:
+      - 36-39
+    item:
+      material: PAPER
+      model-id: 1
+      name: "<gradient:#facc15:#f97316><bold>Open Text (Normal)</bold></gradient>"
+      lore:
+        - "&7Display a text using the &fstandard alphabet&7."
+        - "&8Instant display, no animation."
+        - "<gold>📝 Text: example-normal"
+    actions:
+      - type: text open
+        # Text name
+        text: example-normal
+        # NONE, No animation, the full text is displayed immediately.
+        # LETTER_BY_LETTER, Reveals the text character by character.
+        # WORD_BY_WORD, Reveals the text word by word.
+        animation: NONE
+        # Delay between each frame in ticks for the animation
+        animation-delay: 2 # 2 ticks = 10 frames per second
+
+  open-text-tiny:
+    slots:
+      - 41-44
+    item:
+      material: PAPER
+      model-id: 1
+      name: "<gradient:#14f195:#00d18c><bold>Open Text (Tiny)</bold></gradient>"
+      lore:
+        - "&7Display a text using the &fsmall alphabet&7."
+        - "&8Useful for compact titles or signatures."
+        - "<green>📝 Text: example-tiny"
+    actions:
+      - type: text open
+        # Text name
+        text: example-tiny
+        # NONE, No animation, the full text is displayed immediately.
+        # LETTER_BY_LETTER, Reveals the text character by character.
+        # WORD_BY_WORD, Reveals the text word by word.
+        animation: NONE
+        # Delay between each frame in ticks for the animation
+        animation-delay: 2 # 2 ticks = 10 frames per second
