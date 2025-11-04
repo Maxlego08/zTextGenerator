@@ -48,6 +48,8 @@ public final class TextPlugin extends ZPlugin {
 
         this.saveDefaultConfig();
 
+        this.createInstances();
+
         this.enableDebug = this.getConfig().getBoolean("enable-debug", false);
         this.defaultLanguage = normalizeLanguage(this.getConfig().getString("default-language", DEFAULT_LANGUAGE));
         this.textManager.loadAlphabets();
@@ -60,7 +62,6 @@ public final class TextPlugin extends ZPlugin {
         this.registerCommand("text-generator", new CommandTextGenerator(this), "text", "tg");
         this.registerListener(new InventoryListener(this));
 
-        this.createInstances();
         this.textManager.getTexts().forEach(Text::createCacheResult);
 
         this.hookProviders.forEach(hookProvider -> hookProvider.onEnable(this));

@@ -584,7 +584,7 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     @Override
     public String transformFont(String text) {
-        return this.plugin.getFontImage().replace(text).replace("§f", "").replace("§r", "");
+        return this.plugin.getFontImage().replace(text, true).replace("§f", "").replace("§r", "");
     }
 
     @Override
@@ -681,7 +681,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             var currentAlphabet = textLine.alphabet();
 
             var result = colorHelper.transformString(currentAlphabet, text, height);
-            var content = this.plugin.getFontImage().replace(result.string());
+            var content = this.plugin.getFontImage().replace(result.string(), true);
 
             switch (alignment) {
                 case CENTER -> {
