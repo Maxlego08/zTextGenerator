@@ -117,7 +117,7 @@ font-infos:
   - char: 'z'
     length: 4
   - char: '1'
-    length: 2
+    length: 3
   - char: '2'
     length: 4
   - char: '3'
@@ -217,11 +217,9 @@ font-infos:
   - char: '€'
     length: 4
   - char: '°'
-    length: 1
-  - char: '°'
-    length: 1
+    length: 3
   - char: '¤'
-    length: 5
+    length: 4
 
 
 font-transformations:

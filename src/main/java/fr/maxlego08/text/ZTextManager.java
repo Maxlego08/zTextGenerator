@@ -794,6 +794,7 @@ public class ZTextManager extends ZUtils implements TextManager {
 
         StringBuilder builder = new StringBuilder();
         builder.append(fontType.getOffset(startOffset));
+        builder.append("<white>");
         builder.append(fontType.getFormat(inventoryName));
         builder.append(fontType.getOffset(endOffset));
 
@@ -806,7 +807,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             builder.append(this.getNegativeOffset(result.length()));
         }
 
-        var inventory = colorHelper.createTextInventory(player, inventorySize, builder.toString());
+        var inventory = colorHelper.createTextInventory(player, inventorySize, transformFont(builder.toString()));
         player.openInventory(inventory);
     }
 

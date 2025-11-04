@@ -55,6 +55,8 @@ public class AlphabetValidationTask extends BukkitRunnable {
         FontInfo fontInfo = iterator.next();
         this.manager.displayAlphabet(player, alphabet, String.valueOf(fontInfo.character()), this.letterByLine, this.maxLines,
                 fontInfo.length(), this.inventoryName, this.inventorySize, this.startOffset, this.endOffset);
+
+        this.plugin.getLogger().info("Character: " + fontInfo.character());
     }
 
     public void schedule(long delayTicks) {

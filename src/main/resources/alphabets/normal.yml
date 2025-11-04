@@ -217,9 +217,9 @@ font-infos:
   - char: '€'
     length: 5
   - char: '°'
-    length: 1
+    length: 4
   - char: '¤'
-    length: 5    
+    length: 5
 
 font-transformations:
   specials:
@@ -230,7 +230,7 @@ font-transformations:
     - char: '|'
       replacement: 'pipe_t_%height%'
     - char: '~'
-      replacement: 'tilde_t_%height%'  
+      replacement: 'tilde_t_%height%'
     - char: "'"
       replacement: 'apostrophe_%height%'
     - char: '.'
