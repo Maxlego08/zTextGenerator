@@ -292,6 +292,16 @@ public interface TextManager {
      * @param letterLength  the length of each letter in the alphabet
      * @param inventoryName the name of the inventory to display the alphabet in
      * @param inventorySize the size of the inventory to display the alphabet in
+     * @param startOffset   the offset to apply to the first letter
+     * @param endOffset     the offset to apply to the last letter
      */
-    void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize);
+    void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize, int startOffset, int endOffset);
+
+    String getValidationInventoryName();
+
+    int getValidationInventorySize();
+
+    int getValidationStartOffset();
+
+    int getValidationEndOffset();
 }

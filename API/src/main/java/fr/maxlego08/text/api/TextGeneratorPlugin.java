@@ -86,7 +86,25 @@ public interface TextGeneratorPlugin extends Plugin {
      */
     String getDefaultLanguage();
 
+    /**
+     * Gets the test value associated with this plugin.
+     *
+     * @return the test value associated with this plugin
+     */
     int getTestValue();
 
+    /**
+     * Sets the test value of the plugin.
+     *
+     * @param value the value to set
+     */
     void setTestValue(int value);
+
+    /**
+     * Gets the font type associated with this plugin.
+     * The font type is used to define how to render text in various formats.
+     *
+     * @return the font type associated with this plugin
+     */
+    FontType getFontType();
 }

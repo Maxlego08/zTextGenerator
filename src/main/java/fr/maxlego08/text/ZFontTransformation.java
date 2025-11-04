@@ -41,9 +41,9 @@ public class ZFontTransformation implements FontTransformation {
         String heightStr = String.valueOf(height);
 
         if (Character.isUpperCase(c)) {
-            return this.upperCase.replace("%height%", heightStr).replace("%char%", charStr);
+            return this.upperCase.replace("%height%", heightStr).replace("%char%", charStr.toLowerCase());
         } else if (Character.isLowerCase(c)) {
-            return this.lowerCase.replace("%height%", heightStr).replace("%char%", charStr);
+            return this.lowerCase.replace("%height%", heightStr).replace("%char%", charStr.toLowerCase());
         }
 
         return null;

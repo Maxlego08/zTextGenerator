@@ -1,5 +1,6 @@
 package fr.maxlego08.text;
 
+import fr.maxlego08.text.api.FontType;
 import fr.maxlego08.text.api.TextManager;
 import fr.maxlego08.text.api.color.ColorHelper;
 import fr.maxlego08.text.api.fonts.FontImage;
@@ -37,6 +38,7 @@ public final class TextPlugin extends ZPlugin {
     private FontImage fontImage = new EmptyFont();
     private String defaultLanguage = DEFAULT_LANGUAGE;
     private int value;
+    private FontType fontType = FontType.ITEMSADDER;
 
     @Override
     public void onEnable() {
@@ -45,6 +47,8 @@ public final class TextPlugin extends ZPlugin {
         this.ZCommandManager = new ZCommandManager(this);
 
         this.saveDefaultConfig();
+
+        this.createInstances();
 
         this.enableDebug = this.getConfig().getBoolean("enable-debug", false);
         this.defaultLanguage = normalizeLanguage(this.getConfig().getString("default-language", DEFAULT_LANGUAGE));
@@ -58,7 +62,6 @@ public final class TextPlugin extends ZPlugin {
         this.registerCommand("text-generator", new CommandTextGenerator(this), "text", "tg");
         this.registerListener(new InventoryListener(this));
 
-        this.createInstances();
         this.textManager.getTexts().forEach(Text::createCacheResult);
 
         this.hookProviders.forEach(hookProvider -> hookProvider.onEnable(this));
@@ -138,6 +141,11 @@ public final class TextPlugin extends ZPlugin {
         this.value = value;
     }
 
+    @Override
+    public FontType getFontType() {
+        return this.fontType;
+    }
+
     private String normalizeLanguage(String language) {
         if (language == null || language.isEmpty()) {
             return DEFAULT_LANGUAGE;
@@ -159,8 +167,18 @@ public final class TextPlugin extends ZPlugin {
             Optional<FontImage> optional = createInstance("NexoFont");
             optional.ifPresentOrElse(fontImage -> {
                 this.fontImage = fontImage;
+                this.fontType = FontType.NEXO;
                 getLogger().info("Loaded NexoFont");
             }, () -> getLogger().severe("Failed to load NexoFont"));
+        }
+
+        if (isActive(Plugins.ORAXEN)) {
+            Optional<FontImage> optional = createInstance("OraxenFont");
+            optional.ifPresentOrElse(fontImage -> {
+                this.fontImage = fontImage;
+                this.fontType = FontType.ORAXEN;
+                getLogger().info("Loaded OraxenFont");
+            }, () -> getLogger().severe("Failed to load OraxenFont"));
         }
 
         if (isActive(Plugins.ZMENU)) {
@@ -170,6 +188,5 @@ public final class TextPlugin extends ZPlugin {
                 getLogger().info("Loaded zMenu");
             }, () -> getLogger().severe("Failed to load zMenu"));
         }
-
     }
 }

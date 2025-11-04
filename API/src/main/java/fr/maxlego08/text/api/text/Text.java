@@ -100,6 +100,10 @@ public interface Text {
      * @see #getResult(Player)
      */
     void createCacheResult();
+
+    int getStartOffset();
+
+    int getEndOffset();
 }
 
 

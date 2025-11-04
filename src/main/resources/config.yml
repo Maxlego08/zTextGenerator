@@ -1,18 +1,40 @@
-enable-debug: true
+# Documentation: https://ztextgenerator.groupez.dev/
+
+# Enables detailed logging and debugging messages in the console.
+enable-debug: false
+
+# Default language used for texts and books.
 default-language: en_us
 
-text-inventory-size: 54
-text-inventory-name: ""
-
-# Allows horizontal text adjustment.
-# For ItemsAdder you should use: :offset-%pixels%: - https://itemsadder.devs.beer/plugin-usage/adding-content/font-images#offsets
-# For Oraxen you should use: <shift:%pixels%> - https://docs.oraxen.com/configuration/glyphs/custom-gui#how-do-i-get-the-unicode-for-the-glyph
-# For Nexos you should use: <shift:%pixels%> - https://docs.nexomc.com/configuration/glyphs#custom-guis
-offset: ":offset_%pixels%:"
-
-validation:
-  letters-per-line: 10
-  max-lines: 6
-  inventory-name: ":offset_-48::generic_dark_full::offset_-168:"
+# Default inventory size, name, start and end offset used for text displays.
+text:
   inventory-size: 54
+  # The inventory name will be transformed using the font of your pack plugin.
+  # For example, with ItemsAdder, it will become:generic_dark_full:
+  inventory-name: "generic_dark_full"
+  # The offset that will be applied before the inventory name.
+  # For example, with ItemsAdder, it will become:offset_-48:
+  start-offset: -48
+  # The offset that will be applied after the inventory name.
+  # For example, with ItemsAdder, it will become:offset_-168:
+  end-offset: -168
 
+# Validation system used with the command /text alphabet validation <alphabet>.
+# This tool helps you verify that each character in your custom alphabet
+# is properly displayed and aligned within the inventory interface.
+validation:
+  # Number of letters displayed per line.
+  letters-per-line: 10
+  # Maximum number of lines displayed.
+  max-lines: 6
+  # Inventory size used during alphabet validation.
+  inventory-size: 54
+  # The inventory name will be transformed using the font of your pack plugin.
+  # For example, with ItemsAdder, it will become:generic_dark_full:
+  inventory-name: "generic_dark_full"
+  # The offset that will be applied before the inventory name.
+  # For example, with ItemsAdder, it will become:offset_-48:
+  start-offset: -48
+  # The offset that will be applied after the inventory name.
+  # For example, with ItemsAdder, it will become:offset_-168:
+  end-offset: -168

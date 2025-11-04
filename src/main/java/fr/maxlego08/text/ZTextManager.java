@@ -42,8 +42,10 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     private static final int DEFAULT_VALIDATION_LETTERS_PER_LINE = 10;
     private static final int DEFAULT_VALIDATION_MAX_LINES = 6;
-    private static final String DEFAULT_VALIDATION_INVENTORY_NAME = ":offset_-48::generic_dark_full::offset_-168:";
+    private static final String DEFAULT_VALIDATION_INVENTORY_NAME = "generic_dark_full";
     private static final int DEFAULT_VALIDATION_INVENTORY_SIZE = 54;
+    private static final int DEFAULT_VALIDATION_START_OFFSET = -48;
+    private static final int DEFAULT_VALIDATION_END_OFFSET = -168;
 
     private final TextPlugin plugin;
     private final List<Alphabet> alphabets = new ArrayList<>();
@@ -51,13 +53,16 @@ public class ZTextManager extends ZUtils implements TextManager {
     private final List<Book> books = new ArrayList<>();
     private final Map<UUID, TextAnimationTask> activeTextAnimations = new ConcurrentHashMap<>();
     private final Map<UUID, AlphabetValidationTask> alphabetValidationTasks = new ConcurrentHashMap<>();
-    private String offset;
+    private int defaultTextStartOffset = 0;
+    private int defaultTextEndOffset = 0;
     private int defaultTextInventorySize = 54;
     private String defaultTextInventoryName = "";
     private int validationLettersPerLine = DEFAULT_VALIDATION_LETTERS_PER_LINE;
     private int validationMaxLines = DEFAULT_VALIDATION_MAX_LINES;
     private String validationInventoryName = DEFAULT_VALIDATION_INVENTORY_NAME;
     private int validationInventorySize = DEFAULT_VALIDATION_INVENTORY_SIZE;
+    private int validationStartOffset = DEFAULT_VALIDATION_START_OFFSET;
+    private int validationEndOffset = DEFAULT_VALIDATION_END_OFFSET;
 
     public ZTextManager(TextPlugin plugin) {
         this.plugin = plugin;
@@ -164,9 +169,11 @@ public class ZTextManager extends ZUtils implements TextManager {
             this.plugin.saveResource("texts/text-example.yml", false);
         }
 
-        int configuredSize = this.plugin.getConfig().getInt("text-inventory-size", 54);
-        this.defaultTextInventorySize = sanitizeInventorySize(configuredSize, 54);
-        this.defaultTextInventoryName = Objects.requireNonNullElse(this.plugin.getConfig().getString("text-inventory-name"), "");
+        var config = this.plugin.getConfig();
+        this.defaultTextInventorySize = sanitizeInventorySize(config.getInt("text.inventory-size", 54), 54);
+        this.defaultTextInventoryName = Objects.requireNonNullElse(config.getString("text.inventory-name"), "generic_dark_full");
+        this.defaultTextStartOffset = config.getInt("text.start-offset", -48);
+        this.defaultTextEndOffset = config.getInt("text.end-offset", -168);
 
         this.texts.clear();
         this.files(folder, this::loadTexts);
@@ -203,6 +210,9 @@ public class ZTextManager extends ZUtils implements TextManager {
 
         String title = map.containsKey("title") ? (String) map.get("title") : null;
         Alignment alignment = map.containsKey("alignment") ? Alignment.valueOf(((String) map.get("alignment")).toUpperCase()) : Alignment.LEFT;
+
+        int startOffset = map.containsKey("start-offset") ? (int) map.get("start-offset") : configuration.getInt("start-offset", this.defaultTextStartOffset);
+        int endOffset = map.containsKey("end-offset") ? (int) map.get("end-offset") : configuration.getInt("end-offset", this.defaultTextEndOffset);
 
         String alphabetName = (String) map.get("alphabet");
         var optional = this.getAlphabet(alphabetName);
@@ -248,7 +258,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             inventoryName = value == null ? "" : value.toString();
         }
 
-        this.texts.add(new ZText(this.plugin, name, language, title, length, textLines, inventorySize, inventoryName));
+        this.texts.add(new ZText(this.plugin, name, language, title, length, textLines, inventorySize, inventoryName, startOffset, endOffset));
     }
 
     private int parseInventorySize(Object value) {
@@ -283,36 +293,39 @@ public class ZTextManager extends ZUtils implements TextManager {
             folder.mkdirs();
 
             this.plugin.saveResource("alphabets/normal.yml", false);
+            this.plugin.saveResource("alphabets/tiny.yml", false);
             this.plugin.saveResource("alphabets/inventory-title.yml", false);
         }
 
         this.files(folder, this::loadAlphabet);
 
         var config = this.plugin.getConfig();
-        this.offset = config.getString("offset", ":offset-%pixels%:");
         this.validationLettersPerLine = Math.max(1, config.getInt("validation.letters-per-line", DEFAULT_VALIDATION_LETTERS_PER_LINE));
         this.validationMaxLines = Math.max(1, config.getInt("validation.max-lines", DEFAULT_VALIDATION_MAX_LINES));
         this.validationInventoryName = Objects.requireNonNullElse(config.getString("validation.inventory-name"), DEFAULT_VALIDATION_INVENTORY_NAME);
         int configuredValidationSize = config.getInt("validation.inventory-size", DEFAULT_VALIDATION_INVENTORY_SIZE);
         this.validationInventorySize = sanitizeInventorySize(configuredValidationSize, DEFAULT_VALIDATION_INVENTORY_SIZE);
+        this.validationStartOffset = config.getInt("validation.start-offset", DEFAULT_VALIDATION_START_OFFSET);
+        this.validationEndOffset = config.getInt("validation.end-offset", DEFAULT_VALIDATION_END_OFFSET);
     }
 
     @Override
     public void loadAlphabet(File file) {
 
         YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+        var fontType = this.plugin.getFontType();
         String name = configuration.getString("name");
 
         this.alphabets.removeIf(alphabet -> alphabet.getName().equalsIgnoreCase(name));
 
-        List<FontInfo> fontInfos = this.loadFontInfo(configuration);
+        List<FontInfo> fontInfos = this.loadFontInfo(configuration, name);
         if (fontInfos.isEmpty()) {
             this.plugin.getLogger().severe("No font infos found for alphabet " + name + " from " + file.getName());
         }
 
-        List<SpecialFontTransformation> specialFontTransformations = this.loadFontTransformations(configuration);
-        String upperCase = configuration.getString("font-transformations.upper-case");
-        String lowerCase = configuration.getString("font-transformations.lower-case");
+        List<SpecialFontTransformation> specialFontTransformations = this.loadFontTransformations(configuration, name);
+        String upperCase = fontType.getFormat(configuration.getString("font-transformations.upper-case", ""));
+        String lowerCase = fontType.getFormat(configuration.getString("font-transformations.lower-case", ""));
 
         FontTransformation fontTransformation = new ZFontTransformation(upperCase, lowerCase, specialFontTransformations);
 
@@ -322,12 +335,12 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     @Override
     public String getOffset() {
-        return this.offset;
+        return this.plugin.getFontType().getOffset();
     }
 
     @Override
     public String getOffset(int pixels) {
-        return pixels == 0 ? "" : this.offset.replace("%pixels%", String.valueOf(pixels));
+        return pixels == 0 ? "" : this.plugin.getFontType().getOffset(pixels);
     }
 
     @Override
@@ -336,7 +349,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     }
 
 
-    private List<FontInfo> loadFontInfo(YamlConfiguration configuration) {
+    private List<FontInfo> loadFontInfo(YamlConfiguration configuration, String name) {
 
         List<FontInfo> fontInfos = new ArrayList<>();
         List<Map<?, ?>> maps = configuration.getMapList("font-infos");
@@ -349,7 +362,7 @@ public class ZTextManager extends ZUtils implements TextManager {
                 fontInfos.add(new FontInfo(character, length));
 
             } catch (Exception exception) {
-                this.plugin.getLogger().severe("Error while loading font infos");
+                this.plugin.getLogger().severe("Error while loading font infos for " + map + " - aphabet: " + name);
                 exception.printStackTrace();
             }
         }
@@ -357,17 +370,24 @@ public class ZTextManager extends ZUtils implements TextManager {
         return fontInfos;
     }
 
-    private List<SpecialFontTransformation> loadFontTransformations(YamlConfiguration configuration) {
+    private List<SpecialFontTransformation> loadFontTransformations(YamlConfiguration configuration, String name) {
 
         List<SpecialFontTransformation> specialFontTransformations = new ArrayList<>();
         List<Map<?, ?>> maps = configuration.getMapList("font-transformations.specials");
+        var fontType = this.plugin.getFontType();
 
         for (Map<?, ?> map : maps) {
             try {
 
                 char character = ((String) map.get("char")).charAt(0);
                 String replacement = (String) map.get("replacement");
-                specialFontTransformations.add(new SpecialFontTransformation(character, replacement));
+
+                if (replacement == null) {
+                    this.plugin.getLogger().severe("Impossible to load replacement for " + character + " for aphabet " + name);
+                    continue;
+                }
+
+                specialFontTransformations.add(new SpecialFontTransformation(character, fontType.getFormat(replacement)));
 
             } catch (Exception exception) {
                 this.plugin.getLogger().severe("Error while loading font transformations");
@@ -564,7 +584,7 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     @Override
     public String transformFont(String text) {
-        return this.plugin.getFontImage().replace(text).replace("§f", "").replace("§r", "");
+        return this.plugin.getFontImage().replace(text, true);
     }
 
     @Override
@@ -661,7 +681,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             var currentAlphabet = textLine.alphabet();
 
             var result = colorHelper.transformString(currentAlphabet, text, height);
-            var content = this.plugin.getFontImage().replace(result.string());
+            var content = this.plugin.getFontImage().replace(result.string(), true);
 
             switch (alignment) {
                 case CENTER -> {
@@ -699,18 +719,13 @@ public class ZTextManager extends ZUtils implements TextManager {
             return false;
         }
 
-        List<FontInfo> letters = alphabet.getFontInfos().stream()
-                .map(info -> new FontInfo(info.character(), info.length()))
-                .toList();
+        List<FontInfo> letters = alphabet.getFontInfos().stream().map(info -> new FontInfo(info.character(), info.length())).toList();
 
         if (letters.isEmpty()) {
             return false;
         }
 
-        AlphabetValidationTask task = new AlphabetValidationTask(this.plugin, this, player, alphabet, letters,
-                this.validationLettersPerLine, this.validationMaxLines,
-                this.validationInventoryName, this.validationInventorySize);
-
+        AlphabetValidationTask task = new AlphabetValidationTask(this.plugin, this, player, alphabet, letters, this.validationLettersPerLine, this.validationMaxLines, this.validationInventoryName, this.validationInventorySize, this.validationStartOffset, this.validationEndOffset);
         this.alphabetValidationTasks.put(uuid, task);
 
         long delayTicks = Math.max(1L, delaySeconds * 20L);
@@ -763,7 +778,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     }
 
     @Override
-    public void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize) {
+    public void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize, int startOffset, int endOffset) {
 
         var colorHelper = this.plugin.getColorHelper();
         var letterChar = letter.charAt(0);
@@ -775,8 +790,14 @@ public class ZTextManager extends ZUtils implements TextManager {
             fontInfos.add(new FontInfo(letterChar, letterLength));
         }
 
+        var fontType = this.plugin.getFontType();
 
-        StringBuilder builder = new StringBuilder(inventoryName);
+        StringBuilder builder = new StringBuilder();
+        builder.append(fontType.getOffset(startOffset));
+        builder.append("<white>");
+        builder.append(fontType.getFormat(inventoryName));
+        builder.append(fontType.getOffset(endOffset));
+
         for (int height = 0; height != maxLines; height++) {
 
             var line = Strings.repeat(letter, letterByLine);
@@ -786,7 +807,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             builder.append(this.getNegativeOffset(result.length()));
         }
 
-        var inventory = colorHelper.createTextInventory(player, inventorySize, builder.toString());
+        var inventory = colorHelper.createTextInventory(player, inventorySize, transformFont(builder.toString()));
         player.openInventory(inventory);
     }
 
@@ -808,5 +829,25 @@ public class ZTextManager extends ZUtils implements TextManager {
         if (previous != null) {
             previous.cancelAnimation();
         }
+    }
+
+    @Override
+    public String getValidationInventoryName() {
+        return validationInventoryName;
+    }
+
+    @Override
+    public int getValidationInventorySize() {
+        return validationInventorySize;
+    }
+
+    @Override
+    public int getValidationStartOffset() {
+        return validationStartOffset;
+    }
+
+    @Override
+    public int getValidationEndOffset() {
+        return validationEndOffset;
     }
 }

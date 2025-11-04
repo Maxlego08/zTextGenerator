@@ -1,3 +1,5 @@
+# Documentation: https://ztextgenerator.groupez.dev/configurations/books
+
 name: "example"
 language: en_us
 inventory-name: ":offset_-48::exemple_book::offset_-250:"

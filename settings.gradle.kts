@@ -15,4 +15,5 @@ pluginManagement {
 include("API")
 include("Hooks:ItemsAdder")
 include("Hooks:Nexo")
+include("Hooks:Oraxen")
 include("Hooks:ZMenu")

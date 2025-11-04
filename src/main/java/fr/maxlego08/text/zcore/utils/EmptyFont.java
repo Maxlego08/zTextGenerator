@@ -4,7 +4,7 @@ import fr.maxlego08.text.api.fonts.FontImage;
 
 public class EmptyFont implements FontImage {
     @Override
-    public String replace(String string) {
+    public String replace(String string, boolean removeColor) {
         return string;
     }
 }

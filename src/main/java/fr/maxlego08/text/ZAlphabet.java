@@ -61,6 +61,9 @@ public class ZAlphabet implements Alphabet {
 
     @Override
     public String transformChar(char c, int height) {
+
+        if (c == ' ') return " ";
+
         String result = this.fontTransformation.transformChar(c, height);
         if (result != null) return result;
 

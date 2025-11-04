@@ -18,9 +18,11 @@ public class ZText extends ZUtils implements Text {
     private final List<TextLine> lines;
     private final int inventorySize;
     private final String inventoryName;
+    private final int startOffset;
+    private final int endOffset;
     private String result;
 
-    public ZText(TextGeneratorPlugin plugin, String name, String language, String title, int length, List<TextLine> lines, int inventorySize, String inventoryName) {
+    public ZText(TextGeneratorPlugin plugin, String name, String language, String title, int length, List<TextLine> lines, int inventorySize, String inventoryName, int startOffset, int endOffset) {
         this.plugin = plugin;
         this.name = name;
         this.language = language;
@@ -29,6 +31,8 @@ public class ZText extends ZUtils implements Text {
         this.lines = lines;
         this.inventorySize = inventorySize;
         this.inventoryName = inventoryName == null ? "" : inventoryName;
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
     }
 
     @Override
@@ -66,7 +70,11 @@ public class ZText extends ZUtils implements Text {
         if (player == null || this.inventoryName.isEmpty()) {
             return this.inventoryName;
         }
-        return papi(this.inventoryName.replace("%player%", player.getName()), player);
+
+        var fontType = this.plugin.getFontType();
+        var inventoryName = this.inventoryName.contains("%") ? papi(this.inventoryName.replace("%player%", player.getName()), player) : this.inventoryName;
+
+        return fontType.getOffset(this.startOffset) + "<white>" + fontType.getFormat(inventoryName) + fontType.getOffset(this.endOffset);
     }
 
     @Override
@@ -115,5 +123,15 @@ public class ZText extends ZUtils implements Text {
         }
 
         this.result = this.getResult(null);
+    }
+
+    @Override
+    public int getStartOffset() {
+        return this.startOffset;
+    }
+
+    @Override
+    public int getEndOffset() {
+        return this.endOffset;
     }
 }

@@ -46,8 +46,10 @@ public class TextAnimationTask extends BukkitRunnable {
         this.frames = buildFrames(this.originalText, animationType);
         this.finalFrame = this.originalText;
         this.animated = animationType != TextAnimationType.NONE && this.frames.size() > 1 && this.options.stepDelayMillis() > 0;
+
         String prefix = text == null ? "" : text.getInventoryName(player);
-        this.inventoryName = prefix == null ? "" : prefix;
+        this.inventoryName = prefix == null ? "" : plugin.getFontImage().replace(prefix, false);
+
         this.inventorySize = text == null ? 54 : text.getInventorySize();
     }
 

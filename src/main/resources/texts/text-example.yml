@@ -1,5 +1,16 @@
+# Documentation: https://ztextgenerator.groupez.dev/configurations/texts
+
 inventory-size: 54
-inventory-name: ":offset_-48::generic_dark_full::offset_-168:"
+# The inventory name will be transformed using the font of your pack plugin.
+# For example, with ItemsAdder, it will become:generic_dark_full:
+inventory-name: "generic_dark_full"
+# The offset that will be applied before the inventory name.
+# For example, with ItemsAdder, it will become:offset_-48:
+start-offset: -48
+# The offset that will be applied after the inventory name.
+# For example, with ItemsAdder, it will become:offset_-168:
+end-offset: -168
+
 texts:
   - name: "example-normal"
     title: "<dark_gray>Lorem Ipsum<white>"
@@ -45,7 +56,9 @@ texts:
     alignment: LEFT
     alphabet: "tiny"
     inventory-size: 45
-    inventory-name: ":offset_-48::generic_5::offset_-162:"
+    inventory-name: "generic_5"
+    start-offset: -48
+    end-offset: -162
     lines:
       - alphabet: "normal"
         element: "Lorem ipsum dolor sit amet,"
@@ -59,12 +72,14 @@ texts:
       - "consequat. Sed lobortis quis tortor sed"
       - "mollis. Praesent at nibh sem."
 
-  - name: "example-dialogue"  
+  - name: "example-dialogue"
     title: "<#fffaee>From Steve Title<white>"
     alignment: LEFT
     alphabet: "tiny"
     inventory-size: 54
-    inventory-name: ":offset_-48::exemple_dialog::offset_-190:"    
+    inventory-name: "exemple_dialog"
+    start-offset: -48
+    end-offset: -190
     length: 180
     lines:
       - "<black>Lorem ipsum dolor sit amet, consectetur"
@@ -82,3 +97,47 @@ texts:
       - "Duis lobortis ex vitae massa tristique"
       - "aliquam. Sed feugiat pharetra urna, sit amet"
       - "malesuada lacus fermentum ac."      
+
+
+  - name: "example-window"
+    title: "<#fffaee>Command Prompt<white>"
+    alignment: LEFT
+    alphabet: "tiny"
+    inventory-size: 54
+    inventory-name: "retro_window"
+    start-offset: -48
+    end-offset: -185
+    length: 170
+    lines:
+      - alphabet: "normal"
+        element: "<white>GroupeZ V1.0.5"    
+      - "(c) Copyright 1985-2025 Z Corp."
+      - " "
+      - 'C:\Documents\My Super Plugin\GroupeZ'
+     
+
+  - name: "example-screen"
+    title: ""
+    alignment: LEFT
+    alphabet: "normal"
+    inventory-size: 54
+    inventory-name: "screen"
+    start-offset: -48
+    end-offset: -165
+    length: 160
+    lines:
+      - ""
+      - "<#13e310>/cmd_"
+      - "<#13e310>[mail@mail.mail]  ¤¤¤¤¤¤"
+      - ""
+      - "____________________"
+      - "nisi feugiat pretium. Nunc consequat "
+      - "lectus at eleifend. Nunc convallis"
+      - "erat, nec finibus est suscipit eget."
+      - ""            
+      - "-5°"             
+      - ""            
+      - ""            
+      - ""            
+      - alphabet: "tiny"
+        element: "<#13e310>GroupeZ V1.0.5"         
