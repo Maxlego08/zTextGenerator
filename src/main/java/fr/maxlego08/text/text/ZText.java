@@ -74,7 +74,7 @@ public class ZText extends ZUtils implements Text {
         var fontType = this.plugin.getFontType();
         var inventoryName = this.inventoryName.contains("%") ? papi(this.inventoryName.replace("%player%", player.getName()), player) : this.inventoryName;
 
-        return fontType.getOffset(this.startOffset) + fontType.getFormat(inventoryName) + fontType.getOffset(this.endOffset);
+        return fontType.getOffset(this.startOffset) + "<white>" + fontType.getFormat(inventoryName) + fontType.getOffset(this.endOffset);
     }
 
     @Override
