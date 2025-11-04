@@ -295,7 +295,7 @@ font-transformations:
     - char: '%'
       replacement: 'percent_t_%height%'
     - char: '²'
-      replacement: 'superscript_2_t_%height%'
+      replacement: 'superscript2_t_%height%'
     - char: 'ü'
       replacement: 'u_l_tr_t_%height%'
     - char: 'Ü'
