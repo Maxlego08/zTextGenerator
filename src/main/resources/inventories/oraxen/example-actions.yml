@@ -1,11 +1,10 @@
-name: ":offset_-48::exemple_actions::offset_-56:<white>%ztextgenerator_right_normal_0_{ztextgenerator_test}%"
+name: "<shift:-48>&f<glyph_exemple_actions><shift:-56>%ztextgenerator_right_normal_0_{ztextgenerator_test}%"
 size: 54
 items:
   add:
     slot: 14
     item:
-      material: PAPER
-      model-id: 1
+      material: "oraxen:voiditem"
       name: "<gradient:#34d399:#22c55e><bold>Add Value</bold></gradient>"
       lore:
         - "&7Add a new entry to the generator."
@@ -17,8 +16,7 @@ items:
   remove:
     slot: 12
     item:
-      material: PAPER
-      model-id: 1
+      material: "oraxen:voiditem"
       name: "<gradient:#f97316:#ef4444><bold>Remove Value</bold></gradient>"
       lore:
         - "&7Remove the last recorded value."
@@ -30,8 +28,7 @@ items:
   close:
     slot: 8
     item:
-      material: PAPER
-      model-id: 1
+      material: "oraxen:voiditem"
       name: "<gradient:#f43f5e:#fb7185><bold>Close</bold></gradient>"
     actions:
       - type: close
@@ -40,8 +37,7 @@ items:
     slots:
       - 27-30
     item:
-      material: PAPER
-      model-id: 1
+      material: "oraxen:voiditem"
       name: "<gradient:#38bdf8:#0ea5e9><bold>Open Book</bold></gradient>"
       lore:
         - "&7Display the content of the &fexample book&7."
@@ -58,8 +54,7 @@ items:
     slots:
       - 32-35
     item:
-      material: PAPER
-      model-id: 1
+      material: "oraxen:voiditem"
       name: "<gradient:#a855f7:#6366f1><bold>Open Dialogue</bold></gradient>"
       lore:
         - "&7Launch a dialogue with a word-by-word animation."
@@ -81,8 +76,7 @@ items:
     slots:
       - 36-39
     item:
-      material: PAPER
-      model-id: 1
+      material: "oraxen:voiditem"
       name: "<gradient:#facc15:#f97316><bold>Open Text (Normal)</bold></gradient>"
       lore:
         - "&7Display a text using the &fstandard alphabet&7."
@@ -103,8 +97,7 @@ items:
     slots:
       - 41-44
     item:
-      material: PAPER
-      model-id: 1
+      material: "oraxen:voiditem"
       name: "<gradient:#14f195:#00d18c><bold>Open Text (Tiny)</bold></gradient>"
       lore:
         - "&7Display a text using the &fsmall alphabet&7."
