@@ -64,10 +64,12 @@ public class CommandTextGeneratorAlphabetLetter extends VCommand {
 
         var alphabet = optional.get();
         int letterLength = this.argAsInteger(4, alphabet.getLength(letter.charAt(0)));
-        String inventoryName = this.argAsString(5, ":offset_-48::generic_dark_full::offset_-168:");
-        int inventorySize = this.argAsInteger(6, 54);
+        String inventoryName = this.argAsString(5, manager.getValidationInventoryName());
+        int inventorySize = this.argAsInteger(6, manager.getValidationInventorySize());
+        int startOffset = this.argAsInteger(7, manager.getValidationStartOffset());
+        int endOffset = this.argAsInteger(8, manager.getValidationEndOffset());
 
-        manager.displayAlphabet(player, alphabet, letter, letterByLine, maxLines, letterLength, inventoryName, inventorySize);
+        manager.displayAlphabet(player, alphabet, letter, letterByLine, maxLines, letterLength, inventoryName, inventorySize, startOffset, endOffset);
 
         return CommandType.SUCCESS;
     }

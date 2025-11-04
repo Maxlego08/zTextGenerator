@@ -42,8 +42,10 @@ public class ZTextManager extends ZUtils implements TextManager {
 
     private static final int DEFAULT_VALIDATION_LETTERS_PER_LINE = 10;
     private static final int DEFAULT_VALIDATION_MAX_LINES = 6;
-    private static final String DEFAULT_VALIDATION_INVENTORY_NAME = ":offset_-48::generic_dark_full::offset_-168:";
+    private static final String DEFAULT_VALIDATION_INVENTORY_NAME = "generic_dark_full";
     private static final int DEFAULT_VALIDATION_INVENTORY_SIZE = 54;
+    private static final int DEFAULT_VALIDATION_START_OFFSET = -48;
+    private static final int DEFAULT_VALIDATION_END_OFFSET = -168;
 
     private final TextPlugin plugin;
     private final List<Alphabet> alphabets = new ArrayList<>();
@@ -59,6 +61,8 @@ public class ZTextManager extends ZUtils implements TextManager {
     private int validationMaxLines = DEFAULT_VALIDATION_MAX_LINES;
     private String validationInventoryName = DEFAULT_VALIDATION_INVENTORY_NAME;
     private int validationInventorySize = DEFAULT_VALIDATION_INVENTORY_SIZE;
+    private int validationStartOffset = DEFAULT_VALIDATION_START_OFFSET;
+    private int validationEndOffset = DEFAULT_VALIDATION_END_OFFSET;
 
     public ZTextManager(TextPlugin plugin) {
         this.plugin = plugin;
@@ -301,6 +305,8 @@ public class ZTextManager extends ZUtils implements TextManager {
         this.validationInventoryName = Objects.requireNonNullElse(config.getString("validation.inventory-name"), DEFAULT_VALIDATION_INVENTORY_NAME);
         int configuredValidationSize = config.getInt("validation.inventory-size", DEFAULT_VALIDATION_INVENTORY_SIZE);
         this.validationInventorySize = sanitizeInventorySize(configuredValidationSize, DEFAULT_VALIDATION_INVENTORY_SIZE);
+        this.validationStartOffset = config.getInt("validation.start-offset", DEFAULT_VALIDATION_START_OFFSET);
+        this.validationEndOffset = config.getInt("validation.end-offset", DEFAULT_VALIDATION_END_OFFSET);
     }
 
     @Override
@@ -713,18 +719,13 @@ public class ZTextManager extends ZUtils implements TextManager {
             return false;
         }
 
-        List<FontInfo> letters = alphabet.getFontInfos().stream()
-                .map(info -> new FontInfo(info.character(), info.length()))
-                .toList();
+        List<FontInfo> letters = alphabet.getFontInfos().stream().map(info -> new FontInfo(info.character(), info.length())).toList();
 
         if (letters.isEmpty()) {
             return false;
         }
 
-        AlphabetValidationTask task = new AlphabetValidationTask(this.plugin, this, player, alphabet, letters,
-                this.validationLettersPerLine, this.validationMaxLines,
-                this.validationInventoryName, this.validationInventorySize);
-
+        AlphabetValidationTask task = new AlphabetValidationTask(this.plugin, this, player, alphabet, letters, this.validationLettersPerLine, this.validationMaxLines, this.validationInventoryName, this.validationInventorySize, this.validationStartOffset, this.validationEndOffset);
         this.alphabetValidationTasks.put(uuid, task);
 
         long delayTicks = Math.max(1L, delaySeconds * 20L);
@@ -777,7 +778,7 @@ public class ZTextManager extends ZUtils implements TextManager {
     }
 
     @Override
-    public void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize) {
+    public void displayAlphabet(Player player, Alphabet alphabet, String letter, int letterByLine, int maxLines, int letterLength, String inventoryName, int inventorySize, int startOffset, int endOffset) {
 
         var colorHelper = this.plugin.getColorHelper();
         var letterChar = letter.charAt(0);
@@ -789,8 +790,13 @@ public class ZTextManager extends ZUtils implements TextManager {
             fontInfos.add(new FontInfo(letterChar, letterLength));
         }
 
+        var fontType = this.plugin.getFontType();
 
-        StringBuilder builder = new StringBuilder(inventoryName);
+        StringBuilder builder = new StringBuilder();
+        builder.append(fontType.getOffset(startOffset));
+        builder.append(fontType.getFormat(inventoryName));
+        builder.append(fontType.getOffset(endOffset));
+
         for (int height = 0; height != maxLines; height++) {
 
             var line = Strings.repeat(letter, letterByLine);
@@ -822,5 +828,25 @@ public class ZTextManager extends ZUtils implements TextManager {
         if (previous != null) {
             previous.cancelAnimation();
         }
+    }
+
+    @Override
+    public String getValidationInventoryName() {
+        return validationInventoryName;
+    }
+
+    @Override
+    public int getValidationInventorySize() {
+        return validationInventorySize;
+    }
+
+    @Override
+    public int getValidationStartOffset() {
+        return validationStartOffset;
+    }
+
+    @Override
+    public int getValidationEndOffset() {
+        return validationEndOffset;
     }
 }
