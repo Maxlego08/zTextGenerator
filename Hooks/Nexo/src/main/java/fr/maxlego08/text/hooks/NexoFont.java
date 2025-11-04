@@ -17,7 +17,7 @@ public class NexoFont implements FontImage {
         while (matcher.find()) {
             var value = NexoPlugin.instance().fontManager().glyphFromID(matcher.group(0));
             if (value == null) continue;
-            String replacement = value.character();
+            String replacement = value.getFormattedUnicodes();
             matcher.appendReplacement(result, replacement);
         }
         matcher.appendTail(result);

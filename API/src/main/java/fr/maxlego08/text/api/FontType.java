@@ -3,7 +3,7 @@ package fr.maxlego08.text.api;
 public enum FontType {
 
     ITEMSADDER(":%format%:", ":offset_%pixels%:"),
-    NEXO("<glyph_%format%>", "<shift:%pixels%>"),
+    NEXO("<glyph:%format%>", "<shift:%pixels%>"),
     ORAXEN("<glyph_%format%>", "<shift:%pixels%>"),
 
     ;
