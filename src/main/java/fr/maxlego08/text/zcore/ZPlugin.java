@@ -2,11 +2,11 @@ package fr.maxlego08.text.zcore;
 
 import fr.maxlego08.text.api.TextGeneratorPlugin;
 import fr.maxlego08.text.api.commands.CommandManager;
+import fr.maxlego08.text.api.commands.VCommand;
 import fr.maxlego08.text.api.placeholders.LocalPlaceholder;
 import fr.maxlego08.text.api.placeholders.Placeholder;
 import fr.maxlego08.text.api.utils.Plugins;
 import fr.maxlego08.text.command.ZCommandManager;
-import fr.maxlego08.text.api.commands.VCommand;
 import fr.maxlego08.text.messages.MessageLoader;
 import fr.maxlego08.text.zcore.utils.documentations.CommandMarkdownGenerator;
 import fr.maxlego08.text.zcore.utils.documentations.PlaceholderMarkdownGenerator;
@@ -26,6 +26,11 @@ public abstract class ZPlugin extends JavaPlugin implements TextGeneratorPlugin 
     protected ZCommandManager ZCommandManager;
 
     protected void preEnable() {
+
+        var folder = getDataFolder();
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
 
         LocalPlaceholder.getInstance().setPlugin(this);
         Placeholder.getPlaceholder();

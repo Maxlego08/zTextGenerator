@@ -6,9 +6,18 @@ enable-debug: false
 # Default language used for texts and books.
 default-language: en_us
 
-# Default inventory size and name used for text displays.
-text-inventory-size: 54
-text-inventory-name: ""
+# Default inventory size, name, start and end offset used for text displays.
+text:
+  inventory-size: 54
+  # The inventory name will be transformed using the font of your pack plugin.
+  # For example, with ItemsAdder, it will become:generic_dark_full:
+  inventory-name: "generic_dark_full"
+  # The offset that will be applied before the inventory name.
+  # For example, with ItemsAdder, it will become:offset_-48:
+  start-offset: -48
+  # The offset that will be applied after the inventory name.
+  # For example, with ItemsAdder, it will become:offset_-168:
+  end-offset: -168
 
 # Validation system used with the command /text alphabet validation <alphabet>.
 # This tool helps you verify that each character in your custom alphabet
@@ -18,7 +27,14 @@ validation:
   letters-per-line: 10
   # Maximum number of lines displayed.
   max-lines: 6
-  # Inventory name used during alphabet validation.
-  inventory-name: ":offset_-48::generic_dark_full::offset_-168:"
   # Inventory size used during alphabet validation.
   inventory-size: 54
+  # The inventory name will be transformed using the font of your pack plugin.
+  # For example, with ItemsAdder, it will become:generic_dark_full:
+  inventory-name: "generic_dark_full"
+  # The offset that will be applied before the inventory name.
+  # For example, with ItemsAdder, it will become:offset_-48:
+  start-offset: -48
+  # The offset that will be applied after the inventory name.
+  # For example, with ItemsAdder, it will become:offset_-168:
+  end-offset: -168

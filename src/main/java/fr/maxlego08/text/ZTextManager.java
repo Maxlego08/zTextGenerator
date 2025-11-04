@@ -51,6 +51,8 @@ public class ZTextManager extends ZUtils implements TextManager {
     private final List<Book> books = new ArrayList<>();
     private final Map<UUID, TextAnimationTask> activeTextAnimations = new ConcurrentHashMap<>();
     private final Map<UUID, AlphabetValidationTask> alphabetValidationTasks = new ConcurrentHashMap<>();
+    private int defaultTextStartOffset = 0;
+    private int defaultTextEndOffset = 0;
     private int defaultTextInventorySize = 54;
     private String defaultTextInventoryName = "";
     private int validationLettersPerLine = DEFAULT_VALIDATION_LETTERS_PER_LINE;
@@ -163,9 +165,11 @@ public class ZTextManager extends ZUtils implements TextManager {
             this.plugin.saveResource("texts/text-example.yml", false);
         }
 
-        int configuredSize = this.plugin.getConfig().getInt("text-inventory-size", 54);
-        this.defaultTextInventorySize = sanitizeInventorySize(configuredSize, 54);
-        this.defaultTextInventoryName = Objects.requireNonNullElse(this.plugin.getConfig().getString("text-inventory-name"), "");
+        var config = this.plugin.getConfig();
+        this.defaultTextInventorySize = sanitizeInventorySize(config.getInt("text.inventory-size", 54), 54);
+        this.defaultTextInventoryName = Objects.requireNonNullElse(config.getString("text.inventory-name"), "generic_dark_full");
+        this.defaultTextStartOffset = config.getInt("text.start-offset", -48);
+        this.defaultTextEndOffset = config.getInt("text.end-offset", -168);
 
         this.texts.clear();
         this.files(folder, this::loadTexts);
@@ -202,6 +206,9 @@ public class ZTextManager extends ZUtils implements TextManager {
 
         String title = map.containsKey("title") ? (String) map.get("title") : null;
         Alignment alignment = map.containsKey("alignment") ? Alignment.valueOf(((String) map.get("alignment")).toUpperCase()) : Alignment.LEFT;
+
+        int startOffset = map.containsKey("start-offset") ? (int) map.get("start-offset") : configuration.getInt("start-offset", this.defaultTextStartOffset);
+        int endOffset = map.containsKey("end-offset") ? (int) map.get("end-offset") : configuration.getInt("end-offset", this.defaultTextEndOffset);
 
         String alphabetName = (String) map.get("alphabet");
         var optional = this.getAlphabet(alphabetName);
@@ -247,7 +254,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             inventoryName = value == null ? "" : value.toString();
         }
 
-        this.texts.add(new ZText(this.plugin, name, language, title, length, textLines, inventorySize, inventoryName));
+        this.texts.add(new ZText(this.plugin, name, language, title, length, textLines, inventorySize, inventoryName, startOffset, endOffset));
     }
 
     private int parseInventorySize(Object value) {
