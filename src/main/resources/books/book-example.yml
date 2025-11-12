@@ -2,7 +2,9 @@
 
 name: "example"
 language: en_us
-inventory-name: ":offset_-48::exemple_book::offset_-250:"
+inventory-start-offset: -48
+inventory-name: "exemple_book"
+inventory-end-offset: -250
 start-offset: 10
 left-size: 110
 right-size: 110

@@ -103,10 +103,12 @@ public class ZTextManager extends ZUtils implements TextManager {
         String language = normalizeLanguage(configuration.getString("language", this.getDefaultLanguage()));
         String alphabetName = configuration.getString("alphabet");
         Alignment alignment = Alignment.valueOf(configuration.getString("alignment", Alignment.LEFT.name()));
-        int startOffset = configuration.getInt("start-offset");
-        int leftSize = configuration.getInt("left-size");
-        int rightSize = configuration.getInt("right-size");
-        int offsetBetween = configuration.getInt("offset-between");
+        int startOffset = configuration.getInt("start-offset", 0);
+        int inventoryStartOffset = configuration.getInt("inventory-start-offset", -48);
+        int inventoryEndOffset = configuration.getInt("inventory-end-offset", 0);
+        int leftSize = configuration.getInt("left-size", 0);
+        int rightSize = configuration.getInt("right-size", 0);
+        int offsetBetween = configuration.getInt("offset-between", 0);
         List<Map<?, ?>> pages = configuration.getMapList("pages");
         Optional<Alphabet> optional = this.getAlphabet(alphabetName);
         if (optional.isEmpty()) {
@@ -121,7 +123,7 @@ public class ZTextManager extends ZUtils implements TextManager {
             int page = Integer.parseInt(map.get("page").toString());
             bookPages.add(new BookPage(page, loadPage(right, alphabet, alignment), loadPage(left, alphabet, alignment)));
         });
-        this.books.add(new ZBook(name, language, inventoryName, bookPages, startOffset, leftSize, rightSize, offsetBetween, alphabet));
+        this.books.add(new ZBook(this.plugin, name, language, inventoryName, bookPages, inventoryStartOffset, inventoryEndOffset, startOffset, leftSize, rightSize, offsetBetween, alphabet));
     }
 
     private Page loadPage(Object object, Alphabet alphabet, Alignment alignment) {
