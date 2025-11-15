@@ -38,7 +38,7 @@ public class SpigotColor implements ColorHelper {
     @Override
     public Inventory createBook(Player player, Book book, BookPage page, TextManager textManager) {
         BookInventory bookInventory = new BookInventory();
-        var inventory = Bukkit.createInventory(bookInventory, 54, book.getInventoryName() + book.toBookString(textManager, this, page));
+        var inventory = Bukkit.createInventory(bookInventory, 54, book.getInventoryName(player) + book.toBookString(textManager, this, page));
         bookInventory.setInventory(inventory);
         return inventory;
     }

@@ -3,6 +3,7 @@ package fr.maxlego08.text.api.book;
 import fr.maxlego08.text.api.Alphabet;
 import fr.maxlego08.text.api.TextManager;
 import fr.maxlego08.text.api.color.ColorHelper;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,8 @@ public interface Book {
      * @return The name of the book as it appears in the inventory.
      */
     String getInventoryName();
+
+    String getInventoryName(Player player);
 
     /**
      * Get the list of all pages in the book.
@@ -92,5 +95,9 @@ public interface Book {
      * @return The formatted string.
      */
     String toBookString(TextManager textManager, ColorHelper colorHelper, BookPage page);
+
+    int getInventoryStartOffset();
+
+    int getInventoryEndOffset();
 
 }
