@@ -26,13 +26,13 @@ public class ZMessageManager extends ZUtils implements MessageManager {
 
             switch (message.getType()) {
                 case ACTION -> {
-                    System.out.println("ToDo A");
+                    this.plugin.getLogger().warning("MessageType ACTION is not yet implemented.");
                 }
                 case CENTER -> {
-                    System.out.println("ToDo B");
+                    this.plugin.getLogger().warning("MessageType CENTER is not yet implemented.");
                 }
                 case TCHAT_AND_ACTION -> {
-                    System.out.println("ToDo C");
+                    this.plugin.getLogger().warning("MessageType TCHAT_AND_ACTION is not yet implemented.");
                 }
                 case WITHOUT_PREFIX, TCHAT -> this.sendTchatMessage(player, message, objects);
             }
@@ -43,8 +43,12 @@ public class ZMessageManager extends ZUtils implements MessageManager {
     }
 
     private void sendTchatMessage(Player player, Message message, Object... args) {
-        boolean isWithoutPrefix = message.getType() == MessageType.WITHOUT_PREFIX || message.getMessages().size() > 1;
-        message.getMessages().forEach(msg -> this.plugin.getColorHelper().message(player, this.papi((isWithoutPrefix ? "" : Message.PREFIX.getMessage()) + getMessage(msg, args), player)));
+        boolean isWithoutPrefix = message.getType() == MessageType.WITHOUT_PREFIX;
+        List<String> messages = message.getMessages();
+        for (int i = 0; i < messages.size(); i++) {
+            String prefix = (isWithoutPrefix || i > 0) ? "" : Message.PREFIX.getMessage();
+            this.plugin.getColorHelper().message(player, this.papi(prefix + getMessage(messages.get(i), args), player));
+        }
     }
 
     private String getMessage(Message message, Object... args) {

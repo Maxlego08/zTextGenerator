@@ -16,7 +16,7 @@ public class ItemsAdderFont implements FontImage {
         StringBuilder result = new StringBuilder();
         while (matcher.find()) {
             String replacement = FontImageWrapper.replaceFontImages(matcher.group(0));
-            matcher.appendReplacement(result, replacement);
+            matcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
         }
         matcher.appendTail(result);
         return removeColor ? result.toString().replace("§f", "").replace("§r", "") : result.toString();

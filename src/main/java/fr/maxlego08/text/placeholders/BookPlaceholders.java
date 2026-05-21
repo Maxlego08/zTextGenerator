@@ -29,7 +29,12 @@ public class BookPlaceholders extends PlaceholderRegister {
             if (values.size() != 2) return "The format is invalid! Please try again (" + values.size() + ")";
 
             String bookName = values.getFirst();
-            int pageNumber = Integer.parseInt(values.get(1));
+            int pageNumber;
+            try {
+                pageNumber = Integer.parseInt(values.get(1));
+            } catch (NumberFormatException exception) {
+                return "Invalid page number: " + values.get(1);
+            }
             var bookOpt = textManager.getBook(bookName, player);
             if (bookOpt.isEmpty()) return "Book " + bookName + " not found";
 
