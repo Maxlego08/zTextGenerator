@@ -1,3 +1,7 @@
+# 1.0.3
+
+- Code fixes and improvements
+
 # 1.0.2
 
 - Fix nexo

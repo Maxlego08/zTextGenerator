@@ -77,7 +77,9 @@ public abstract class Arguments extends ZUtils {
 	 * @return the argument as an integer.
 	 */
 	protected int argAsInteger(int index) {
-		return Integer.valueOf(argAsString(index));
+		String value = argAsString(index);
+		if (value == null) throw new IllegalArgumentException("Argument at index " + index + " is missing");
+		return Integer.parseInt(value);
 	}
 
 	/**
@@ -102,7 +104,9 @@ public abstract class Arguments extends ZUtils {
 	 * @return the argument as a long.
 	 */
 	protected long argAsLong(int index) {
-		return Long.valueOf(argAsString(index));
+		String value = argAsString(index);
+		if (value == null) throw new IllegalArgumentException("Argument at index " + index + " is missing");
+		return Long.parseLong(value);
 	}
 
 	/**
@@ -127,7 +131,9 @@ public abstract class Arguments extends ZUtils {
 	 * @return the argument as a double.
 	 */
 	protected double argAsDouble(int index) {
-		return Double.valueOf(argAsString(index).replace(",", "."));
+		String value = argAsString(index);
+		if (value == null) throw new IllegalArgumentException("Argument at index " + index + " is missing");
+		return Double.parseDouble(value.replace(",", "."));
 	}
 
 	/**
@@ -202,7 +208,9 @@ public abstract class Arguments extends ZUtils {
 	 * @return the argument as an EntityType.
 	 */
 	protected EntityType argAsEntityType(int index) {
-		return EntityType.valueOf(argAsString(index).toUpperCase());
+		String value = argAsString(index);
+		if (value == null) throw new IllegalArgumentException("Argument at index " + index + " is missing");
+		return EntityType.valueOf(value.toUpperCase());
 	}
 
 	/**

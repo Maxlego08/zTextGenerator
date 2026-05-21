@@ -99,9 +99,15 @@ public class ZTextManager extends ZUtils implements TextManager {
         YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
         String name = configuration.getString("name");
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Book in " + file.getName() + " must have a name");
+        }
         String inventoryName = configuration.getString("inventory-name");
         String language = normalizeLanguage(configuration.getString("language", this.getDefaultLanguage()));
         String alphabetName = configuration.getString("alphabet");
+        if (alphabetName == null || alphabetName.isEmpty()) {
+            throw new IllegalArgumentException("Book '" + name + "' must have an alphabet");
+        }
         Alignment alignment = Alignment.valueOf(configuration.getString("alignment", Alignment.LEFT.name()));
         int startOffset = configuration.getInt("start-offset", 0);
         int inventoryStartOffset = configuration.getInt("inventory-start-offset", -48);
@@ -245,6 +251,9 @@ public class ZTextManager extends ZUtils implements TextManager {
                 }
 
                 String element = (String) lineMap.get("element");
+                if (element == null) {
+                    throw new IllegalArgumentException("Text line must have an 'element' key in text '" + name + "'");
+                }
                 textLines.add(new TextLine(ligneAlignment, ligneAlphabet, element));
             }
         }

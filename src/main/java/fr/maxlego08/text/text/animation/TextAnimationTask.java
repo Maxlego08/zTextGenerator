@@ -104,9 +104,12 @@ public class TextAnimationTask extends BukkitRunnable {
         if (text.isEmpty()) {
             return;
         }
-        this.player.setMetadata("cant-close-inventory", new FixedMetadataValue(this.plugin, true));
-        this.player.openInventory(this.colorHelper.createTextInventory(this.player, this.inventorySize, text));
-        this.player.removeMetadata("cant-close-inventory", this.plugin);
+        try {
+            this.player.setMetadata("cant-close-inventory", new FixedMetadataValue(this.plugin, true));
+            this.player.openInventory(this.colorHelper.createTextInventory(this.player, this.inventorySize, text));
+        } finally {
+            this.player.removeMetadata("cant-close-inventory", this.plugin);
+        }
     }
 
     public boolean isAnimated() {

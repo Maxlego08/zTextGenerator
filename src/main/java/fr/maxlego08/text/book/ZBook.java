@@ -10,12 +10,13 @@ import fr.maxlego08.text.api.book.PageType;
 import fr.maxlego08.text.api.color.ColorHelper;
 import fr.maxlego08.text.api.color.Result;
 import fr.maxlego08.text.api.text.TextLine;
+import fr.maxlego08.text.api.utils.ZUtils;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Optional;
 
-public class ZBook implements Book {
+public class ZBook extends ZUtils implements Book {
 
     private final TextGeneratorPlugin plugin;
     private final String name;
@@ -67,7 +68,7 @@ public class ZBook implements Book {
         }
 
         var fontType = this.plugin.getFontType();
-        var inventoryName = this.inventoryName.contains("%") ? this.inventoryName.replace("%player%", player.getName()) : this.inventoryName;
+        var inventoryName = this.inventoryName.contains("%") ? papi(this.inventoryName.replace("%player%", player.getName()), player) : this.inventoryName;
 
         return fontType.getOffset(this.inventoryStartOffset) + "<white>" + fontType.getFormat(inventoryName) + fontType.getOffset(this.inventoryEndOffset);
     }

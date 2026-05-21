@@ -58,7 +58,12 @@ public class AlignedPlaceholders extends PlaceholderRegister {
             }
 
             String alphabetName = values.getFirst();
-            int height = Integer.parseInt(values.get(1));
+            int height;
+            try {
+                height = Integer.parseInt(values.get(1));
+            } catch (NumberFormatException exception) {
+                return "Invalid height value: " + values.get(1);
+            }
             String content = papi(values.get(2).replace("%player%", player.getName()), player);
 
             var optional = textManager.getAlphabet(alphabetName);

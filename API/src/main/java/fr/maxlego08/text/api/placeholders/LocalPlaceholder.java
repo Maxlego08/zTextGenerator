@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class LocalPlaceholder {
 
-    private static LocalPlaceholder instance;
+    private static volatile LocalPlaceholder instance;
     private final String prefix = "ztextgenerator";
     private final Pattern pattern = Pattern.compile("[%]([^%]+)[%]");
     private final List<AutoPlaceholder> autoPlaceholders = new ArrayList<>();

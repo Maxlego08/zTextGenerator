@@ -19,7 +19,7 @@ public class OraxenFont implements FontImage {
             var value = manager.getGlyphFromID(matcher.group(1));
             if (value == null) continue;
             String replacement = value.getCharacter();
-            matcher.appendReplacement(result, replacement);
+            matcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
         }
         matcher.appendTail(result);
         return removeColor ? result.toString().replace("§f", "").replace("§r", "") : result.toString();

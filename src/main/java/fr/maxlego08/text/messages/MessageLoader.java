@@ -143,7 +143,10 @@ public class MessageLoader {
             }
 
             this.loadedMessages.add(message);
-        } catch (Exception ignored) {
+        } catch (IllegalArgumentException exception) {
+            this.plugin.getLogger().warning("Unknown message key in messages.yml: " + key);
+        } catch (Exception exception) {
+            this.plugin.getLogger().warning("Error loading message '" + key + "': " + exception.getMessage());
         }
     }
 

@@ -17,10 +17,13 @@ public class TitlePlaceholders extends PlaceholderRegister {
 
     private BiFunction<Player, String, String> getTitleLength(TextManager textManager) {
         return (player, args) -> {
-
             String content = args.replace("_", " ");
-            Alphabet alphabet = textManager.getInventoryTitleAlphabet();
-            return String.valueOf(alphabet.getTextLength(content));
+            try {
+                Alphabet alphabet = textManager.getInventoryTitleAlphabet();
+                return String.valueOf(alphabet.getTextLength(content));
+            } catch (RuntimeException exception) {
+                return "Inventory title alphabet not found";
+            }
         };
     }
 }

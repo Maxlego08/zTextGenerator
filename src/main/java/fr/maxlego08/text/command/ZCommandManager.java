@@ -34,7 +34,8 @@ public class ZCommandManager extends ZUtils implements CommandManager {
             commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
             constructor = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
             constructor.setAccessible(true);
-        } catch (Exception ignored) {
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 

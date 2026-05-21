@@ -128,7 +128,7 @@ public abstract class ZPlugin extends JavaPlugin implements TextGeneratorPlugin 
                 return Optional.of((T) constructor.newInstance(this));
             } catch (NoSuchMethodException error) {
                 // noinspection unchecked
-                return Optional.of((T) clazz.newInstance());
+                return Optional.of((T) clazz.getDeclaredConstructor().newInstance());
             }
         } catch (ClassNotFoundException ignored) {
             return Optional.empty();
