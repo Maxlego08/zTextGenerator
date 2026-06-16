@@ -10,5 +10,5 @@ repositories {
 dependencies {
 
     compileOnly(projects.api)
-    compileOnly("fr.maxlego08.menu:zmenu-api:1.1.0.2")
+    compileOnly("fr.maxlego08.menu:zmenu-api:1.1.1.4")
 }
