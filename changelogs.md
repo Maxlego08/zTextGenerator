@@ -1,3 +1,7 @@
+# 1.0.4
+
+- Fix zMenu loading
+
 # 1.0.3
 
 - Code fixes and improvements
