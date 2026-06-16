@@ -10,24 +10,29 @@ import fr.maxlego08.text.hooks.zmenu.loader.AddTestLoader;
 import fr.maxlego08.text.hooks.zmenu.loader.OpenBookLoader;
 import fr.maxlego08.text.hooks.zmenu.loader.OpenTextLoader;
 import fr.maxlego08.text.hooks.zmenu.loader.RemoveTestLoader;
+import org.bukkit.event.Listener;
 
 import java.io.File;
 
-public class ZMenuProvider extends ZUtils implements HookProvider {
+public class ZMenuProvider extends ZUtils implements HookProvider, Listener {
 
     private InventoryManager inventoryManager;
-    private ButtonManager buttonManager;
 
     @Override
     public void onEnable(TextGeneratorPlugin plugin) {
 
         this.inventoryManager = plugin.getProvider(InventoryManager.class);
-        this.buttonManager = plugin.getProvider(ButtonManager.class);
+        ButtonManager buttonManager = plugin.getProvider(ButtonManager.class);
+        if (buttonManager == null) {
+            plugin.getLogger().warning("ButtonManager not found, retry in 5 seconds");
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> onEnable(plugin), 20 * 5L);
+            return;
+        }
 
-        this.buttonManager.registerAction(new OpenTextLoader(plugin));
-        this.buttonManager.registerAction(new OpenBookLoader(plugin));
-        this.buttonManager.registerAction(new AddTestLoader(plugin));
-        this.buttonManager.registerAction(new RemoveTestLoader(plugin));
+        buttonManager.registerAction(new OpenTextLoader(plugin));
+        buttonManager.registerAction(new OpenBookLoader(plugin));
+        buttonManager.registerAction(new AddTestLoader(plugin));
+        buttonManager.registerAction(new RemoveTestLoader(plugin));
 
         this.loadInventories(plugin);
     }
